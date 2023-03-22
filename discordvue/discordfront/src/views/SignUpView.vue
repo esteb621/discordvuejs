@@ -1,0 +1,41 @@
+<template>
+  <LoginForm 
+  :title="title" 
+  :secondTitle="secondTitle" 
+  :choixInscription="choixInscription"
+  :insertPhoto="insertPhoto" 
+  :confirmPwd="confirmPwd"
+  :pwd-checker="pwdChecker"
+  :buttonTitle="buttonTitle"
+  :link="link"
+  />
+</template>
+
+<script>
+import LoginForm from '@/components/LoginForm.vue';
+
+export default {
+  name: 'LoginView',
+  components: {
+    LoginForm
+  },
+
+  data(){
+    return {
+        title: 'Ravi de faire ta connaissance!',
+        secondTitle: 'Merci de renseigner les informations suivantes',
+        buttonTitle: 'Inscription',
+        insertPhoto:true,
+        choixInscription:false,
+        confirmPwd:true,
+        pwdChecker:true
+    };
+  },
+  computed: {
+    link(){
+      return "Déjà inscrit ? <a href='/connexion'>Connexion</a>";
+    }
+  }
+}
+</script>
+
