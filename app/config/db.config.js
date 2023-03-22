@@ -1,3 +1,15 @@
 module.exports = {
-    url:"mongodb+srv://root:MLs79rQdpn9RxM89@cluster0.2iqya77.mongodb.net/test"
+  HOST: "database-2.ct0lavn8okva.eu-west-3.rds.amazonaws.com",
+  PORT:3306,
+  USER: "admin",
+  PASSWORD: "root1234",
+  DB: "projdiscord",
+  dialect: "mysql",
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+    }
+
   };
