@@ -41,18 +41,6 @@ db.Users_Roles = require("./users_roles.model.js")(sequelize, Sequelize);
 
 sequelize.sync();
 
-
-//db.Roles.belongsToMany(db.Users, {
-  //through: "users_roles",
-  //foreignKey: "roleId",
-  //otherKey: "userId"
-//});
-//db.Users.belongsToMany(db.Roles, {
-  //through: "users_roles",
-  //foreignKey: "userId",
-  //otherKey: "roleId"
-//});
-
 db.ROLES = ["user","admin", "moderator"];
 
 module.exports = db;
