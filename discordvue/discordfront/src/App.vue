@@ -1,17 +1,36 @@
 <template>
-  <router-view/>
+  <transition name="fade">
+    <router-view/>
+  </transition>
 </template>
 
+<script>
+export default {
+  watch: {
+    $route(to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    },
+  },
+}
+</script>
 <style>
-html,body{
-    background-image:url("assets/background.jpg");
+@import url('https://fonts.cdnfonts.com/css/gotham');
+
+main{
     background-repeat: no-repeat;
     background-size:cover;
     color: #b9bbbe;
     font-family: 'Gotham Light', sans-serif;
     height: 100%;
-}
+    }
 
+body, html {
+  margin: 0;
+  height: 100%;
+  background-color: #313338;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -32,5 +51,14 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
