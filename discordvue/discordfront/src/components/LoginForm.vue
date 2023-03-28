@@ -2,8 +2,10 @@
     <main class=" d-flex justify-content-center align-items-center text-left">
         
       <div id="login" class="p-4 bg-dark rounded shadow-sm ">
-        <RouterLink to="/"><i :class="iconClass" @mouseover="changeIcon" @mouseout="resetIcon"></i></RouterLink>
-        <h1 class="pb-2 text-light">{{ title }}</h1>
+        
+        <h1 class="pb-2 text-light">
+        <RouterLink to="/"><i :class="iconClass" @mouseover="changeIcon" @mouseout="resetIcon"></i>
+        </RouterLink> {{ title }}</h1>
         <h2 class="text-center">{{ secondTitle }}</h2>
         <div class="mt-4">
           <form class="form-group" method="POST">
