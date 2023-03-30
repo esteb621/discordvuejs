@@ -1,6 +1,7 @@
 <template>
-    <div class="d-flex flex-column">
-        <h1>Bienvenue sur Discord!</h1>
+    <!-- Message conversation -->
+    <div id="messages">
+        
     </div>
 </template>
 

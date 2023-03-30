@@ -1,14 +1,14 @@
 <template>
      <div class="menu p-2 d-flex flex-column h-100">
         <button 
-            v-bind:class="{ active: activeButton === 'privateMessage', buttonSelected: activeButton === 'privateMessage' }" 
-            @click="setSelectedButton('privateMessage')"            id="mpButton" class="mb-3 active" type="submit" 
+            :class="{ buttonSelected: selectedButtonId === 1 }"
+            @click="selectButton(1)" id="mpButton" class="mb-3 active" type="submit" 
             data-toggle="tooltip" data-trigger="hover" data-placement="right" title="Messages privés">
                 <i class="bi bi-discord"></i>
         </button>
         <button id="serverButton" 
-            v-bind:class="{ active: activeButton === 'server', buttonSelected: activeButton === 'server' }" 
-            @click="setSelectedButton('server')"
+            :class="{ buttonSelected: selectedButtonId === 2 }"
+            @click="selectButton(2)"
             data-toggle="tooltip" data-trigger="hover" data-placement="right" title="Serveur principal">
         </button>
     </div>
@@ -16,18 +16,20 @@
 
 
 <script>
-    export default {
-    data() {
-        return {
-        activeButton: null
-        }
-    },
-    methods: {
-        setSelectedButton(button) {
-            this.activeButton = button;
-        }
+import { mapGetters, mapMutations } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters(['selectedButtonId'])
+  },
+  methods: {
+    ...mapMutations(['setSelectedButtonId']),
+    selectButton(id) {
+      this.setSelectedButtonId(id)
+      localStorage.setItem('selectedButtonId', id)
     }
-    }
+  }
+}
 </script>
 
 <style scoped>

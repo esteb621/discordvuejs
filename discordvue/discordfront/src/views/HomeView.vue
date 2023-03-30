@@ -1,6 +1,6 @@
 <template>
     <HomeHeader/>
-    <section id="demo" class="bg-dark py-5">
+    <section id="demo" class="bg-dark py-5 text-light">
       <div class="container">
         <div class="row">
           <div class="col-md-6 mx-auto text-center">
@@ -36,9 +36,3 @@
     }
   }
 </script>
-
-<style scoped>
-#demo {
-  color: #f6f6f6;
-}
-</style>

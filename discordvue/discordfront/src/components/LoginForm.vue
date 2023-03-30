@@ -1,8 +1,7 @@
 <template>
     <main class=" d-flex justify-content-center align-items-center text-left">
-        
+
       <div id="login" class="p-4 bg-dark rounded shadow-sm ">
-        
         <h1 class="pb-2 text-light">
         <RouterLink to="/"><i :class="iconClass" @mouseover="changeIcon" @mouseout="resetIcon"></i>
         </RouterLink> {{ title }}</h1>
