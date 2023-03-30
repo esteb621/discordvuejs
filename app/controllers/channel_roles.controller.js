@@ -21,7 +21,7 @@ exports.create = (req, res) => {
   };
 
   // Save Channel in the database
-  Channels_Roles.create(channels)
+  Channels_Roles.create(channels_roles)
     .then(data => {
       res.send(data);
     })
@@ -35,7 +35,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Channels from the database.
 exports.findAll = (req, res) => {
-  const id = req.query.nom;
+  const nom = req.query.nom;
   var condition = nom ? { nom: { [Op.like]: `%${nom}%` } } : null;
 
   Channels_Roles.findAll({ where: condition })
@@ -54,7 +54,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Channels.findByPk(id)
+  Channels_Roles.findByPk(id)
     .then(data => {
       if (data) {
         res.send(data);
@@ -75,7 +75,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Channels.update(req.body, {
+  Channels_Roles.update(req.body, {
     where: { id: id }
   })
     .then(num => {
@@ -100,7 +100,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Channels.destroy({
+  Channels_Roles.destroy({
     where: { id: id }
   })
     .then(num => {
@@ -123,7 +123,7 @@ exports.delete = (req, res) => {
 
 // Delete all Channels from the database.
 exports.deleteAll = (req, res) => {
-  Channels.destroy({
+  Channels_Roles.destroy({
     where: {},
     truncate: false
   })
@@ -140,7 +140,7 @@ exports.deleteAll = (req, res) => {
 
 // find all published Channel
 exports.findAllPublished = (req, res) => {
-  Channels.findAll({ where: { published: true } })
+  Channels_Roles.findAll({ where: { published: true } })
     .then(data => {
       res.send(data);
     })

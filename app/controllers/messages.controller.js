@@ -1,6 +1,6 @@
 const { channels } = require("../models");
 const db = require("../models");
-const Messages = db.messages;
+const Messages = db.Messages;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -52,7 +52,7 @@ exports.getMessagesByChannelId = async (req, res) => {
   const { id } = req.params;
   console.log(id)
   try {
-    const messages = await Message.findAll({
+    const messages = await Messages.findAll({
       where: { channel_id: id }
     });
 

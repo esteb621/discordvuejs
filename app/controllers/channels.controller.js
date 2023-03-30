@@ -1,6 +1,6 @@
 const { channels } = require("../models");
 const db = require("../models");
-const Channels = db.channels;
+const Channels = db.Channels;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Channel

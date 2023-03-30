@@ -1,8 +1,7 @@
 const { Router } = require("express");
 const db = require("../models");
 const fs = require('fs');
-const Users = db.users;
-const axios = require('axios');
+const Users = db.Users;
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -15,7 +14,7 @@ exports.create = (req, res) => {
   }
 
   // Create a User
-  const users = {
+  const user = {
     username: req.body.username,
     email: req.body.email,
     mdp: req.body.mdp,
@@ -23,7 +22,7 @@ exports.create = (req, res) => {
   };
 
   // Save User in the database
-  Users.create(users)
+  Users.create(user)
   .then(user => {
       res.status(201).json(user);
       // perform http request here or in another function 
