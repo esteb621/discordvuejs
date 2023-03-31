@@ -9,12 +9,14 @@
                     <h2 class="h4 font-weight-light mb-5">
                         Inscrivez-vous ou connectez-vous pour commencer
                     </h2>
+                    <div class="align-self-center">
                         <RouterLink to="/connexion"  class="btn btn-primary btn-lg m-2">Se connecter</RouterLink>
                         <RouterLink to="/inscription" class="btn btn-secondary btn-lg">S'inscrire</RouterLink>
+                    </div>
                 </div>
             </div>
         </div>
-    <div class="p-2 mt-auto align-self-start"> 
+    <div id="credits" class="p-2 mt-auto align-self-start"> 
             Dévelopée par <a href="">Esteban Vangi</a>,<a href=""> Pierre Pujos</a> et <a href=""> Lucas Buonocore</a>
     </div>
     </section>
@@ -58,5 +60,41 @@
     background-color: #677bc4;
     border-color: #677bc4;
   }
+/* Applique une opacité de 0% au titre h1 */
+
+    /* Définit une animation pour le titre h1 */
+    h1,h2,.btn,#credits {
+    opacity: 0%;
+    animation-name: slide-in;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    }
+
+    h1{
+      animation-delay: 0.2s; /* Délai de demi-seconde avant que l'animation ne commence */  
+    }
+    h2 {
+    animation-delay: 0.5s; /* Délai de demi-seconde avant que l'animation ne commence */
+    }
+
+    .btn {
+    animation-delay: 0.7s; /* Délai de demi-seconde avant que l'animation ne commence */
+    }
+
+    #credits{
+      animation-delay: 1s;
+    }
+
+    /* Définit les propriétés de l'animation */
+    @keyframes slide-in {
+        from {
+            opacity: 0%;
+            transform: translateY(100%);
+        }
+        to {
+            opacity: 100%;
+            transform: translateY(0%);
+        }
+    }
 
 </style>
