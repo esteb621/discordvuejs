@@ -8,9 +8,7 @@
             <p class="lead mb-5">
               Découvrez l'interface sans devoir vous connecter!
             </p>
-            <button class="btn btn-outline-primary" @click="voirDemo()">
-              Voir la démo
-            </button>
+            <RouterLink class="btn btn-outline-primary" to="/main">Voir la démo</RouterLink>
           </div>
         </div>
       </div>

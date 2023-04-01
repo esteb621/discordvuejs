@@ -49,7 +49,7 @@ a{
 }
 
 
-a:hover,a:active,a:focus
+a:hover,.selected
 {
     cursor: pointer;
     background-color: #3c3f45;

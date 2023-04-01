@@ -7,7 +7,9 @@
         </div>
         <MessagesList/>
         <UsersList/>
+        <!-- <ProfileSettings/> -->
     </div>
+
 </template>
 
 <script>
@@ -16,6 +18,7 @@ import MenuSelection from '@/components/MenuSelection.vue';
 import MessagesList from '@/components/MessagesList.vue'
 import UsersList from '@/components/UsersList.vue';
 import ProfileBanner from '../components/ProfileBanner.vue';
+// import ProfileSettings from '@/components/ProfileSettings.vue';
 export default{
     name: 'MenuView',
     components:{
@@ -23,7 +26,8 @@ export default{
     MessagesList,
     ChannelsList,
     UsersList,
-    ProfileBanner
+    ProfileBanner,
+    // ProfileSettings
 }
 }
 </script>

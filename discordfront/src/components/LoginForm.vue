@@ -1,17 +1,23 @@
 <template>
-    <main class=" d-flex justify-content-center align-items-center text-left">
-
-      <div id="login" class="p-4 bg-dark rounded shadow-sm ">
+    <main class="d-flex justify-content-center align-items-center text-left">
+      <div id="login" class="p-4 bg-dark rounded shadow-sm">
         <h1 class="pb-2 text-light">
         <RouterLink to="/"><i :class="iconClass" @mouseover="changeIcon" @mouseout="resetIcon"></i>
         </RouterLink> {{ title }}</h1>
         <h2 class="text-center">{{ secondTitle }}</h2>
         <div class="mt-4">
           <form class="form-group" method="POST">
+            <!-- Champ pseudo -->
             <div class="row">
                 <div class="col-md-12">
               <label for="username" class="form-label">Nom d'utilisateur *</label>
               <input v-model="username" class="form-control" type="username" id="username" name="username" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+              <label for="email" class="form-label">Adresse mail *</label>
+              <input v-model="email" class="form-control" type="email" id="email" name="email" required>
                 </div>
             </div>
 
@@ -35,7 +41,7 @@
                     <i v-if="isPasswordContainSpecialChar()" class="bi bi-check"></i> Un caractère spécial</li>
               </ul>
             </div>
-            
+
             <!-- Champ confirmer mot de passe -->
             <div v-if="confirmPwd" class="row">
                 <div class="col-md-12">
