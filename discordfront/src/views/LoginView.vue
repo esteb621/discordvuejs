@@ -4,7 +4,8 @@
     :secondTitle="secondTitle"
     :buttonTitle="buttonTitle"
     :confirmPwd="confirmPwd"
-    :link="link" />
+    :link="link"
+    :submit="submit" />
   </template>
 
 <script>
@@ -21,6 +22,7 @@ export default {
         secondTitle: 'Renseigne tes identifiants pour te connecter',
         buttonTitle: 'Connexion',
         confirmPwd:false,
+        submit:''
     };
   },
   computed: {

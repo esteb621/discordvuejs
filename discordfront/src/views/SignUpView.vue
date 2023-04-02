@@ -2,6 +2,7 @@
   <LoginForm 
   :title="title" 
   :secondTitle="secondTitle" 
+  :email="email"
   :choixInscription="choixInscription"
   :insertPhoto="insertPhoto" 
   :confirmPwd="confirmPwd"
@@ -28,7 +29,8 @@ export default {
         insertPhoto:true,
         choixInscription:false,
         confirmPwd:true,
-        pwdChecker:true
+        pwdChecker:true,
+        email:true
     };
   },
   computed: {

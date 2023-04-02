@@ -1,9 +1,7 @@
 <template>
     <main class="d-flex justify-content-center align-items-center text-left">
       <div id="login" class="p-4 bg-dark rounded shadow-sm">
-        <h1 class="pb-2 text-light">
-        <RouterLink to="/"><i :class="iconClass" @mouseover="changeIcon" @mouseout="resetIcon"></i>
-        </RouterLink> {{ title }}</h1>
+            <h1 class="pb-2 text-light text-center ">{{ title }}</h1>
         <h2 class="text-center">{{ secondTitle }}</h2>
         <div class="mt-4">
           <form class="form-group" method="POST">
@@ -14,7 +12,7 @@
               <input v-model="username" class="form-control" type="username" id="username" name="username" required>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="confirmPwd">
                 <div class="col-md-12">
               <label for="email" class="form-label">Adresse mail *</label>
               <input v-model="email" class="form-control" type="email" id="email" name="email" required>
@@ -27,6 +25,7 @@
                     <label for="password" class="form-label">Mot de passe *</label>
                     <input v-model="password" class="form-control" type="password" id="password" name="password" required>
                 </div>
+                <p :on-change="showPasswordError=false" class="text-danger col-md-12">{{ passwordError }}</p>
             </div>
 
             <!-- Conditions du mot de passe -->
@@ -46,10 +45,8 @@
             <div v-if="confirmPwd" class="row">
                 <div class="col-md-12">
                     <label for="retypePassword" class="form-label">Confirmer le mot de passe *</label>
-                    <input :on-change="retypePassword.length>0 && verifyPassword()" v-model="retypePassword" class="form-control" type="password" id="retypePassword" name="password" required="true">
+                    <input :on-change="retypePassword.length>=0 && verifyPassword()" v-model="retypePassword" class="form-control" type="password" id="retypePassword" name="password" required="true">
                 </div>
-              
-                <p v-if="showPasswordError" class="text-danger col-md-12">{{ passwordError }}</p>
             </div>
 
             <!-- Photo de profil -->
@@ -59,8 +56,8 @@
                     <input type="file" accept=".jpg,.jpeg,.gif,.png" id="profile_picture" class="form-control">
                 </div>
             </div>
-            <button :disabled="showPasswordError || username.length==0 || password.length==0" id="submit" class="btn btn-primary">{{ buttonTitle }}</button>
           </form>
+            <button @click="submitForm" :disabled="showPasswordError || username.length==0 || password.length==0" id="submit" class="btn btn-primary">{{ buttonTitle }}</button>
 
         </div>
         <div class="text-capitalize mt-3 text-center">
@@ -72,6 +69,9 @@
   
 
 <script>
+import store from '@/store';
+import axios from 'axios';
+import { mapMutations } from 'vuex'
     export default {
         name: 'LoginForm',
         data() {
@@ -103,19 +103,76 @@
                 return digit.test(this.password);
                 },
             verifyPassword(){
-                if(this.password!==this.retypePassword){
-                    this.showPasswordError=true;
-                    this.passwordError='Le mot de passe ne correspond pas avec celui retapé';
-                }
-                else if (this.password==this.retypePassword && !this.isPasswordLongEnough() || !this.isPasswordContainDigit() || !this.isPasswordContainSpecialChar())
-                    {
-                        this.showPasswordError=true;
-                        this.passwordError='Votre mot de passe ne rempli pas toutes les conditions!';
+                if (this.pwdChecker) {
+                    if (this.retypePassword=="") {
+                        this.showPasswordError=false;
+                        this.passwordError='';                        
                     }
-                    else {
+                    else if((this.password!==this.retypePassword)){
+                        this.showPasswordError=true;
+                        this.passwordError='Votre mot de passe ne correspond pas avec celui retapé';
+                    }
+                    else if (this.password==this.retypePassword && !this.isPasswordLongEnough() || !this.isPasswordContainDigit() || !this.isPasswordContainSpecialChar())
+                        {
+                            this.showPasswordError=true;
+                            this.passwordError='Votre mot de passe ne rempli pas toutes les conditions!';
+                        }
+                    else{
                         this.showPasswordError=false;
                         this.passwordError='';
+                    }
                 }
+                
+            },
+            submitForm() {
+                if (this.buttonTitle === "Inscription") {
+                    this.handleRegistration()
+                } 
+                else if (this.buttonTitle === "Connexion") {
+                    this.handleLogin()
+                }
+            },
+            handleRegistration() {
+                axios.post('http://localhost:8080/api/auth/signup', {
+                    username: this.username,
+                    email: this.email,
+                    password: this.password,
+                })
+                .then(response => {
+                    console.log(response.data);
+                    // handle success
+                })
+                .catch(error => {
+                    console.log(error);
+                    // handle error
+                });
+            },
+            ...mapMutations(['storeToken']),
+            handleLogin() {
+                axios.post('http://localhost:8080/api/auth/login', {
+                    username: this.username,
+                    password: this.password
+                })
+                .then(response => {
+                    this.showPasswordError=false;
+                    const token= response.data;
+                    this.$store.commit('storeToken', token);
+                    console.log(store.state.token);
+                    localStorage.setItem('jwt', token);
+                    this.$router.push("/main");
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        // Affichage du message d'erreur
+                        this.showPasswordError=true;
+                        this.passwordError = "Nom d'utilisateur ou mot de passe incorrect !";
+                    }
+                    else if(error.response && error.response.status === 500){
+                        this.showPasswordError=true;
+                        this.passwordError = "Une erreur interne sur notre serveur est survenue. Réessayer plus tard.";
+
+                    }
+               });
             }
         },
         props: {

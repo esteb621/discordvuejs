@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -15,18 +14,7 @@ export default {
     return {
       channelName: this.name
     }
-  },
-  computed: {
-    ...mapGetters(['selectedChannelId'])
-  },
-  methods: {
-    ...mapMutations(['setSelectedChannelId']),
-    selectChannel(id) {
-      this.setSelectedChannelId(id)
-      localStorage.setItem('selectedChannelId', id)
-    }
   }
-
 }
 </script>
 <style scoped>
