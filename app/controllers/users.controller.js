@@ -1,6 +1,4 @@
-const { Router } = require("express");
 const db = require("../models");
-const fs = require('fs');
 const Users = db.Users;
 
 // Create and Save a new User
@@ -13,11 +11,12 @@ exports.create = (req, res) => {
     return;
   }
 
+
   // Create a User
   const user = {
     username: req.body.username,
     email: req.body.email,
-    mdp: req.body.mdp,
+    password: req.body.mdp,
     published: req.body.published ? req.body.published : false
   };
 
@@ -45,7 +44,7 @@ exports.findAll = (req, res) => {
   const username = req.query.username;
   var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
 
-  Users.findAll({attributes: ['id','username', 'email'] })
+  Users.findAll({attributes: ['id','username', 'email','password'] })
     .then(data => {
       res.send(data);
     })
@@ -59,10 +58,8 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  const login= req.params.username;
-  const pwd= req.params.password;
 
-  Users.findByPk(id, { attributes: ['username', 'email'] })
+  Users.findByPk(id, { attributes: ['username', 'email','mdp'] })
     .then(data => {
       if (data) {
         res.send(data);
@@ -75,22 +72,6 @@ exports.findOne = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message: "Error retrieving User with id=" + id
-      });
-    });
-
-  Users.findForLogin(login,pwd, { attributes: ['username', 'password'] })
-    .then(data => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Username or Password incorrect`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error retrieving User with login=" + username
       });
     });
 
