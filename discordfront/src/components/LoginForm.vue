@@ -162,7 +162,8 @@
         border-radius: 5px;
         background-color: #36393f;
         box-shadow: 2px 2px 10px #5e5e60;
-        height: fit-content;
+        max-height: 75%;
+        overflow-y: auto;
     }
 
     h1 {
