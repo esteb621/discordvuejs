@@ -1,9 +1,9 @@
 module.exports = {
-  HOST: "database-2.ct0lavn8okva.eu-west-3.rds.amazonaws.com",
+  HOST: "database-1.ct0lavn8okva.eu-west-3.rds.amazonaws.com",
   PORT:3306,
-  USER: "admin",
+  USER: "root",
   PASSWORD: "root1234",
-  DB: "projdiscord",
+  DB: "discordjs",
   dialect: "mysql",
   pool: {
     max: 5,
