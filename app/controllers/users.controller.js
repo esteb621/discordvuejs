@@ -59,6 +59,8 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
+  const login= req.params.username;
+  const pwd= req.params.password;
 
   Users.findByPk(id, { attributes: ['username', 'email'] })
     .then(data => {
@@ -75,7 +77,25 @@ exports.findOne = (req, res) => {
         message: "Error retrieving User with id=" + id
       });
     });
+
+  Users.findForLogin(login,pwd, { attributes: ['username', 'password'] })
+    .then(data => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Username or Password incorrect`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving User with login=" + username
+      });
+    });
+
 };
+
 
 // Update a User by the id in the request
 exports.update = (req, res) => {

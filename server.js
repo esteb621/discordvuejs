@@ -1,16 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const path = require("path");
-const mysql = require("mysql");
-const mysql2 = require("mysql2");
 const bodyParser = require("body-parser");
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-app.use(express.static(path.join(__dirname, 'app/public')));
+require('dotenv').config();
 
-app.use(cors(corsOptions));
+// var corsOptions = {
+//   origin: "http://localhost:8081"
+// };
+
+
+app.use(cors());
+
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -35,7 +35,10 @@ app.get("/", (req, res) => {
   return "Welcolme to Beskoder"
 });
 
+
+
 require("./app/routes/discord.routes")(app);
+require("./app/routes/auth.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

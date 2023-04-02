@@ -1,5 +1,3 @@
-const { channels, messages } = require("../models/index.js");
-
 module.exports = app => {
     const users = require("../controllers/users.controller.js");
     const roles = require("../controllers/roles.controller.js");
@@ -23,7 +21,7 @@ module.exports = app => {
     router.get("/messages", messages.findAll);
 
 
-  
+
     // Retrieve all values that are published
     router.get("/published/users", users.findAllPublished);
     router.get("/published/roles", roles.findAllPublished);
@@ -38,7 +36,6 @@ module.exports = app => {
     router.get("/channels/:id", channels.findOne);
     router.get("/messages/:id", messages.findOne);
     router.get("/messages/channel/:id",messages.getMessagesByChannelId);
-
 
   
     // Update a User or a Role with id
