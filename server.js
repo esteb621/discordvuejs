@@ -9,19 +9,22 @@ var corsOptions = {
 };
 
 
+const path = __dirname + '/app/views/';
+
+app.use(express.static(path));
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(express.urlencoded({extended: true}));
 
 const db = require("./app/models");
 
- db.sequelize.sync()
+
+db.sequelize.sync()
    .then(() => {
      console.log("Synced db.");
    })
@@ -29,10 +32,9 @@ const db = require("./app/models");
      console.log("Failed to sync db: " + err.message);
    });
 
-   // simple route
-app.get("/", (req, res) => {
-  return "Welcolme to Beskoder"
-});
+app.get('*', function (req,res) {
+    res.sendFile(path + "index.html");
+  });
 
 
 
