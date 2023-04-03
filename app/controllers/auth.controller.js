@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../models");
-
+const auth = require("../config/auth.config");
 const User = db.Users;
 
 exports.signup = (req, res) => {
@@ -9,6 +9,13 @@ exports.signup = (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.password) {
     return res.status(400).send({ message: "Tous les champs sont obligatoires !" });
   }
+  // Vérification si le nom d'utilisateur existe déjà dans la base de données
+  User.findOne({ where: { username: req.body.username } })
+    .then(existingUser => {
+      if (existingUser) {
+        return res.status(400).send({ message: "Cette utilisateur existe déjà!" });
+      }
+    });
 
   // Création d'un objet User
   const user = {
@@ -25,7 +32,7 @@ exports.signup = (req, res) => {
         console.error("Il manque la clé du JWT dans le fichier .env");
         return res.status(500).send({ message: "Internal server error" });
       }
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user.id }, auth.secret, {
         expiresIn: 86400 // Délai de 24h
       });
       console.log("JWT crée: ", token);
