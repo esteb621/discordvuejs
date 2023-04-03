@@ -77,7 +77,7 @@
     import { mapMutations } from 'vuex'
 
     const props = defineProps({
-        title: {
+        title: {    
             type: String,
             required: true
         },
@@ -153,16 +153,21 @@
     function handleRegistration() {
         axios.post('http://localhost:8080/api/auth/signup', {
             username: username.value,
-            email: email.value, // la variable email n'est pas définie, il faut utiliser this.email à la place
+            email: email.value,
             password: password.value,
         })
         .then(response => {
-            console.log(response.data);
-            // handle success
+            showPasswordError=false;
+            const token= response.data;
+            storeToken(token);
+            console.log(store.state.token);
+            router.push("/main");
         })
         .catch(error => {
-            console.log(error);
-            // handle error
+            if (error.response.status==404) {
+                passwordError.value="Désolé, le serveur ne répond pas. Veuillez réessayer ultérieurement"
+            }
+            else{passwordError.value = error.response;}
         });
         }
     
@@ -172,32 +177,35 @@
             password: password.value
         })
         .then(response => {
-            showPasswordError=false;
+            showPasswordError.value=false;
             const token= response.data;
             storeToken(token); // utiliser la mutation storeToken de Vuex pour stocker le token
             console.log(store.state.token);
             router.push("/main");
         })
         .catch(error => {
-            if (error.response && error.response.status === 401) {
-                // Affichage du message d'erreur
-                showPasswordError=true;
-                passwordError = "Nom d'utilisateur ou mot de passe incorrect !";
+            console.log("erreur");
+            showPasswordError.value=true;
+            if (error.response.status==404) {
+                passwordError.value="Désolé, le serveur ne répond pas. Veuillez réessayer ultérieurement"
             }
-            else if(error.response && error.response.status === 500){
-                showPasswordError=true;
-                passwordError = "Une erreur interne sur notre serveur est survenue. Réessayer plus tard.";
+            else{
+                passwordError.value = error.response;
             }
+            
         });
     }
 
     function submitForm() {
         verifyPassword();
-        if (props.buttonTitle === "Inscription") {
-            handleRegistration()
-        } else if (props.buttonTitle === "Connexion") {
-            handleLogin()
+        if (showPasswordError.value==false) {
+            if (props.buttonTitle === "Inscription") {
+                handleRegistration()
+            } else if (props.buttonTitle === "Connexion") {
+                handleLogin()
+            }        
         }
+
     }
 
 </script>
