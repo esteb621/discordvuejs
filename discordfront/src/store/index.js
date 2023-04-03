@@ -13,6 +13,7 @@ const store = createStore({
     },
     storeToken(state, token) {
       state.token = token
+      localStorage.setItem('jwt', token);
     }
   },
   getters: {

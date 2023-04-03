@@ -41,8 +41,11 @@
 
 </template>
 
-<script>
-export default {
-  props: ['show']
-}
+<script setup>
+import { defineProps} from 'vue';
+
+defineProps({
+  show: String
+})
+
 </script>

@@ -9,16 +9,10 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import TextBarComponent from './TextBarComponent.vue';
 import MessageComponent from './MessageComponent.vue';
 
-export default {
-  name: 'MessagesList',
-  components: {
-    MessageComponent,TextBarComponent
-  }
-}
 
 </script>
 

@@ -9,13 +9,13 @@
             <div class="row">
                 <div class="col-md-12">
               <label for="username" class="form-label">Nom d'utilisateur *</label>
-              <input v-model="username" class="form-control" type="username" id="username" name="username" required>
+              <input v-model="username" class="form-control" ref="usernameInput" type="username" id="username" name="username" required>
                 </div>
             </div>
-            <div class="row" v-if="confirmPwd">
+            <div class="row" v-if="props.confirmPwd">
                 <div class="col-md-12">
               <label for="email" class="form-label">Adresse mail *</label>
-              <input v-model="email" class="form-control" type="email" id="email" name="email" required>
+              <input v-model="email" class="form-control" ref="emailInput" type="email" id="email" name="email" required>
                 </div>
             </div>
 
@@ -23,13 +23,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <label for="password" class="form-label">Mot de passe *</label>
-                    <input v-model="password" class="form-control" type="password" id="password" name="password" required>
+                    <input v-model="password" class="form-control" ref="passwordInput" type="password" id="password" name="password" required>
                 </div>
                 <p :on-change="showPasswordError=false" class="text-danger col-md-12">{{ passwordError }}</p>
             </div>
 
             <!-- Conditions du mot de passe -->
-            <div v-if="pwdChecker">
+            <div v-if="props.confirmPwd">
               <span class="mb-2 text-light">Votre mot de passe doit contenir au moins:</span>
               <ul class="list-unstyled text-light">
                 <li :class="{ 'text-success': isPasswordLongEnough() }">
@@ -42,10 +42,10 @@
             </div>
 
             <!-- Champ confirmer mot de passe -->
-            <div v-if="confirmPwd" class="row">
+            <div v-if="props.confirmPwd" class="row">
                 <div class="col-md-12">
                     <label for="retypePassword" class="form-label">Confirmer le mot de passe *</label>
-                    <input :on-change="retypePassword.length>=0 && verifyPassword()" v-model="retypePassword" class="form-control" type="password" id="retypePassword" name="password" required="true">
+                    <input v-model="retypePassword" class="form-control" type="password" id="retypePassword" name="password" required="true">
                 </div>
             </div>
 
@@ -57,155 +57,149 @@
                 </div>
             </div>
           </form>
-            <button @click="submitForm" :disabled="showPasswordError || username.length==0 || password.length==0" id="submit" class="btn btn-primary">{{ buttonTitle }}</button>
+            <button @click="submitForm()" :disabled="showPasswordError || isFormEmpty()" id="submit" class="btn btn-primary">{{ buttonTitle }}</button>
 
         </div>
         <div class="text-capitalize mt-3 text-center">
           <p class="pl-2" v-html="link"></p>
         </div>
-      </div>
+      </div>    
     </main>
   </template>
   
 
-<script>
-import store from '@/store';
-import axios from 'axios';
-import { mapMutations } from 'vuex'
-    export default {
-        name: 'LoginForm',
-        data() {
-            return {
-                iconClass:'bi bi-arrow-left-circle',
-                username:'',
-                password: '',
-                retypePassword: '',
-                passwordError:'',
-                showPasswordError:false
-            }
-        },
-        methods:{
-            changeIcon() {
-                this.iconClass = 'bi bi-arrow-left-circle-fill'; // icône remplie lorsqu'on survole la souris
-            },
-            resetIcon() {
-                this.iconClass = 'bi bi-arrow-left-circle'; // icône par défaut lorsque la souris quitte l'icône
-            },
-            isPasswordLongEnough(){
-                return this.password.length>=8;
-            },
-            isPasswordContainSpecialChar() {
-                const specialChars = /[$&+.,:;=?@#|'"<>^*ඞ()%!-]/;
-                return specialChars.test(this.password);
-                },
-            isPasswordContainDigit() {
-                const digit = /\d/;
-                return digit.test(this.password);
-                },
-            verifyPassword(){
-                if (this.pwdChecker) {
-                    if (this.retypePassword=="") {
-                        this.showPasswordError=false;
-                        this.passwordError='';                        
-                    }
-                    else if((this.password!==this.retypePassword)){
-                        this.showPasswordError=true;
-                        this.passwordError='Votre mot de passe ne correspond pas avec celui retapé';
-                    }
-                    else if (this.password==this.retypePassword && !this.isPasswordLongEnough() || !this.isPasswordContainDigit() || !this.isPasswordContainSpecialChar())
-                        {
-                            this.showPasswordError=true;
-                            this.passwordError='Votre mot de passe ne rempli pas toutes les conditions!';
-                        }
-                    else{
-                        this.showPasswordError=false;
-                        this.passwordError='';
-                    }
-                }
-                
-            },
-            submitForm() {
-                if (this.buttonTitle === "Inscription") {
-                    this.handleRegistration()
-                } 
-                else if (this.buttonTitle === "Connexion") {
-                    this.handleLogin()
-                }
-            },
-            handleRegistration() {
-                axios.post('http://localhost:8080/api/auth/signup', {
-                    username: this.username,
-                    email: this.email,
-                    password: this.password,
-                })
-                .then(response => {
-                    console.log(response.data);
-                    // handle success
-                })
-                .catch(error => {
-                    console.log(error);
-                    // handle error
-                });
-            },
-            ...mapMutations(['storeToken']),
-            handleLogin() {
-                axios.post('http://localhost:8080/api/auth/login', {
-                    username: this.username,
-                    password: this.password
-                })
-                .then(response => {
-                    this.showPasswordError=false;
-                    const token= response.data;
-                    this.$store.commit('storeToken', token);
-                    console.log(store.state.token);
-                    localStorage.setItem('jwt', token);
-                    this.$router.push("/main");
-                })
-                .catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        // Affichage du message d'erreur
-                        this.showPasswordError=true;
-                        this.passwordError = "Nom d'utilisateur ou mot de passe incorrect !";
-                    }
-                    else if(error.response && error.response.status === 500){
-                        this.showPasswordError=true;
-                        this.passwordError = "Une erreur interne sur notre serveur est survenue. Réessayer plus tard.";
+<script setup>
+    import store from '@/store';
+    import router from '@/router';
+    import axios from 'axios';
+    import { ref } from 'vue';
+    import { defineProps } from 'vue';
+    import { mapMutations } from 'vuex'
 
-                    }
-               });
-            }
+    const props = defineProps({
+        title: {
+            type: String,
+            required: true
         },
-        props: {
-            title: {
-                type: String,
-                required: true
-            },
-            secondTitle: {
-                type: String,
-                required: true
-            },
-            buttonTitle: {
-                type: String,
-                required: true
-            },
-            choixInscription: {
-                type: Boolean
-            },
-            insertPhoto: {
-                type: Boolean
-            },
-            confirmPwd: {
-                type: Boolean
-            },
-            pwdChecker: {
-                type: Boolean
-            },
-            link: {
-                type: String,
-                required: true,
-            },
+        secondTitle: {
+            type: String,
+            required: true
         },
+        buttonTitle: {
+            type: String,
+            required: true
+        },
+        choixInscription: {
+            type: Boolean
+        },
+        insertPhoto: {
+            type: Boolean
+        },
+        confirmPwd: {
+            type: Boolean
+        },
+        link: {
+            type: String,
+            required: true,
+        }
+    });
+    const username = ref('');
+    const password = ref('');
+    const email = ref('');
+    const retypePassword = ref('');
+    let passwordError=ref('');
+    let showPasswordError=ref(false);
+    const isFormEmpty = () => {
+        return !(username.value && password.value);
+    };
+
+    const { storeToken } = mapMutations(['storeToken']);
+    
+    function isPasswordLongEnough(){
+        return password.value.length>=8;
     }
+    
+    function isPasswordContainSpecialChar() {
+        const specialChars = /[$&+.,:;=?@#|'"<>^*ඞ()%!-]/;
+        return specialChars.test(password.value);
+    }
+    
+    function isPasswordContainDigit() {
+        const digit = /\d/;
+        return digit.test(password.value);
+    }
+    
+    function verifyPassword(){
+            if (props.confirmPwd) {
+                if (retypePassword.value=="") {
+                    showPasswordError.value=false;
+                    passwordError.value='';                      
+                }
+                else if((password.value!==retypePassword.value)){
+                    showPasswordError.value=true;
+                    passwordError.value='Votre mot de passe ne correspond pas avec celui retapé';
+                }
+                else if (password.value==retypePassword.value && !isPasswordLongEnough() || !isPasswordContainDigit() || !isPasswordContainSpecialChar()){
+                    showPasswordError.value=true;
+                    passwordError.value='Votre mot de passe ne rempli pas toutes les conditions!';
+                }
+                else{
+                    showPasswordError.value=false;
+                    passwordError.value='';
+                }
+            }
+    }
+    
+    function handleRegistration() {
+        axios.post('http://localhost:8080/api/auth/signup', {
+            username: username.value,
+            email: email.value, // la variable email n'est pas définie, il faut utiliser this.email à la place
+            password: password.value,
+        })
+        .then(response => {
+            console.log(response.data);
+            // handle success
+        })
+        .catch(error => {
+            console.log(error);
+            // handle error
+        });
+        }
+    
+    function handleLogin() {
+        axios.post('http://localhost:8080/api/auth/login', {
+            username: username.value,
+            password: password.value
+        })
+        .then(response => {
+            showPasswordError=false;
+            const token= response.data;
+            storeToken(token); // utiliser la mutation storeToken de Vuex pour stocker le token
+            console.log(store.state.token);
+            router.push("/main");
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 401) {
+                // Affichage du message d'erreur
+                showPasswordError=true;
+                passwordError = "Nom d'utilisateur ou mot de passe incorrect !";
+            }
+            else if(error.response && error.response.status === 500){
+                showPasswordError=true;
+                passwordError = "Une erreur interne sur notre serveur est survenue. Réessayer plus tard.";
+            }
+        });
+    }
+
+    function submitForm() {
+        verifyPassword();
+        if (props.buttonTitle === "Inscription") {
+            handleRegistration()
+        } else if (props.buttonTitle === "Connexion") {
+            handleLogin()
+        }
+    }
+
 </script>
 
 <style scoped lang="css">

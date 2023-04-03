@@ -6,7 +6,6 @@
   :choixInscription="choixInscription"
   :insertPhoto="insertPhoto" 
   :confirmPwd="confirmPwd"
-  :pwd-checker="pwdChecker"
   :buttonTitle="buttonTitle"
   :link="link"
   />
@@ -29,7 +28,6 @@ export default {
         insertPhoto:true,
         choixInscription:false,
         confirmPwd:true,
-        pwdChecker:true,
         email:true
     };
   },

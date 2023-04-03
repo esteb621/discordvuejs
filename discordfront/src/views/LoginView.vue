@@ -8,29 +8,16 @@
     :submit="submit" />
   </template>
 
-<script>
+<script setup>
 import LoginForm from '@/components/LoginForm.vue';
 
-export default {
-  name: 'LoginView',
-  components: {
-    LoginForm
-  },
-  data(){
-    return {
-        title: 'Content de te revoir!',
-        secondTitle: 'Renseigne tes identifiants pour te connecter',
-        buttonTitle: 'Connexion',
-        confirmPwd:false,
-        submit:''
-    };
-  },
-  computed: {
-    link(){
-      return "Besoin d'un compte ? <a href='/inscription'>S'inscrire</a>";
-    }
-  }
-}
+const title= 'Content de te revoir!';
+const secondTitle= 'Renseigne tes identifiants pour te connecter';
+const buttonTitle= 'Connexion';
+const confirmPwd=false;
+const submit='';
+const link = "Besoin d'un compte ? <a href='/inscription'>S'inscrire</a>";
+
 </script>
 
 

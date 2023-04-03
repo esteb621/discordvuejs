@@ -1,21 +1,19 @@
 <template>
     <a  :class="{ channelSelected: selectedChannelId === index }" @click="selectChannel(1)" >
-        <li>{{ channelName }}</li>
+        <li>{{ name }}</li>
     </a>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from 'vue';
+defineProps({
+  name: String
+})
 
-export default {
-  props: {
-    name: String
-  },
-  data() {
-    return {
-      channelName: this.name
-    }
-  }
+function selectChannel(channelId) {
+  console.log(channelId);
 }
+
 </script>
 <style scoped>
 

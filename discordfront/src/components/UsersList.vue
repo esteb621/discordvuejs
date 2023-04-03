@@ -8,21 +8,8 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import UserComponent from './UserComponent.vue';
-
-export default {
-  name: 'UsersList',
-  components: {
-    UserComponent
-  },
-  data() {
-    return {
-      channels: ['general', 'devoirs', 'jeux']
-    }
-  }
-}
-
 </script>
 
 <style>

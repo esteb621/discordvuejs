@@ -9,20 +9,11 @@
         </ul>
     </div>
 </template>
-<script>
+<script setup>
 import ChannelComponent from './ChannelComponent.vue'
+import { ref } from 'vue'
+const channels = ref(['general', 'devoirs', 'jeux'])
 
-export default {
-  name: 'ChannelsList',
-  components: {
-    ChannelComponent
-  },
-  data() {
-    return {
-      channels: ['general', 'devoirs', 'jeux']
-    }
-  }
-}
 </script>
 
 <style scoped>

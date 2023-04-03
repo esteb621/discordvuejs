@@ -2,13 +2,13 @@
      <div class="menu p-2 d-flex flex-column h-100">
         <button 
             :class="{ buttonSelected: selectedButtonId === 1 }"
-            @click="selectButton(1)" id="mpButton" class="mb-3 active" type="submit" 
+            @click="setSelectedButtonId(1)" id="mpButton" class="mb-3 active" type="submit" 
             data-toggle="tooltip" data-trigger="hover" data-placement="right" title="Messages privés">
                 <i class="bi bi-discord"></i>
         </button>
         <button id="serverButton" 
             :class="{ buttonSelected: selectedButtonId === 2 }"
-            @click="selectButton(2)"
+            @click="setSelectedButtonId(2)"
             data-toggle="tooltip" data-trigger="hover" data-placement="right" title="Serveur principal">
         </button>
     </div>
@@ -16,20 +16,27 @@
 
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters(['selectedButtonId'])
-  },
-  methods: {
-    ...mapMutations(['setSelectedButtonId']),
-    selectButton(id) {
-      this.setSelectedButtonId(id)
+  setup() {
+    const store = useStore()
+
+    const selectedButtonId = computed(() => store.getters.selectedButtonId)
+
+    const setSelectedButtonId = (id) => {
+      store.commit('setSelectedButtonId', id)
       localStorage.setItem('selectedButtonId', id)
+    }
+
+    return {
+      selectedButtonId,
+      setSelectedButtonId
     }
   }
 }
+
 </script>
 
 <style scoped>
