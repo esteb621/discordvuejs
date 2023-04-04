@@ -153,7 +153,7 @@
     }
     
     function handleRegistration() {
-        axios.post('http://localhost:8080/api/auth/signup', {
+        axios.post('https://wild-plum-colt-cuff.cyclic.app/api/auth/signup', {
             username: username.value,
             email: email.value,
             password: password.value,
@@ -179,7 +179,7 @@
     }
 
     const handleLogin = () => {
-        axios.post('http://localhost:8080/api/auth/login', {
+        axios.post('https://wild-plum-colt-cuff.cyclic.app//api/auth/login', {
             username: username.value,
             password: password.value
         })
