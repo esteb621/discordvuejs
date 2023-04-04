@@ -69,13 +69,14 @@
   
 
 <script setup>
-    import store from '@/store';
     import router from '@/router';
     import axios from 'axios';
-    import { ref } from 'vue';
-    import { defineProps } from 'vue';
-    import { mapMutations } from 'vuex'
+    import { ref,defineProps } from 'vue';
+    import { useStore } from 'vuex'
 
+    const store = useStore();
+    
+    
     const props = defineProps({
         title: {    
             type: String,
@@ -113,7 +114,8 @@
         return !(username.value && password.value);
     };
 
-    const { storeToken } = mapMutations(['storeToken']);
+
+
     
     function isPasswordLongEnough(){
         return password.value.length>=8;
@@ -159,40 +161,38 @@
         .then(response => {
             showPasswordError=false;
             const token= response.data;
-            storeToken(token);
+            store.commit('storeToken',token);
             console.log(store.state.token);
-            router.push("/main");
+            if(response && response.status === 200) { // Vérifier si la propriété status est définie
+                router.push("/main");
+            } 
+            else {
+                console.log("Erreur: Impossible d'obtenir le statut de la réponse");
+            }
         })
         .catch(error => {
             if (error.response.status==404) {
                 passwordError.value="Désolé, le serveur ne répond pas. Veuillez réessayer ultérieurement"
             }
-            else{passwordError.value = error.response;}
+            else{passwordError.value = error.response.data.message;}
         });
-        }
-    
-    function handleLogin() {
+    }
+
+    const handleLogin = () => {
         axios.post('http://localhost:8080/api/auth/login', {
             username: username.value,
             password: password.value
         })
         .then(response => {
             showPasswordError.value=false;
-            const token= response.data;
-            storeToken(token); // utiliser la mutation storeToken de Vuex pour stocker le token
+            const token = response.data;
+            store.commit('storeToken',token);
             console.log(store.state.token);
             router.push("/main");
         })
         .catch(error => {
-            console.log("erreur");
             showPasswordError.value=true;
-            if (error.response.status==404) {
-                passwordError.value="Désolé, le serveur ne répond pas. Veuillez réessayer ultérieurement"
-            }
-            else{
-                passwordError.value = error.response;
-            }
-            
+            passwordError.value = error.response.data.message;
         });
     }
 
