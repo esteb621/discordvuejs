@@ -153,7 +153,7 @@
     }
     
     function handleRegistration() {
-        axios.post('https://wild-plum-colt-cuff.cyclic.app/api/auth/signup', {
+        axios.post('/api/auth/signup', {
             username: username.value,
             email: email.value,
             password: password.value,
@@ -162,7 +162,6 @@
             showPasswordError=false;
             const token= response.data;
             store.commit('storeToken',token);
-            console.log(store.state.token);
             if(response && response.status === 200) { // Vérifier si la propriété status est définie
                 router.push("/main");
             } 
@@ -179,7 +178,7 @@
     }
 
     const handleLogin = () => {
-        axios.post('https://wild-plum-colt-cuff.cyclic.app//api/auth/login', {
+        axios.post('/api/auth/login', {
             username: username.value,
             password: password.value
         })
@@ -187,7 +186,6 @@
             showPasswordError.value=false;
             const token = response.data;
             store.commit('storeToken',token);
-            console.log(store.state.token);
             router.push("/main");
         })
         .catch(error => {
