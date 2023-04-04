@@ -1,10 +1,15 @@
 module.exports = {
-  HOST: "database-1.ct0lavn8okva.eu-west-3.rds.amazonaws.com",
-  PORT:3306,
-  USER: "root",
-  PASSWORD: "root1234",
-  DB: "discordjs",
+  HOST: "db-mysql-pd-do-user-13887801-0.b.db.ondigitalocean.com",
+  PORT:25060,
+  USER: "doadmin",
+  PASSWORD: "AVNS_c20ZZfbq8bY5gHytiQf",
+  DB: "defaultdb",
   dialect: "mysql",
+  dialectOptions:{
+    ssl: {
+      ca: 'path/to/ca'
+    }
+  },
   pool: {
     max: 5,
     min: 0,
