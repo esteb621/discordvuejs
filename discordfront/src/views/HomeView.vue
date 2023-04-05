@@ -15,22 +15,7 @@
     </section>
 </template>
 
-<script>
-  // @ is an alias to /src
-  import HomeHeader from '@/components/HomeHeader.vue'
-
-  export default {
-    name: 'HomeView',
-    components: {
-      HomeHeader
-    },
-    methods: {
-      connecter() {
-        console.log("Connexion...")
-      },
-      inscrire() {
-        console.log("Inscription...")
-      }
-    }
-  }
+<script setup>
+import HomeHeader from '@/components/index/HomeHeader.vue';
 </script>
+

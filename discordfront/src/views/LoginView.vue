@@ -9,7 +9,7 @@
   </template>
 
 <script setup>
-import LoginForm from '@/components/LoginForm.vue';
+import LoginForm from '@/components/login/LoginForm.vue';
 
 const title= 'Content de te revoir!';
 const secondTitle= 'Renseigne tes identifiants pour te connecter';

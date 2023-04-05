@@ -8,7 +8,7 @@
                 <p class="px-2">Esteban</p>
             </a>
             <a href="../" class="p-2 ml-auto" id="exit" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Déconnexion">
-                <i class="bi bi-box-arrow-right"></i>
+                <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
             </a>
         </div>
     </div>

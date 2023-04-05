@@ -4,7 +4,7 @@
             :class="{ buttonSelected: selectedButtonId === 1 }"
             @click="setSelectedButtonId(1)" id="mpButton" class="mb-3 active" type="submit" 
             data-toggle="tooltip" data-trigger="hover" data-placement="right" title="Messages privés">
-                <i class="bi bi-discord"></i>
+            <font-awesome-icon :icon="['fab', 'discord']" size="xs" style="color: #f5f5f5;" />
         </button>
         <button id="serverButton" 
             :class="{ buttonSelected: selectedButtonId === 2 }"
@@ -79,7 +79,7 @@ button:hover:first-child{
 }
 
 #serverButton{
-    background-image: url("../assets/Pierre_Pujos.jpg");
+    background-image: url("@/assets/Pierre_Pujos.jpg");
     background-position: center;
     background-size: cover;
 }

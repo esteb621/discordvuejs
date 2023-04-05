@@ -13,17 +13,25 @@
 </template>
 
 <script setup>
-import ChannelsList from '@/components/ChannelsList.vue';
-import MenuSelection from '@/components/MenuSelection.vue';
-import MessagesList from '@/components/MessagesList.vue'
-import UsersList from '@/components/UsersList.vue';
-import ProfileBanner from '../components/ProfileBanner.vue';
+import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
+import MenuSelection from '@/components/main/MenuSelection.vue';
+import MessagesList from '@/components/main/MessageComponents/MessagesList.vue'
+import UsersList from '@/components/main/UserComponents/UsersList.vue';
+import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
 </script>
 
-<style scoped>
+<style>
 
 #channel{
     width: 250px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a,p{
+    text-align: left;
 }
 
 </style>
