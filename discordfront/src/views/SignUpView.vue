@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     link(){
-      return "Déjà inscrit ? <a href='/connexion'>Connexion</a>";
+      return "Déjà inscrit ? <a class='text-decoration-none' href='/connexion'>Connexion</a>";
     }
   }
 }

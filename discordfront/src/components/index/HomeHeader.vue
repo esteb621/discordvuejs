@@ -27,7 +27,7 @@
     #home {
         font-family: "Gotham", sans-serif;
         color: azure;
-        height: 91vh;
+        height: 100%;
         background-image: url("@/assets/home.png");
     }
 

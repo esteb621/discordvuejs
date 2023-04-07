@@ -7,7 +7,7 @@
                 <img id="profile-picture" src="@/assets/profile-default.jpg" alt="Photo profil">
                 <p class="px-2">Esteban</p>
             </a>
-            <a href="../" class="p-2 ml-auto" id="exit" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Déconnexion">
+            <a href="../" class="p-2 ms-auto" id="exit" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Déconnexion">
                 <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
             </a>
         </div>
@@ -31,6 +31,7 @@
 a{
     width: fit-content;
     color: azure;
+    text-decoration: none;
 }
 
 a:hover, a:visited, a:link{

@@ -31,6 +31,7 @@ a{
     border-radius: 5px;
     width: 90%;
     padding:5px 10px;
+    text-decoration: none;
 
 }
 

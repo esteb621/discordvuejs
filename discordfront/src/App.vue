@@ -6,8 +6,8 @@
 
 </script>
 <style>
-@import url('https://fonts.cdnfonts.com/css/gotham');
 
+@import url('https://fonts.cdnfonts.com/css/gotham');
 main{
     background-repeat: no-repeat;
     background-size:cover;
@@ -20,6 +20,7 @@ body, html {
   margin: 0;
   height: 100%;
   background-color: #313338;
+  overflow-y: hidden;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

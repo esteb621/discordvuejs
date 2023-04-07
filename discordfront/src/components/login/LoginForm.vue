@@ -1,11 +1,9 @@
 <template>
     <main class="d-flex justify-content-center align-items-center text-left">
         <div id="login" class="shadow-lg p-4 rounded">
-
-
-            <h1 class="pb-2 text-light text-center ">{{ title }}</h1>
+            <h1 class="pb-2 text-light">{{ title }}</h1>
             <h2 class="text-center">{{ secondTitle }}</h2>
-            <div class="mt-4" style="text-align: left;">
+            <div class="mt-4 text-start">
                 <form class="form-group" method="POST">
                     <!-- Champ pseudo -->
                     <div class="row">
@@ -76,8 +74,8 @@
                 </button>
                 <p :on-change="showPasswordError=false" class="text-danger col-md-12">{{ passwordError }}</p>
             </div>
-            <div class="text-capitalize mt-3 text-center">
-                <p class="pl-2" v-html="link"></p>
+            <div class="text-capitalize mt-3">
+                <p class="pl-2 text-center " v-html="link"></p>
             </div>
         </div>
     </main>
