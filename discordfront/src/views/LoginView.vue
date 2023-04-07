@@ -16,7 +16,7 @@ const secondTitle= 'Renseigne tes identifiants pour te connecter';
 const buttonTitle= 'Connexion';
 const confirmPwd=false;
 const submit='';
-const link = "Besoin d'un compte ? <a class='text-decoration-none' href='/inscription'>S'inscrire</a>";
+const link = "Besoin d'un compte ? <a class='text-blue-500' href='/inscription'>S'inscrire</a>";
 
 </script>
 

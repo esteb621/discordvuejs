@@ -1,23 +1,23 @@
 <template>
-    <div class="d-flex flex-row h-100" id="discord">
-        <MenuSelection/>
-        <div id="channel" class="d-flex flex-column">
+    <div class="flex" id="discord">
+        <SideBar/>
+        <!-- <div id="channel" class="d-flex flex-column">
             <ChannelsList/>
             <ProfileBanner/>
         </div>
         <MessagesList/>
-        <UsersList/>
+        <UsersList/> -->
         <!-- <ProfileSettings/> -->
     </div>
 
 </template>
 
 <script setup>
-import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
-import MenuSelection from '@/components/main/MenuSelection.vue';
-import MessagesList from '@/components/main/MessageComponents/MessagesList.vue'
-import UsersList from '@/components/main/UserComponents/UsersList.vue';
-import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
+// import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
+// import MessagesList from '@/components/main/MessageComponents/MessagesList.vue'
+// import UsersList from '@/components/main/UserComponents/UsersList.vue';
+// import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
+import SideBar from '@/components/main/SideBar/SideBar.vue';
 </script>
 
 <style>

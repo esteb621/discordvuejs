@@ -1,85 +1,95 @@
 <template>
-    <main class="d-flex justify-content-center align-items-center text-left">
-        <div id="login" class="shadow-lg p-4 rounded">
-            <h1 class="pb-2 text-light">{{ title }}</h1>
-            <h2 class="text-center">{{ secondTitle }}</h2>
-            <div class="mt-4 text-start">
-                <form class="form-group" method="POST">
-                    <!-- Champ pseudo -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="username" class="form-label">Nom d'utilisateur *</label>
-                            <input v-model="username" class="form-control text-light" ref="usernameInput"
-                                type="username" id="username" name="username" required>
-                        </div>
-                    </div>
-                    <div class="row" v-if="props.confirmPwd">
-                        <div class="col-md-12">
-                            <label for="email" class="form-label">Adresse mail *</label>
-                            <input v-model="email" class="form-control text-light" ref="emailInput" type="email"
-                                id="email" name="email" required>
-                        </div>
-                    </div>
-
-                    <!-- Champ mot de passe -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="password" class="form-label ">Mot de passe *</label>
-                            <input v-model="password" class="form-control text-light" ref="passwordInput"
-                                type="password" id="password" name="password" required>
-                        </div>
-                    </div>
-
-                    <!-- Conditions du mot de passe -->
-                    <div v-if="props.confirmPwd">
-                        <span class="mb-2 text-light">Votre mot de passe doit contenir au moins:</span>
-                        <ul class="list-unstyled text-light">
-                            <li :class="{ 'text-success': isPasswordLongEnough() }">
-                                <font-awesome-icon v-if="isPasswordLongEnough()" :icon="['fa', 'check']" style="color: #0ba70b;" />
-                                8 caractères
-                            </li>
-                            <li :class="{ 'text-success': isPasswordContainDigit() }">
-                                <font-awesome-icon v-if="isPasswordContainDigit()" :icon="['fa', 'check']" style="color: #0ba70b;" />
-                                Un chiffre
-                            </li>
-                            <li :class="{ 'text-success': isPasswordContainSpecialChar() }">
-                                <font-awesome-icon v-if="isPasswordContainSpecialChar()" :icon="['fa', 'check']" style="color: #0ba70b;" />
-                                 Un caractère spécial
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Champ confirmer mot de passe -->
-                    <div v-if="props.confirmPwd" class="row">
-                        <div class="col-md-12">
-                            <label for="retypePassword" class="form-label">Confirmer le mot de passe *</label>
-                            <input v-model="retypePassword" class="form-control text-light " type="password"
-                                id="retypePassword" name="password" required="true">
-                        </div>
-                    </div>
-
-                    <!-- Photo de profil -->
-                    <div v-if="insertPhoto" class="row">
-                        <div class="col-md-12">
-                            <label for="profile_picture" class="form-label">Photo de profil (optionnel)</label>
-                            <input type="file" accept=".jpg,.jpeg,.gif,.png" id="profile_picture" class="form-control">
-                        </div>
-                    </div>
-                </form>
-                <button :style="{ backgroundColor: isLoading ? clickedButton : backgroundColor }" @click="submitForm()"
-                    :disabled="showPasswordError || isFormEmpty()" id="submit" class="btn btn-primary">
-                    <span v-if="!isLoading">{{ buttonTitle }}</span>
-                    <span v-if="isLoading">
-                        <font-awesome-icon :icon="['fas', 'spinner']" spin /></span>
-                </button>
-                <p :on-change="showPasswordError=false" class="text-danger col-md-12">{{ passwordError }}</p>
+    <main class="flex justify-center items-center text-left bg-cover bg-center">
+      <div id="login" class="shadow-lg shadow-gray-600 p-6 rounded-lg  bg-gray-700 max-h-75 overflow-y-auto">
+        <h1 class="mb-2 text-white text-center text-3xl font-semibold">{{ title }}</h1>
+        <h2 class="text-center text-xl font-semibold">{{ secondTitle }}</h2>
+        <div class="mt-4 text-start">
+          <form class="form-group" method="POST">
+            <!-- Champ pseudo -->
+            <div class="grid grid-cols-12 mb-3">
+              <div class="col-span-12">
+                <label for="username" class="mb-2 text-white font-semibold text-base">Nom d'utilisateur *</label>
+                <input v-model="username" ref="usernameInput" type="username" id="username" name="username" required 
+                class=" text-white bg-colors-gray-form border-none w-full px-4 py-2 rounded-m border  focus:outline-none">
+              </div>
             </div>
-            <div class="text-capitalize mt-3">
-                <p class="pl-2 text-center " v-html="link"></p>
+            <!-- Champ email -->
+            <div class="grid grid-cols-12 mb-3" v-if="props.confirmPwd">
+              <div class="col-span-12">
+                <label for="email" class="text-white font-semibold text-base">Adresse mail *</label>
+                <input v-model="email" ref="emailInput" type="email" id="email" name="email" required 
+                class="text-white bg-colors-gray-form w-full px-4 py-2 rounded-m border-none   focus:outline-none">
+              </div>
             </div>
+  
+            <!-- Champ mot de passe -->
+            <div class="grid grid-cols-12 mb-3">
+              <div class="col-span-12">
+                <label for="password" class="text-white font-semibold text-base">Mot de passe *</label>
+                <input v-model="password"  ref="passwordInput" type="password" id="password" name="password" required 
+                class="text-white bg-colors-gray-form w-full px-4 py-2 rounded-m border-none focus:outline-none">
+              </div>
+            </div>
+  
+            <!-- Conditions du mot de passe -->
+            <div class="mb-3" v-if="props.confirmPwd">
+              <span class="mb-2 text-white font-semibold">Votre mot de passe doit contenir au moins:</span>
+              <ul class="list-none text-white">
+                <li :class="{ 'text-green-600': isPasswordLongEnough() }">
+                  <font-awesome-icon v-if="isPasswordLongEnough()" :icon="['fa', 'check']" class="text-green-600" />
+                  8 caractères
+                </li>
+                <li :class="{ 'text-green-600': isPasswordContainDigit() }">
+                  <font-awesome-icon v-if="isPasswordContainDigit()" :icon="['fa', 'check']" class="text-green-600" />
+                  Un chiffre
+                </li>
+                <li :class="{ 'text-green-600': isPasswordContainSpecialChar() }">
+                  <font-awesome-icon v-if="isPasswordContainSpecialChar()" :icon="['fa', 'check']" class="text-green-600" />
+                  Un caractère spécial
+                </li>
+              </ul>
+            </div>
+  
+        <!-- Champ confirmer mot de passe -->
+      <div v-if="props.confirmPwd" class="grid grid-cols-12 mb-3">
+        <div class="col-span-12">
+          <label for="retypePassword" class=" text-white font-semibold text-base">
+            Confirmer le mot de passe *
+          </label>
+          <input v-model="retypePassword" type="password" id="retypePassword" name="password" required="true" 
+          class="bg-colors-gray-form text-white w-full px-4 py-2 rounded-m border-none  focus:border-blue-500 focus:outline-none ">
         </div>
-    </main>
-</template>
+      </div>
+      <!-- Photo de profil -->
+      <div v-if="insertPhoto" class="grid grid-cols-12">
+        <div class="col-span-12">
+          <label for="profile_picture" class="text-white font-semibold text-base">Photo de profil (optionnel)</label>
+          <input type="file" accept=".jpg,.jpeg,.gif,.png" id="profile_picture" class="w-full">
+        </div>
+      </div>
+    </form>
+    <p :on-change="showPasswordError=false" class="text-red-500 col-span-12 text-center mt-3">{{ passwordError }}</p>
+    <button
+      :class="{
+        'bg-green-500 cursor-wait': isLoading
+      }"
+      @click="submitForm()" 
+      :disabled="showPasswordError || isFormEmpty()"
+      :style="{ backgroundColor: isLoading ? clickedButton : backgroundColor }"
+      id="submit"
+      class="mt-5 block w-full px-4 py-2 rounded-md font-bold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-blue-500 hover:bg-blue-600 duration-200">
+      <span v-if="!isLoading">{{ buttonTitle }}</span>
+      <span v-if="isLoading"><font-awesome-icon :icon="['fas', 'spinner']" spin /></span>
+    </button>
+  </div>
+  <div class="text-capitalize mt-3">
+    <p class="pl-2 text-center " v-html="link"></p>
+  </div>
+</div>
+</main>
+</template>  
+
+  
 
 
 <script setup>
@@ -239,114 +249,15 @@
     }
 </script>
 
-<style scoped lang="css">
-    main {
-        background-image: url("@/assets/login.jpg");
-    }
+<style scoped>
+main{
+    background-image: url("@/assets/img/login.jpg");
+}
 
-
-    #login {
-        border-radius: 5px;
-        background-color: #36393f;
-        max-height: 75%;
-        overflow-y: auto;
-    }
-
-    h1 {
-        font-size: 30px;
-        font-weight: 600;
-        line-height: 30px;
-
-    }
-
-    h1,
-    #submit {
-        color: #f3f1f1;
-    }
-
-    h1,
-    h2 {
-        text-align: center;
-        margin: 5px;
-    }
-
-    h2 {
-        font-size: 20px;
-    }
-
-    * {
-        color: #f3f1f1;
-    }
-
-    ul {
-        list-style-type: ' ';
-    }
-
-    label {
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 8px;
-        text-align: left;
-    }
-
-
-    #label-picture::after {
-        content: none;
-    }
-
-    input,
-    #submit {
-        width: 100%;
-        height: 40px;
-        background-color: #40444b;
-        border: 0;
-        border-radius: 3px;
-        margin-bottom: 15px;
-        outline: 0;
-    }
-
-    input[type="file"],
-    input:hover,
-    input:focus {
-        background-color: #40444b;
-        color: #f3f1f1;
-        border: 0;
-    }
-
-    #submit {
-        height: 44px;
-        border-radius: 3px;
-        font-size: 18px;
-        transition: all 0.2s ease 0s;
-    }
-
-    #submit:hover {
-        background-color: #4752c4;
-        cursor: pointer;
-    }
-
-    a:hover {
-        text-decoration: none;
-    }
-
-    a {
-        color: #00aff4;
-    }
-
-    p {
-        font-size: 15px;
-    }
-
-    .condition-checked {
-        color: rgb(11, 167, 11);
-    }
-
-    i {
-        font-size: 25px;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .isLoading {
-        background-color: rgb(50, 159, 30);
-    }
+input[type="file"],
+input:hover,
+input:focus {
+    background-color: #40444b;
+    border: 0;
+}
 </style>
