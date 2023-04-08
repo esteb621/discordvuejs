@@ -1,5 +1,6 @@
 <template> 
-<div class="relative flex items-center justify-center 
+<div :class="{ selected: props.id == store.getters.selectedButtonId }"
+    class="relative flex items-center justify-center 
                 h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
                 bg-gray-800 text-green-500
                 hover:bg-green-600 hover:text-gray-200
@@ -37,12 +38,18 @@ const props = defineProps({
 
     const store = useStore()
 
-
     const setSelectedButtonId = (id) => {
-      store.commit('setSelectedButtonId', id)
-      localStorage.setItem('selectedButtonId', id)
+      store.commit('setSelectedButtonId', id);
+      localStorage.setItem('selectedButtonId', id);
     }
 
 
 </script>
 
+<style scoped>
+.selected{
+    background-color:rgb(22 163 74/ var(--tw-text-opacity));
+    color: rgb(235 237 239 / var(--tw-text-opacity));
+    border-radius: 0.75rem;
+}
+</style>

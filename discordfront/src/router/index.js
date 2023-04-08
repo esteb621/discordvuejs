@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView'
 import SignUpView from '../views/SignUpView'
 import MainView from '../views/MainView'
-
 const routes = [
   {
     path: '/',
@@ -13,7 +12,12 @@ const routes = [
   {
     path: '/main',
     name: 'main',
-    component: MainView
+    component: MainView,
+  },
+  {
+    path: "/main/channel/:id",
+    name: "channel",
+    component: () => import("@/components/main/ChannelComponents/ChannelComponent")
   },
   {
     path:'/connexion',

@@ -1,6 +1,6 @@
 <template>
 <a href="#" class="d-flex align-items-center">
-  <img src="@/assets/profile-default.jpg" alt="Photo de profil" id="profile-picture">
+  <img src="@/assets/img/profile-default.jpg" alt="Photo de profil" id="profile-picture">
   <h4 class="p-2 mb-auto">Esteban</h4>
 </a>
 

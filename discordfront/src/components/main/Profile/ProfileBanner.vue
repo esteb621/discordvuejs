@@ -1,11 +1,11 @@
 <template>
     <div id="profile" class="p-2">
-        <div class="d-flex flex-row align-items-center" >
+        <div class="flex flex-row items-center" >
 
             <a href="#" id="profileSettings" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Modifier le profil"
-                class="d-flex flex-row justify-content-center p-2">
-                <img id="profile-picture" src="@/assets/profile-default.jpg" alt="Photo profil">
-                <p class="px-2">Esteban</p>
+                class="flex flex-row justify-center items-start p-2">
+                <img id="profile-picture" src="@/assets/img/profile-default.jpg" alt="Photo profil">
+                <p class="px-2 font-bold">Esteban</p>
             </a>
             <a href="../" class="p-2 ms-auto" id="exit" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Déconnexion">
                 <font-awesome-icon :icon="['fas', 'sign-out-alt']" />

@@ -1,9 +1,10 @@
 <template>
     <!-- Message conversation -->
-    <div class="flex-xl-grow-1 d-flex flex-column align-items-stretch" id="messages-field">
+    <div class="flex-grow flex flex-col items-stretch" id="messages-field">
         <h2 class="p-2 mb-auto">General</h2>
-        <div id="message-container" class="d-flex flex-column w-100">
-            <MessageComponent/>
+        <div id="message-container" class="flex flex-col w-100">
+            <MessageComponent username="Lucas" message="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat"/>
+            <MessageComponent username="Esteban" message="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."/>
         </div>
         <TextBarComponent/>
     </div>
@@ -12,8 +13,6 @@
 <script setup>
 import TextBarComponent from './TextBarComponent.vue';
 import MessageComponent from './MessageComponent.vue';
-
-
 </script>
 
 <style>
