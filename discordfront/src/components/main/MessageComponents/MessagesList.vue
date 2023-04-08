@@ -6,13 +6,27 @@
             <MessageComponent username="Lucas" message="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat"/>
             <MessageComponent username="Esteban" message="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."/>
         </div>
-        <TextBarComponent/>
+        <TextBarComponent @send-message="sendMessage"/>
     </div>
 </template>
 
 <script setup>
 import TextBarComponent from './TextBarComponent.vue';
 import MessageComponent from './MessageComponent.vue';
+import { createApp, defineComponent } from 'vue';
+
+function sendMessage(message, username) {
+  console.log(message);
+  const MessageComponent = defineComponent({
+    props: ['message', 'username'],
+    template: `<div>Le message de {{ username }} : {{ message }}</div>`
+  });
+  const newMessage = createApp(MessageComponent, {
+    message: message,
+    username: username
+  });
+  newMessage.mount(document.body.appendChild(document.createElement('div')));
+}
 </script>
 
 <style>

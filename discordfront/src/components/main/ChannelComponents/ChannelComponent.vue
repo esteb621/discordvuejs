@@ -1,6 +1,8 @@
 <template>
-  <router-link :to="'/main/server/channel/' + (id+1)" :class="{ active: id == currentIndex }"
-    class="rounded-md w-90 p-5 mx-1 hover:bg-gray-500 focus:text-gray-200" @click="setActiveChannel(name, index)">
+  <router-link :to="'/main/server/channel/' + (id+1)" :class="{active: $route.path.includes('channel/'+(id+1)) }"
+    class="rounded-md w-90 py-2 px-3 mb-3 mx-2
+     focus:text-gray-200 hover:cursor-pointer hover:bg-gray-600
+    " @click="setActiveChannel(name, index)">
     <p class="text-gray-100">{{ name }}</p>
   </router-link>
 </template>
@@ -23,6 +25,7 @@ function setActiveChannel(channel, index) {
       console.log(props.id)
       console.log(currentIndex.value)
 }
+
 </script>
 
 <style scoped>

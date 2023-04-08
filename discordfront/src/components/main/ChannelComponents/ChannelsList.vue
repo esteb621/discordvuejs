@@ -5,11 +5,11 @@
             <span @click="addChannel()"
             class="text-gray-100 opacity-50
             cursor-pointer hover:opacity-100 p-1
-            transition-all duration-200 ease-linear">
+            transition-all duration-200 ease-linear" id="plus">
                 <font-awesome-icon :icon="['fas', 'plus']"  />
             </span>
         </h2>
-        <div id="channels-list" class="text-left flex flex-col">
+        <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
             <ChannelComponent v-for="(channel, index) in channels" :id="index" :key="index" :name="channel"/>
         </div>
     </div>
@@ -36,6 +36,8 @@ function addChannel() {
         event.target.remove();
     }
     });
+    input.placeholder="Nom du salon"
+    input.className="w-90 py-2 px-3 mb-3 mx-2 left-2 bg-gray-600 rounded-md outline-none text-gray-200"
     document.getElementById('channels-list').appendChild(input);
     input.focus();
 }
@@ -43,30 +45,3 @@ function addChannel() {
 
 </script>
 
-<style scoped>
-
-a{
-    margin:0.2em 1em;
-    border-radius: 5px;
-    width: 90%;
-    padding:5px 10px;
-    text-decoration: none;
-
-}
-
-
-a:hover,.selected
-{
-    cursor: pointer;
-    background-color: #3c3f45;
-}
-
-a:hover>li{
-    color: #dcddde;
-}
-
-a:focus>li{
-    color:#dcddde;
-    font-weight: 600;
-}
-</style>

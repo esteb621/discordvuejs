@@ -1,38 +1,30 @@
 <template>
 <div class="relative p-2 mb-2">
-    <input id="textbar" type="text"
+    <form @submit.prevent="submitMessage">
+    <input id="textbar" type="text" required autocomplete="off"
         class="shadow-none rounded-md  w-full p-3 pr-10 focus:outline-none
-        bg-gray-800 text-gray-400 placeholder:text-gray-400"
-        placeholder="Ecrivez votre message..."
+        bg-gray-800 text-gray-400 placeholder:text-gray-400 placeholder:opacity-50"
+        placeholder="Ecrivez votre message..." v-model="message"
         aria-label="Recipient's username" aria-describedby="button-addon2">
-    <button class="absolute mt-3 right-0 mr-5 text-rounded-md text-gray-400 hover:text-gray-500 duration-200" type="button">
+    <button @click="submitMessage" class="absolute mt-3 right-0 mr-5 text-rounded-md text-gray-400 hover:text-gray-500 duration-200" type="button">
         <font-awesome-icon :icon="['fas', 'paper-plane'] " />
-    </button>
+    </button>        
+    </form>
+
 </div>
 
 </template>
 
-<!-- <style scoped>
-#textbar{
-    
-    color: #d7ddde;
-    border: 0;
-    padding: 10px 1rem;
-    border-radius:8px 0 0 8px;
-    
+
+<script setup>
+import { ref,defineEmits } from 'vue';
+
+const message = ref('');
+
+const emit = defineEmits(['send-message']);
+
+function submitMessage() {
+    emit('send-message', message.value,"Esteban");
+    message.value = '';
 }
-
-#textbar::placeholder{
-    color: #727677;
-}
-
-#send{
-    border:0;
-    border-radius:0 8px 8px 0;
-    background-color: #40444b;
-} -->
-
-
-
-
-<!-- </style> -->
+</script>

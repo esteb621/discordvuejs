@@ -3,25 +3,21 @@
     :class="{selected: $route.path.includes(props.id) }"
     class="relative flex items-center justify-center 
                 h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
-                bg-gray-800 text-green-500
-                hover:bg-green-600 hover:text-gray-200
+                bg-gray-800 text-purple
+                hover:bg-purple-600 hover:text-gray-200
                 active:top-0.5
                 rounded-3xl hover:rounded-xl
-                transition-all duration-200 ease-linear cursor-pointer group"
-                >
+                transition-all duration-200 ease-linear cursor-pointer group">
+    <ToolTip :title="props.name" class="origin-left left-14"/>
     <font-awesome-icon :icon="props.icon" size="xl" />
-    <span class="absolute w-auto p-2 m-2 min-w-max left-14
-                rounded-md shadow-md
-                text-gray-100 bg-gray-900
-                text-sm font-bold
-                transition-all duration-100 scale-0 origin-left group-hover:scale-100">
-    {{ props.name }}</span>
+
 </router-link>    
 </template>
 
 
 <script setup>
 import { defineProps } from 'vue';
+import ToolTip from '../ToolTip.vue';
 
 const props = defineProps({
     name: {
@@ -43,7 +39,7 @@ const props = defineProps({
 
 <style scoped>
 .selected{
-    background-color:rgb(22 163 74/ var(--tw-text-opacity));
+    background-color: rgb(103 123 196 / var(--tw-bg-opacity));
     color: rgb(235 237 239 / var(--tw-text-opacity));
     border-radius: 0.75rem;
 }
