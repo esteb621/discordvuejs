@@ -1,5 +1,6 @@
 <template> 
-<a  :class="{ selected: props.id == store.getters.selectedButtonId }"
+<router-link :to="'/main/'+ props.id"
+    :class="{selected: $route.path.includes(props.id) }"
     class="relative flex items-center justify-center 
                 h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
                 bg-gray-800 text-green-500
@@ -7,7 +8,7 @@
                 active:top-0.5
                 rounded-3xl hover:rounded-xl
                 transition-all duration-200 ease-linear cursor-pointer group"
-                @click="setSelectedButtonId(props.id)">
+                >
     <font-awesome-icon :icon="props.icon" size="xl" />
     <span class="absolute w-auto p-2 m-2 min-w-max left-14
                 rounded-md shadow-md
@@ -15,14 +16,13 @@
                 text-sm font-bold
                 transition-all duration-100 scale-0 origin-left group-hover:scale-100">
     {{ props.name }}</span>
-</a>    
+</router-link>    
 </template>
 
 
 <script setup>
-import router from '@/router';
 import { defineProps } from 'vue';
-import { useStore } from 'vuex';
+
 const props = defineProps({
     name: {
         type: String,
@@ -37,13 +37,6 @@ const props = defineProps({
         required:true
     }
 });
-
-    const store = useStore()
-
-    const setSelectedButtonId = (id) => {
-      store.commit('setSelectedButtonId', id);
-      router.push(id);
-    }
 
 
 </script>

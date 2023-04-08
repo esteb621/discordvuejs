@@ -24,8 +24,6 @@ const channels = ref(['general', 'devoirs', 'jeux'])
 
 function addChannel() {
     const input = document.createElement('input');
-    if (document.getElementById('channels-list').contains(input)!==true) {
-
     input.type = 'text';
     input.required='true';
     input.addEventListener('keydown', (event) => {
@@ -40,8 +38,6 @@ function addChannel() {
     });
     document.getElementById('channels-list').appendChild(input);
     input.focus();
-
-    }
 }
 
 
