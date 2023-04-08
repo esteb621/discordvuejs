@@ -1,7 +1,7 @@
 <template>
-<a href="#" class="d-flex align-items-center">
+<a href="#" class="flex items-center">
   <img src="@/assets/img/profile-default.jpg" alt="Photo de profil" id="profile-picture">
-  <h4 class="p-2 mb-auto">Esteban</h4>
+  <h4 class="p-2 mb-auto text-sm">Esteban</h4>
 </a>
 
 </template>

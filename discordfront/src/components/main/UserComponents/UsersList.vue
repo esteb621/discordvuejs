@@ -2,7 +2,7 @@
     <!-- Liste channels / Amis si MP -->
     <div id="users">
         <h2 class="p-2">Utilisateurs</h2>
-        <div class="p-2 d-flex row mb-3" id="users-list">
+        <div class="p-2 flex row mb-3" id="users-list">
             <UserComponent/>
         </div>
     </div>

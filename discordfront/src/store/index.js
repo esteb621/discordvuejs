@@ -3,14 +3,15 @@ import { createStore } from 'vuex'
 const store = createStore({
   state() {
     return {
-      selectedButtonId: null,
+      selectedButtonId: '',
       connected:null,
       token: null
     }
   },
   mutations: {
     setSelectedButtonId(state, buttonId) {
-      state.selectedButtonId = buttonId
+      state.selectedButtonId = buttonId;
+      localStorage.setItem('selectedButtonId', buttonId);
     },
     storeToken(state, token) {
       state.token = token
@@ -25,7 +26,7 @@ const store = createStore({
     loadSelectedButtonIdFromLocalStorage({ commit }) {
       const selectedButtonId = localStorage.getItem('selectedButtonId')
       if (selectedButtonId) {
-        commit('setSelectedButtonId', parseInt(selectedButtonId))
+        commit('setSelectedButtonId', selectedButtonId)
       }
     }
   }

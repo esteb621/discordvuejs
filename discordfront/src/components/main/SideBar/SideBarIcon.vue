@@ -1,5 +1,5 @@
 <template> 
-<div :class="{ selected: props.id == store.getters.selectedButtonId }"
+<a  :class="{ selected: props.id == store.getters.selectedButtonId }"
     class="relative flex items-center justify-center 
                 h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
                 bg-gray-800 text-green-500
@@ -7,7 +7,7 @@
                 active:top-0.5
                 rounded-3xl hover:rounded-xl
                 transition-all duration-200 ease-linear cursor-pointer group"
-    @click="setSelectedButtonId(props.id)">
+                @click="setSelectedButtonId(props.id)">
     <font-awesome-icon :icon="props.icon" size="xl" />
     <span class="absolute w-auto p-2 m-2 min-w-max left-14
                 rounded-md shadow-md
@@ -15,10 +15,12 @@
                 text-sm font-bold
                 transition-all duration-100 scale-0 origin-left group-hover:scale-100">
     {{ props.name }}</span>
-</div>    
+</a>    
 </template>
 
+
 <script setup>
+import router from '@/router';
 import { defineProps } from 'vue';
 import { useStore } from 'vuex';
 const props = defineProps({
@@ -31,7 +33,7 @@ const props = defineProps({
         required: true,
     },
     id: {
-        type:Number,
+        type:String,
         required:true
     }
 });
@@ -40,7 +42,7 @@ const props = defineProps({
 
     const setSelectedButtonId = (id) => {
       store.commit('setSelectedButtonId', id);
-      localStorage.setItem('selectedButtonId', id);
+      router.push(id);
     }
 
 

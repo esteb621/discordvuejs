@@ -13,11 +13,23 @@ const routes = [
     path: '/main',
     name: 'main',
     component: MainView,
-  },
-  {
-    path: "/main/channel/:id",
-    name: "channel",
-    component: () => import("@/components/main/ChannelComponents/ChannelComponent")
+    children:[
+      {
+        path: "server/channel/:id",
+        name: "channel",
+        component: MainView
+      },
+      {
+        path: "personal",
+        name: "privateMessage",
+        component: MainView
+      },
+      {
+        path: "server",
+        name: "server",
+        component: MainView
+      }
+    ]
   },
   {
     path:'/connexion',
