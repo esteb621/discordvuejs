@@ -22,9 +22,10 @@ import { ref,defineEmits } from 'vue';
 const message = ref('');
 
 const emit = defineEmits(['send-message']);
-
 function submitMessage() {
+    
     emit('send-message', message.value,"Esteban");
     message.value = '';
+
 }
 </script>

@@ -9,7 +9,7 @@
                 <font-awesome-icon :icon="['fas', 'plus']"  />
             </span>
         </h2>
-        <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
+        <div id="channels-list" class="text-left flex flex-col overflow-y-scroll">
             <ChannelComponent v-for="(channel, index) in channels" :id="index" :key="index" :name="channel"/>
         </div>
     </div>
@@ -27,7 +27,7 @@ function addChannel() {
     input.type = 'text';
     input.required='true';
     input.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' && event.target.value!='') {
+    if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
         const channelName = event.target.value;
         channels.value.push(channelName);
         event.target.remove();
