@@ -8,11 +8,6 @@ var corsOptions = {
   origin: "http://localhost:8081"
 };
 
-
-const path = __dirname + '/app/views/';
-
-app.use(express.static(path));
-
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -32,15 +27,16 @@ db.sequelize.sync()
      console.log("Failed to sync db: " + err.message);
    });
 
-
 require("./app/routes/discord.routes")(app);
 require("./app/routes/auth.routes")(app);
 
+const path = __dirname + '/app/views/';
+
+app.use(express.static(path));
 
 app.get('*', function (req,res) {
-  res.sendFile(path + "index.html");
-});
-
+    res.sendFile(path + "index.html");
+  });
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
