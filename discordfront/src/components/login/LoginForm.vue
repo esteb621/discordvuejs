@@ -91,7 +91,7 @@
   
 <script setup>
     import router from '@/router';
-    import axios from 'axios';
+    import { signup, login } from '@/services/auth.service';
     import {
         ref,
         defineProps
@@ -184,51 +184,44 @@
         return true;
     }
 
-    function handleRegistration() {
-        axios.post('/api/auth/signup', {
-                username: username.value,
-                email: email.value,
-                password: password.value,
-            })
-            .then(response => {
-                showPasswordError = false;
-                const token = response.data;
-                store.commit('storeToken', token);
-                if (response && response.status === 200) { // Vérifier si la propriété status est définie
-                    router.push("/main");
-                } else {
-                    console.log("Erreur: Impossible d'obtenir le statut de la réponse");
-                }
-            })
-            .catch(error => {
-                isLoading.value = false;
-                if (error.response.status == 404) {
-                    passwordError.value = "Désolé, le serveur ne répond pas. Veuillez réessayer ultérieurement"
-                } else {
-                    passwordError.value = error.response.data.message;
-                }
-            });
-    }
+function handleRegistration() {
+  signup(username.value, email.value, password.value)
+    .then(response => {
+      showPasswordError = false;
+      const token = response.data;
+      store.commit('storeToken', token);
+      if (response && response.status === 200) { // Vérifier si la propriété status est définie
+        router.push("/main");
+      } else {
+        console.log("Erreur: Impossible d'obtenir le statut de la réponse");
+      }
+    })
+    .catch(error => {
+      isLoading.value = false;
+      if (error.response.status == 404) {
+        passwordError.value = "Désolé, le serveur ne répond pas. Veuillez réessayer ultérieurement"
+      } else {
+        passwordError.value = error.response.data.message;
+      }
+    });
+}
 
-    const handleLogin = () => {
-        axios.post('/api/auth/login', {
-                username: username.value,
-                password: password.value
-            })
-            .then(response => {
-                showPasswordError.value = false;
-                const token = response.data;
-                store.commit('storeToken', token);
-                router.push("/main");
-            })
-            .catch(error => {
-                isLoading.value = false;
-                showPasswordError.value = true;
-                passwordError.value = error.response.data.message;
-            });
-    }
+const handleLogin = () => {
+  login(username.value, password.value)
+    .then(response => {
+      showPasswordError.value = false;
+      const token = response.data;
+      store.commit('storeToken', token);
+      router.push("/main");
+    })
+    .catch(error => {
+      isLoading.value = false;
+      showPasswordError.value = true;
+      passwordError.value = error.response.data.message;
+    });
+}
 
-    function submitForm() {
+function submitForm() {
         if (verifyPassword()) {
             isLoading.value = true;
             setTimeout(() => {
@@ -241,8 +234,6 @@
                 }
             }, 500);
         }
-
-
     }
 </script>
 
