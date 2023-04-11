@@ -8,7 +8,6 @@ exports.create = (req, res) => {
     res.status(400).send({
       message: "Content can not be empty!"
     });
-    return;
   }
 
 
@@ -30,12 +29,15 @@ exports.create = (req, res) => {
       axios.post(url, params)
         .then(response => {
             console.log(response.data);
+            return;
         })
         .catch(error => {
             console.log(error);
+            return;
         });
   })
   .catch(error => res.status(400).json(error));
+  return;
 };
 
 
