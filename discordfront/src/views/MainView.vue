@@ -18,6 +18,8 @@ import MessagesList from '@/components/main/MessageComponents/MessagesList.vue'
 import UsersList from '@/components/main/UserComponents/UsersList.vue';
 import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
 import SideBar from '@/components/main/SideBar/SideBar.vue';
+
+
 </script>
 
 <style>

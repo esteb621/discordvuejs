@@ -1,18 +1,27 @@
 import axios from 'axios';
 
-const baseURL = '/api/auth';
+const API_URL = '/api/auth/';
 
-export function signup(username, email, password) {
-  return axios.post(`${baseURL}/signup`, {
-    username,
-    email,
-    password,
-  });
+class AuthService {
+  signup(username, email, password) {
+    return axios.post(`${baseURL}/signup`, {
+      username,
+      email,
+      password,
+    });
+  }
+
+  login(username, password) {
+    return axios.post(`${baseURL}/login`, {
+      username,
+      password,
+    });
+  }
+
+  logout() {
+    store.commit('removeToken');
+    router.push("/");
+  }
 }
 
-export function login(username, password) {
-  return axios.post(`${baseURL}/login`, {
-    username,
-    password,
-  });
-}
+export default new AuthService();

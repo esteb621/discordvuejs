@@ -12,6 +12,10 @@ const store = createStore({
     storeToken(state, token) {
       state.token = token
       localStorage.setItem('jwt', token);
+    },
+    removeToken(state) {
+      state.token = null
+      localStorage.removeItem('jwt');
     }
   },
   getters: {
