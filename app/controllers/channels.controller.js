@@ -1,4 +1,3 @@
-const { channels } = require("../models");
 const db = require("../models");
 const Channels = db.Channels;
 const Op = db.Sequelize.Op;
@@ -6,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Channel
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.nom || !req.body.typologie) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -24,13 +23,16 @@ exports.create = (req, res) => {
   Channels.create(channels)
     .then(data => {
       res.send(data);
+      return;
     })
     .catch(err => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the Channel."
       });
+      return;
     });
+    return;
 };
 
 // Retrieve all Channels from the database.

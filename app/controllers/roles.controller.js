@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Role
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.nom) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -21,14 +21,17 @@ exports.create = (req, res) => {
   // Save Role in the database
   Roles.create(roles)
     .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Role."
+        res.send(data);
+        return;
+      })
+      .catch(error => {
+        res.status(500).send({
+          message:
+            error.message || "Some error occurred while creating the Role."
       });
-    });
+  return;
+  });
+  return;
 };
 
 // Retrieve all Roles from the database.

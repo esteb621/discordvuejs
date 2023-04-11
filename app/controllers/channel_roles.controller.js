@@ -1,4 +1,3 @@
-const { channels } = require("../models");
 const db = require("../models");
 const Channels_Roles = db.Channels_Roles;
 const Op = db.Sequelize.Op;
@@ -6,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Channel_Role
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.id_roles || !req.body.id_channels) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -24,12 +23,14 @@ exports.create = (req, res) => {
   Channels_Roles.create(channels_roles)
     .then(data => {
       res.send(data);
+      return;
     })
     .catch(err => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the Channel_Roles."
       });
+      return;
     });
 };
 
@@ -41,13 +42,16 @@ exports.findAll = (req, res) => {
   Channels_Roles.findAll({ where: condition })
     .then(data => {
       res.send(data);
+      return;
     })
     .catch(err => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving channels_roles."
       });
+      return;
     });
+    return;
 };
 
 // Find a single Channel with an id

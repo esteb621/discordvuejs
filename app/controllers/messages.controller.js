@@ -1,11 +1,10 @@
-const { channels } = require("../models");
 const db = require("../models");
 const Messages = db.Messages;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.text || !req.body.channel_id) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -22,13 +21,16 @@ exports.create = (req, res) => {
   Messages.create(messages)
     .then(data => {
       res.send(data);
+      return;
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Messages."
+          err.message || "Some error occurred while creating the Message."
       });
+      return;
     });
+    return;
 };
 
 exports.findAll = (req, res) => {
