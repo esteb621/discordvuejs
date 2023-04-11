@@ -22,8 +22,8 @@
 <script setup>
 import ToolTip from '../ToolTip.vue';
 // import ProfileSettings from './ProfileSettings.vue';
-import { logout } from '@/services/auth.service';
-
+import auth from '@/services/auth.service';
+const { logout } = auth;
 </script>
 
 

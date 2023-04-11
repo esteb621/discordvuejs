@@ -1,6 +1,6 @@
 <template>
     <!-- Liste channels / Amis si MP -->
-    <div class="w-100">
+    <div class="w-100 flex-grow">
         <h2 class="p-2 text-gray-100">Salons textuels
             <span @click="addChannel()"
             class="text-gray-100 opacity-50
@@ -9,7 +9,7 @@
                 <font-awesome-icon :icon="['fas', 'plus']"  />
             </span>
         </h2>
-        <div id="channels-list" class="text-left flex flex-col overflow-y-scroll">
+        <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
             <ChannelComponent v-for="(channel, index) in channels" :id="index" :key="index" :name="channel"/>
         </div>
     </div>

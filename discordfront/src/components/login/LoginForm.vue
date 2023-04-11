@@ -91,7 +91,7 @@
   
 <script setup>
     import router from '@/router';
-    import { signup, login } from '@/services/auth.service';
+    import auth from '@/services/auth.service';    
     import {
         ref,
         defineProps
@@ -99,7 +99,8 @@
     import {
         useStore
     } from 'vuex'
-
+    
+    const { login, signup } = auth;
     const store = useStore();
 
 

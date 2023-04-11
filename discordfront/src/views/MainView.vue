@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-row h-screen" id="discord">
         <SideBar/>
-        <div id="channel" class="d-flex flex-column h-full">
-            <ChannelsList class="flex-grow h-[calc(100vh-8vh)]"/>
+        <div id="channel" class="flex flex-col">
+            <ChannelsList class="grow"/>
             <ProfileBanner/>
         </div>
         <MessagesList/>
@@ -19,6 +19,18 @@ import UsersList from '@/components/main/UserComponents/UsersList.vue';
 import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
 import SideBar from '@/components/main/SideBar/SideBar.vue';
 
+
+// A METTRE POUR LA PROD
+
+// import authHeader from '@/services/auth-header';
+// import router from '@/router';
+// import { onMounted } from 'vue';
+
+// onMounted(() => {
+//   const headers = authHeader();
+//   if (!headers['x-access-token']) {
+//   router.push('/connexion');
+// }});
 
 </script>
 

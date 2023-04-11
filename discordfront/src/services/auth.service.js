@@ -1,6 +1,8 @@
+import router from '@/router';
+import store from '@/store';
 import axios from 'axios';
 
-const API_URL = '/api/auth/';
+const baseURL = '/api/auth/';
 
 class AuthService {
   signup(username, email, password) {
