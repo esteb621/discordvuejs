@@ -78,6 +78,7 @@ exports.findOne = (req, res) => {
 // Update a Channel by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
+  req.body.id = id;
 
   Channels_Roles.update(req.body, {
     where: { id: id }

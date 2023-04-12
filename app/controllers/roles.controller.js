@@ -75,6 +75,7 @@ exports.findOne = (req, res) => {
 // Update a Role by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
+  req.body.id = id;
 
   Roles.update(req.body, {
     where: { id: id }
