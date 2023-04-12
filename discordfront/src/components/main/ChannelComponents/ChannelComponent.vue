@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/main/server/channel/' + (id+1)" :class="{active: $route.path.includes('channel/'+(id+1)) }"
+  <router-link :to="'/main/server/channel/' + id" :class="{active: $route.path.includes('channel/'+id) }"
     class="rounded-md w-90 py-2 px-3 mb-3 mx-2
     focus:text-gray-200 hover:cursor-pointer hover:bg-gray-600
     ">

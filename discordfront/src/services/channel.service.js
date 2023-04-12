@@ -1,12 +1,21 @@
-const baseURL = '/api/discord/';
+import axios from 'axios';
+
+const baseURL = 'http://localhost:8080/api/discord/';
 
 class ChannelService {
-  getChannel(username, email, password) {
-    return axios.get(`${baseURL}/channels`);
+
+
+  async getChannels() {
+    const response = await axios.get(`${baseURL}/channels`);
+    const data = response.data.map(item => ({
+      id: item.id,
+      nom: item.nom
+    }));
+    return data;
   }
 
-  addChannel(channel) {
-    return axios.post(`${baseURL}/createchannel`,channel);
+  async addChannel(channel) {
+    await axios.post(`${baseURL}/createchannel`,channel);
   }
 
 }
