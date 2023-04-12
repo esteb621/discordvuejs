@@ -39,7 +39,7 @@ const props = defineProps({
 
 <style scoped>
 .selected{
-    background-color: rgb(103 123 196 / var(--tw-bg-opacity));
+    background-color: #4f46e5;
     color: rgb(235 237 239 / var(--tw-text-opacity));
     border-radius: 0.75rem;
 }

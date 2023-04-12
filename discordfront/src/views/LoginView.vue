@@ -1,4 +1,5 @@
 <template>
+  
     <LoginForm 
     :title="title" 
     :secondTitle="secondTitle"
@@ -6,7 +7,7 @@
     :confirmPwd="confirmPwd"
     :link="link"
     :submit="submit" />
-  </template>
+</template>
 
 <script setup>
 import LoginForm from '@/components/login/LoginForm.vue';
