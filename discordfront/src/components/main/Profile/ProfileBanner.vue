@@ -1,12 +1,9 @@
 <template>
     <div id="profile" class="p-2">
-        <div class="flex flex-row items-center" >
-
-            <a class="flex flex-row justify-center items-start p-2 group cursor-pointer"
-                data-te-toggle='modal'
-                data-te-target='#exampleModalCenter'
-                data-te-ripple-init
-                data-te-ripple-color='light'>
+        <div class="flex flex-row items-center">
+            <a @click="$emit('show-modal')"
+            class="flex flex-row justify-center 
+            items-start p-2 group cursor-pointer">
                 <img id="profile-picture" src="@/assets/img/profile-default.jpg" alt="Photo profil">
                 <p class="px-2 font-bold">Esteban</p>
                 <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
@@ -15,16 +12,19 @@
                 <ToolTip title="Déconnexion" class="origin-bottom bottom-14 left-60"/>
                 <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
             </a>
+            
         </div>  
     </div>
 </template>
 
 <script setup>
 import ToolTip from '../ToolTip.vue';
-// import ProfileSettings from './ProfileSettings.vue';
 import auth from '@/services/auth.service';
+
 const { logout } = auth;
+
 </script>
+
 
 
 <style scoped>
