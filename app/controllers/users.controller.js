@@ -83,6 +83,7 @@ exports.findOne = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
+  req.body.id = id;
 
   Users.update(req.body, {
     where: { id: id }
@@ -103,7 +104,7 @@ exports.update = (req, res) => {
         message: "Error updating User with id=" + id
       });
     });
-};
+  };
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {

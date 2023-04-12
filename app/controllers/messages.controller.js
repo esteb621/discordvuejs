@@ -86,6 +86,7 @@ exports.findOne = (req, res) => {
 
 exports.update = (req, res) => {
   const id = req.params.id;
+  req.body.id = id;
 
   Messages.update(req.body, {
     where: { id: id }

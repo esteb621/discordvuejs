@@ -39,18 +39,17 @@ module.exports = app => {
 
   
     // Update a User or a Role with id
-    router.put("/update/users/id", users.update);
-    router.put("/update/roles/id", roles.update);
-    router.put("/update/channels/id", channels.update);
-    router.put("/update/messages/id", messages.update);
-   
+    router.put("/update/users/:id", users.update);
+    router.put("/update/roles/:id", roles.update);
+    router.put("/update/channels/:id", channels.update);
+    router.put("/update/messages/:id", messages.update);   
 
   
     // Delete a User or a Role with id
-    router.delete("/delete/idu", users.delete);
-    router.delete("/delete/idr", roles.delete);
-    router.delete("/delete/idc", channels.delete);
-    router.delete("/delete/idm", messages.update);
+    router.delete("/delete/:idu", users.delete);
+    router.delete("/delete/:idr", roles.delete);
+    router.delete("/delete/:idc", channels.delete);
+    router.delete("/delete/:idm", messages.update);
 
 
   
