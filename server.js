@@ -32,14 +32,14 @@ db.sequelize.sync()
      console.log("Failed to sync db: " + err.message);
    });
 
-app.get('*', function (req,res) {
-    res.sendFile(path + "index.html");
-  });
-
-
 
 require("./app/routes/discord.routes")(app);
 require("./app/routes/auth.routes")(app);
+
+
+app.get('*', function (req,res) {
+  res.sendFile(path + "index.html");
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
