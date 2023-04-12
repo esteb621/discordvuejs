@@ -10,13 +10,21 @@
             </span>
         </h2>
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
-            <ChannelComponent v-for="(channel, index) in channels" :id="index" :key="index" :name="channel"/>
+            <Suspense>
+                <template #default>
+                    <ChannelComponent v-for="(channel, index) in channels" :id="index" :key="index" :name="channel"/>
+                </template>
+                <template #fallback>
+                    <ChannelSkeleton/>
+                </template>
+            </Suspense>
         </div>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue'
 import ChannelComponent from './ChannelComponent.vue';
+import ChannelSkeleton from './ChannelSkeleton.vue';
 
 
 const channels = ref(['general', 'devoirs', 'jeux'])

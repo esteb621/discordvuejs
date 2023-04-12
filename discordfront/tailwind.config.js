@@ -21,7 +21,7 @@ module.exports = {
         },
         animation: {
           'slide-in': 'slide-in 1s forwards',
-      },
+        },
       colors:{
         primary: '#202225',
         secondary: '#5865f2',
