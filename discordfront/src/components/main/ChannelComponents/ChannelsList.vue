@@ -10,26 +10,32 @@
             </span>
         </h2>
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
-            <Suspense>
-                <template #default>
-                    <ChannelComponent v-for="(channel, index) in channels" :id="index" :key="index" :name="channel"/>
-                </template>
-                <template #fallback>
-                    <ChannelSkeleton/>
-                </template>
-            </Suspense>
+            <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom"/>
+            <ChannelSkeleton v-if="isloading"/>
         </div>
     </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue';
 import ChannelComponent from './ChannelComponent.vue';
 import ChannelSkeleton from './ChannelSkeleton.vue';
+import channelService from '@/services/channel.service';
 
+const channels=ref([]);
+const isloading=ref(false);
+const fetchChannels= async() => {
+    isloading.value=true;
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const data = await channelService.getChannels();
+    channels.value=data;
+    isloading.value=false;
+}
 
-const channels = ref(['general', 'devoirs', 'jeux'])
+onMounted(async () => {
+    await fetchChannels();
+});
 
-
+ 
 function addChannel() {
     const input = document.createElement('input');
     input.type = 'text';
@@ -37,7 +43,11 @@ function addChannel() {
     input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
         const channelName = event.target.value;
-        channels.value.push(channelName);
+        channels.value.push(
+            {
+                nom:channelName,
+                id:channels.value.length+1
+            });
         event.target.remove();
     }
     else if(event.key==='Escape'){

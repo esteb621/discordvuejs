@@ -3,8 +3,8 @@
     :class="{selected: $route.path.includes(props.id) }"
     class="relative flex items-center justify-center 
                 h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
-                bg-gray-800 text-purple
-                hover:bg-purple-600 hover:text-gray-200
+                bg-gray-800 text-blue-600
+                hover:bg-blue-600 hover:text-gray-200
                 active:top-0.5
                 rounded-3xl hover:rounded-xl
                 transition-all duration-200 ease-linear cursor-pointer group">
@@ -39,7 +39,7 @@ const props = defineProps({
 
 <style scoped>
 .selected{
-    background-color: #4f46e5;
+    background-color: rgb(37 99 235 / var(--tw-bg-opacity));
     color: rgb(235 237 239 / var(--tw-text-opacity));
     border-radius: 0.75rem;
 }
