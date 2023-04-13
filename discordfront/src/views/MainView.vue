@@ -1,13 +1,19 @@
 <template>
     <div class="flex flex-row h-screen" id="discord">
-        <SideBar/>
-        <div id="channel" class="flex flex-col">
-            <ChannelsList class="grow"/>
-            <ProfileBanner @show-modal="showModal = true" />
+        <div class="flex flex-row max-[768px]:hidden">
+            <SideBar/>
+            <div id="channel" class="flex flex-col">
+                <ChannelsList class="grow"/>
+                <ProfileBanner @show-modal="showModal = true" />
+            </div>
         </div>
         <MessagesList/>
-        <UsersList/>
-        <ProfileSettings v-if="showModal" @close="showModal = false" />/>
+        <div class="flex flex-col max-[768px]:hidden">
+            <UsersList/>
+        </div>
+        <Transition name="fade">
+            <ProfileSettings v-if="showModal" @close="showModal = false" />
+        </Transition>
     </div>
 </template>
 
@@ -48,6 +54,18 @@ a{
 
 a,p{
     text-align: left;
+}
+
+.fade-enter-from{
+  opacity: 0;
+}
+
+.fade-enter-to{
+  opacity:1;
+}
+
+.fade-enter-active{
+  transition: opacity 0.5s;
 }
 
 </style>

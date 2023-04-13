@@ -2,8 +2,8 @@
   <section id="home" class="flex flex-col items-end bg-gray-900 h-screen">
     <div class="container text-white self-center flex justify-center items-center h-screen">
       <div class="row justify-center">
-        <div class="text-center">
-          <h1 class="opacity-0 m-4 font-bold text-5xl animate-slide-in animation-delay-200">
+        <div class="text-center w-screen">
+          <h1 class="opacity-0 m-4 font-bold text-5xl  animate-slide-in animation-delay-200">
             Bienvenue sur Discord!
           </h1>
           <h2 class="opacity-0 font-light text-xl mb-5 animate-slide-in animation-delay-500">
