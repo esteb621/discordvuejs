@@ -43,11 +43,18 @@ function addChannel() {
     input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
         const channelName = event.target.value;
-        channels.value.push(
-            {
-                nom:channelName,
-                id:channels.value.length+1
-            });
+        try{
+            channels.value.push(
+                {
+                    nom:channelName,
+                    id:channels.value.length+1
+                });  
+            channelService.addChannel(channelName,channels.value.length+1);
+            fetchChannels();      
+        }
+        catch(e){
+            console.log(e);
+        }
         event.target.remove();
     }
     else if(event.key==='Escape'){

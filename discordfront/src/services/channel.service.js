@@ -14,8 +14,11 @@ class ChannelService {
     return data;
   }
 
-  async addChannel(channel) {
-    await axios.post(`${baseURL}/createchannel`,channel);
+  async addChannel(nom,id) {
+    await axios.post(`${baseURL}/createchannel`,{
+      channel:nom,
+      id:id
+    });
   }
 
 }
