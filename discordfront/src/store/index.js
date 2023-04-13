@@ -4,7 +4,8 @@ const store = createStore({
   state() {
     return {
       connected:null,
-      token: null
+      token: null,
+      currentChannel: null
     }
   },
   mutations: {
@@ -16,10 +17,15 @@ const store = createStore({
     removeToken(state) {
       state.token = null
       localStorage.removeItem('jwt');
+    },
+    storeChannel(state,channel){
+      state.currentChannel=channel;
+      localStorage.setItem('currentChannel',channel);
     }
   },
   getters: {
-    token: state => state.token
+    token: state => state.token,
+    currentChannel: state => state.currentChannel
   },
   actions: {
 

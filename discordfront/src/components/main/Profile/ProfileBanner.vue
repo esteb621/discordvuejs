@@ -8,7 +8,7 @@
                 <p class="px-2 font-bold">Esteban</p>
                 <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
             </a>
-            <a @click="logout()" class="p-2 ms-auto group" >
+            <a @click="logout()" class="p-2 ms-auto group cursor-pointer" >
                 <ToolTip title="Déconnexion" class="origin-bottom bottom-14 left-60"/>
                 <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
             </a>

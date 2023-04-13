@@ -1,7 +1,10 @@
 <template>
     <!-- Message conversation -->
     <div class="flex-grow flex flex-col items-stretch" id="messages-field">
-        <h2 class="p-2 mb-auto">General</h2>
+        <div class="mb-auto text-left text-lg  shadow-md bg-gray-700 font-bold p-3">
+          <h2 v-if="!isloading" class="text-gray-300"><font-awesome-icon :icon="['fa', 'hashtag']" class="text-gray-500" /> {{ currentChannel }}</h2>
+          <div v-if="isloading" class="animate-pulse bg-gray-600 rounded-md w-20 h-6"></div>
+        </div>
         <div id="message-container" class="flex flex-col w-100 snap-y" >
             <MessageComponent class="snap" v-for="message in messages" v-bind:key="message.username" :username="message.username" :message="message.text"/>
         </div>
@@ -12,7 +15,14 @@
 <script setup>
 import TextBarComponent from './TextBarComponent.vue';
 import MessageComponent from './MessageComponent.vue';
-import { ref,nextTick } from 'vue';
+import { ref, nextTick, watchEffect } from 'vue';
+import channelService from '@/services/channel.service';
+import { useRouter } from 'vue-router';
+const currentChannel = ref('');
+
+
+const route = useRouter();
+const isloading=ref(false);
 const messages = ref([
   {
     "username":"Lucas",
@@ -46,6 +56,17 @@ function scrollToLastMessage(){
   const messageList = document.querySelector('#message-container');
   messageList.scrollTo(0, messageList.scrollHeight);
 }
+
+watchEffect(async () => {
+  isloading.value=true;
+  const link=route.currentRoute.value;
+  const newId = link.params.id;
+  if (link.path.includes("server/") && newId) {
+    const id = newId;
+    currentChannel.value = await channelService.getChannelName(id);
+  }
+  isloading.value=false;
+});
 
 </script>
 

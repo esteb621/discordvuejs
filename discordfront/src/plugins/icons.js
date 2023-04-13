@@ -5,6 +5,7 @@ import {faSpinner,
         faSignOutAlt,
         faUsers,
         faPlus,
+        faHashtag,
     faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faSpinner,faCheck,faDiscord,faSignOutAlt,faUsers,faPlus,faPaperPlane);
+library.add(faSpinner,faHashtag,faCheck,faDiscord,faSignOutAlt,faUsers,faPlus,faPaperPlane);

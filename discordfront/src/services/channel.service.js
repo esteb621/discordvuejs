@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8080/api/discord/';
+const baseURL = 'http://localhost:8080/api/discord';
 
 class ChannelService {
 
@@ -11,6 +11,12 @@ class ChannelService {
       id: item.id,
       nom: item.nom
     }));
+    return data;
+  }
+
+  async getChannelName(id){
+    const response = await axios.get(`${baseURL}/channels/`+id);
+    const data = response.data.nom;
     return data;
   }
 

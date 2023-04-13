@@ -1,9 +1,10 @@
 <template>
   <router-link :to="'/main/server/channel/' + id" :class="{active: $route.path.includes('channel/'+id) }"
-    class="rounded-md w-90 py-2 px-3 mb-3 mx-2
-    focus:text-gray-200 hover:cursor-pointer hover:bg-gray-600
+    class="rounded-md w-90 py-2 px-3 mb-3 mx-2 hover:text-gray-300 font-bold
+    focus:text-gray-300 hover:cursor-pointer hover:bg-gray-600 flex flex-row items-center space-x-2
     ">
-    <p class="text-gray-100">{{ props.name }}</p>
+    <font-awesome-icon :icon="['fa', 'hashtag']" size="lg" class="text-gray-400" />
+    <p class="text-gray-300 ">{{ props.name }}</p>
   </router-link>
 </template>
 
@@ -20,12 +21,7 @@ import { defineProps } from 'vue';
 
 <style scoped>
 .active{
-    font-weight: bold;
     --tw-bg-opacity: 1;
     background-color: rgb(79 84 92 / var(--tw-bg-opacity));
-}
-
-p::before{
-    content: "# ";
 }
 </style>

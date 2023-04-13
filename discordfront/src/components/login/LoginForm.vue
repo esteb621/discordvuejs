@@ -1,6 +1,5 @@
 <template>
     <main class="flex justify-center items-center text-left bg-cover bg-center">
-      <Transition name="fade">
         <div id="login" class="shadow-lg shadow-gray-600 p-6 rounded-lg  bg-gray-700 max-h-75 overflow-y-auto">
         <h1 class="mb-2 text-white text-center text-3xl font-semibold">{{ title }}</h1>
         <h2 class="text-center text-xl font-semibold">{{ secondTitle }}</h2>
@@ -86,7 +85,6 @@
     <p class="pl-2 text-center " v-html="link"></p>
   </div>
         </div>
-      </Transition>
     </main>
 </template>  
 
@@ -252,15 +250,4 @@ input:focus {
     border: 0;
 }
 
-.fade-enter-from{
-  opacity: 0;
-}
-
-.fade-enter-to{
-  opacity:1;
-}
-
-.fade-enter-active{
-  transition: opacity 0.5s;
-}
 </style>

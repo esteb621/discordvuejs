@@ -14,11 +14,7 @@ const routes = [
     name: 'main',
     component: MainView,
     children:[
-      {
-        path: "server/channel/:id",
-        name: "channel",
-        component: MainView
-      },
+
       {
         path: "personal",
         name: "privateMessage",
@@ -27,7 +23,13 @@ const routes = [
       {
         path: "server",
         name: "server",
-        component: MainView
+        component: MainView,
+        children:[
+          {
+            path: "channel/:id",
+            component:MainView
+          }
+        ]
       }
     ]
   },
