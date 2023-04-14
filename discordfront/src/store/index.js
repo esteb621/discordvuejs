@@ -1,36 +1,10 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
+import { auth } from "./auth.module";
 
 const store = createStore({
-  state() {
-    return {
-      connected:null,
-      token: null,
-      currentChannel: null
-    }
+  modules: {
+    auth,
   },
-  mutations: {
+});
 
-    storeToken(state, token) {
-      state.token = token
-      localStorage.setItem('jwt', token);
-    },
-    removeToken(state) {
-      state.token = null
-      localStorage.removeItem('jwt');
-    },
-    storeChannel(state,channel){
-      state.currentChannel=channel;
-      localStorage.setItem('currentChannel',channel);
-    }
-  },
-  getters: {
-    token: state => state.token,
-    currentChannel: state => state.currentChannel
-  },
-  actions: {
-
-  }
-})
-
-
-export default store
+export default store;

@@ -1,24 +1,9 @@
 <template>
-  
-    <LoginForm 
-    :title="title" 
-    :secondTitle="secondTitle"
-    :buttonTitle="buttonTitle"
-    :confirmPwd="confirmPwd"
-    :link="link"
-    :submit="submit" />
+    <LoginForm/>
 </template>
 
 <script setup>
-import LoginForm from '@/components/login/LoginForm.vue';
-
-const title= 'Content de te revoir!';
-const secondTitle= 'Renseigne tes identifiants pour te connecter';
-const buttonTitle= 'Connexion';
-const confirmPwd=false;
-const submit='';
-const link = "Besoin d'un compte ? <a class='text-blue-500' href='/inscription'>S'inscrire</a>";
-
+import LoginForm from '@/components/auth/LoginForm.vue';
 </script>
 
 

@@ -10,11 +10,11 @@
             Inscrivez-vous ou connectez-vous pour commencer
           </h2>
           <div class="self-center">
-            <RouterLink to="/connexion" class="opacity-0 bg-blue-500 text-white text-xl font-bold rounded-lg py-3 px-6 m-2
+            <RouterLink to="/login" class="opacity-0 bg-blue-500 text-white text-xl font-bold rounded-lg py-3 px-6 m-2
              hover:bg-blue-600 duration-200 animate-slide-in animation-delay-700">
               Se connecter
             </RouterLink>
-            <RouterLink to="/inscription" class="opacity-0 bg-gray-500 text-white text-xl font-bold rounded-lg py-3 px-6 
+            <RouterLink to="/register" class="opacity-0 bg-gray-500 text-white text-xl font-bold rounded-lg py-3 px-6 
             hover:bg-gray-600 duration-200 animate-slide-in animation-delay-700">
               S'inscrire
             </RouterLink>

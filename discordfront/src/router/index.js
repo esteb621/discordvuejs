@@ -34,12 +34,12 @@ const routes = [
     ]
   },
   {
-    path:'/connexion',
+    path:'/login',
     name:'login',
     component:LoginView
   },
   {
-    path:'/inscription',
+    path:'/register',
     name:'signup',
     component:SignUpView
   },

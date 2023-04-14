@@ -1,28 +1,33 @@
-import router from '@/router';
-import store from '@/store';
 import axios from 'axios';
 
-const baseURL = '/api/auth/';
+const API_URL = 'http://localhost:8080/api/auth/';
 
 class AuthService {
-  signup(username, email, password) {
-    return axios.post(`${baseURL}/signup`, {
-      username,
-      email,
-      password,
-    });
-  }
+  login(user) {
+    return axios
+      .post(API_URL + 'signin', {
+        username: user.username,
+        password: user.password
+      })
+      .then(response => {
+        if (response.data.accessToken) {
+          localStorage.setItem('user', JSON.stringify(response.data));
+        }
 
-  login(username, password) {
-    return axios.post(`${baseURL}/login`, {
-      username,
-      password,
-    });
+        return response.data;
+      });
   }
 
   logout() {
-    store.commit('removeToken');
-    router.push("/");
+    localStorage.removeItem('user');
+  }
+
+  register(user) {
+    return axios.post(API_URL + 'signup', {
+      username: user.username,
+      email: user.email,
+      password: user.password
+    });
   }
 }
 

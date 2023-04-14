@@ -22,9 +22,11 @@
     "jquery": "^3.6.4",
     "process": "^0.11.10",
     "tailwindcss-animation-delay": "^1.0.7",
+    "vee-validate": "^4.8.4",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "yup": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
