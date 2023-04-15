@@ -32,7 +32,7 @@ module.exports = app => {
   
     // Retrieve a single User or a single Role with id
     router.get("/users/:id", users.findOne);
-    router.get("roles/:id", roles.findOne);
+    router.get("/roles/:id", roles.findOne);
     router.get("/channels/:id", channels.findOne);
     router.get("/messages/:id", messages.findOne);
     router.get("/messages/channel/:id",messages.getMessagesByChannelId);
@@ -46,10 +46,10 @@ module.exports = app => {
 
   
     // Delete a User or a Role with id
-    router.delete("/delete/:idu", users.delete);
-    router.delete("/delete/:idr", roles.delete);
-    router.delete("/delete/:idc", channels.delete);
-    router.delete("/delete/:idm", messages.update);
+    router.delete("/delete/:id", users.delete);
+    router.delete("/delete/:id", roles.delete);
+    router.delete("/delete/:id", channels.delete);
+    router.delete("/delete/:id", messages.update);
 
 
   
