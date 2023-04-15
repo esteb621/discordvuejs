@@ -1,17 +1,15 @@
 import axios from 'axios';
-import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:8080/';
+const baseURL = 'http://localhost:8081/api/discord';
 
 class UserService {
 
-  getUserBoard() {
-    return axios.get(API_URL + 'main', { headers: authHeader() });
+  async getUserById(id) {
+    const response = await axios.get(`${baseURL}/users/`+id);
+    const data = response.data.username;
+    return data;
   }
 
-  getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
-  }
 }
 
 export default new UserService();

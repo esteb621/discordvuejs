@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/main/server/channel/' + id" :class="{active: $route.path.includes('channel/'+id) }"
-    class="rounded-md w-90 py-2 px-3 mb-3 mx-2 hover:text-gray-300 font-bold
+    class="rounded-md w-90 py-2 px-3 mb-3 mx-2 hover:text-gray-200 font-bold
     focus:text-gray-300 hover:cursor-pointer hover:bg-gray-600 flex flex-row items-center space-x-2
     ">
     <font-awesome-icon :icon="['fa', 'hashtag']" size="lg" class="text-gray-400" />

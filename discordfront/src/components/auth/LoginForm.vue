@@ -95,7 +95,7 @@
     loading.value = true;
     store.dispatch("auth/login", user).then(
       () => {
-        this.$router.push("/profile");
+        router.push("/main");
       },
       (error) => {
         loading.value = false;

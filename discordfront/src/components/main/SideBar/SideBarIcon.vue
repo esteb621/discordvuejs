@@ -10,7 +10,6 @@
                 transition-all duration-200 ease-linear cursor-pointer group">
     <ToolTip :title="props.name" class="origin-left left-14"/>
     <font-awesome-icon :icon="props.icon" size="xl" />
-
 </router-link>    
 </template>
 

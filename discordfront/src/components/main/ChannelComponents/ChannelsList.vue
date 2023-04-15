@@ -1,6 +1,6 @@
 <template>
     <!-- Liste channels / Amis si MP -->
-    <div class="w-100 flex-grow">
+    <div class="w-100 flex-grow bg-gray-800">
             <p class="mt-4 p-2 pl-3 text-left text-xs text-gray-500 hover:text-gray-300 cursor-pointer font-bold uppercase">Salons textuels
                 <span @click="addChannel()"
                 class="text-gray-100 opacity-50
@@ -52,7 +52,7 @@ function addChannel() {
                     id:channels.value.length+1
                 });  
             channelService.addChannel(channelName,channels.value.length+1);
-            fetchChannels();      
+            fetchChannels();
         }
         catch(e){
             console.log(e);

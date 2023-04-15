@@ -3,7 +3,7 @@
         <div class="flex-shrink-0 p-2">
             <img id="profile-picture-message"
                 src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                alt="photo de profil">
+                alt="photo de profil" class="cursor-pointer w-12 h-12 rounded-full">
         </div>
         <div class="p-2 flex flex-col flex-wrap text-left">
             <h4>{{ username }}</h4>
@@ -12,11 +12,12 @@
     </div>
 </template>
 <script setup>
-import { ref,defineProps } from 'vue';
+import userService from '@/services/user.service';
+import { ref,defineProps, onMounted } from 'vue';
 
 const props = defineProps({
-    username:{
-        type:String,
+    userId:{
+        type:Number,
         required:true
     },
     message:{
@@ -24,16 +25,17 @@ const props = defineProps({
         required:true
     }
 })
-
-const username= ref(props.username);
+const userId= ref(props.userId).value;
 const message= ref(props.message);
+const username = ref('')
+
+
+onMounted(async () => {
+    username.value= await userService.getUserById(userId);
+});
 </script>
 <style scoped>
-#message img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
+
 h4{
     color: #f1c40f;
     font-size: large;

@@ -8,7 +8,7 @@
                 <p class="px-2 font-bold">Esteban</p>
                 <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
             </a>
-            <a @click="logout()" class="p-2 ms-auto group cursor-pointer" >
+            <a @click="handleLogout()" class="p-2 ms-auto group cursor-pointer" >
                 <ToolTip title="Déconnexion" class="origin-bottom bottom-14 left-60"/>
                 <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
             </a>
@@ -18,11 +18,15 @@
 </template>
 
 <script setup>
+import router from '@/router';
 import ToolTip from '../ToolTip.vue';
 import auth from '@/services/auth.service';
 
-const { logout } = auth;
 
+function handleLogout(){
+    auth.logout();
+    router.push('/')
+}
 </script>
 
 
