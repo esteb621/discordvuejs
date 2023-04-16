@@ -21,7 +21,7 @@ exports.signup = (req, res) => {
       var token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
-      res.send({message: "User was registered successfully!",accessToken:token });
+      res.send({ id: user.id, accessToken: token });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
