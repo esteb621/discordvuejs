@@ -19,12 +19,6 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/access/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-  );
-
-  app.get(
     "/api/access/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard

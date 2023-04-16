@@ -39,40 +39,30 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   const nom = req.query.nom;
   const type = req.params.type;
-  var condition = nom ? { nom: { [Op.like]: `%${nom}%` } } : null;
+  var condition = type ? { type: { [Op.like]: `%${type}%` } } : null;
 
-  if (type == 2){
-  Channels.findAll({ where: condition })
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Une erreur s'est produite en voulant récupérer les channels"
+  if (condition && condition.type) {
+    Channels.findAll({ where: { typologie: type } })
+      .then(data => {
+        if (data.length === 0) {
+          res.status(404).json({
+            message: "Pas de channel correspondant à cette typologie"
+          });
+        } else {
+          res.json(data);
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Une erreur s'est produite en voulant récupérer les channels"
+        });
       });
+  } else {
+    res.status(400).json({
+      message: "Le paramètre type est manquant ou invalide"
     });
   }
-  if (type == 0 || type == 1){
-    Channels.findAll({ where:{typologie:type}})
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Une erreur s'est produite en voulant récupérer les channels"
-      });
-    });
-  }
-  else{
-    res.status(404).send({
-      message:
-        "Pas de channel correspondant à cette typologie"
-    })
-
-  }
-
 };
 
 // Récupérer un seul channel en fonction de son id

@@ -9,6 +9,13 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING
     },
+    role_id:{
+      type:Sequelize.INTEGER,
+      references:{
+        model:'Roles',
+        key: 'id'
+    }
+    },
     published: {
       type: Sequelize.BOOLEAN
     }

@@ -27,6 +27,7 @@ db.sequelize.sync()
      console.log("Failed to sync db: " + err.message);
    });
 
+// Ajout roles par defaut
 function initial(){
   db.Roles.create({
     id: 1,
@@ -34,10 +35,6 @@ function initial(){
   });
   db.Roles.create({
     id: 2,
-    name: "moderator"
-  });
-  db.Roles.create({
-    id: 3,
     name: "admin"
   });
 }

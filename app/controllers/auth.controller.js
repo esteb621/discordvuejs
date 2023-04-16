@@ -1,5 +1,4 @@
 const db = require("../models");
-const contr = require("../controllers/roles.controller");
 const config = require("../config/auth.config");
 const Users = db.Users;
 const Roles = db.Roles;
@@ -17,8 +16,13 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
+      
+      var token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: 86400 // 24 hours
+      });
+
       if (req.body.roles) {
-        contr.findAll({
+        Roles.findAll({
           where: {
             name: {
               [Op.or]: req.body.roles
@@ -26,7 +30,7 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({message: "User was registered successfully!",accessToken:token });
           });
         });
       } else {
@@ -49,7 +53,7 @@ exports.signin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "Nom d'utilisateur inconnu!" });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -60,7 +64,7 @@ exports.signin = (req, res) => {
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
-          message: "Invalid Password!"
+          message: "Mot de passe incorrect!"
         });
       }
 
