@@ -65,23 +65,15 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const idparam = req.params.id;
 
-  Users.findOne({ attributes: ['id','username', 'email','password'] , where: {id:idparam}})
+  Users.findByPk({ attributes: ['id','username', 'email','password'] , where: {id:idparam}})
     .then(data => {
-        res.send(data);
-        return;
+       res.send(data);
       })
     .catch(err => {
         res.status(404).send({
           message: "Error retrieving User with id=" + idparam
         });
-        return;
       });
-    if (typeof data==='undefined'){
-      res.status(404).send({
-        message: "Cannot retrieve User with id=" + idparam
-      });
-      return;
-    }
 };
 
 // Update a User by the id in the request
@@ -212,4 +204,20 @@ exports.findAllPublished = (req, res) => {
           err.message || "Some error occurred while retrieving users."
       });
     });
+};
+
+exports.allAccess = (req, res) => {
+  res.status(200).send("Public Content.");
+};
+
+exports.userBoard = (req, res) => {
+  res.status(200).send("User Content.");
+};
+
+exports.adminBoard = (req, res) => {
+  res.status(200).send("Admin Content.");
+};
+
+exports.moderatorBoard = (req, res) => {
+  res.status(200).send("Moderator Content.");
 };

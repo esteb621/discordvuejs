@@ -1,13 +1,23 @@
-module.exports = app => {
-    const authController = require('../controllers/auth.controller');
+const { verifySignUp } = require("../middleware");
+const controller = require("../controllers/auth.controller");
 
-    var router = require("express").Router();
+module.exports = function(app) {
+  app.use(function(req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+  });
 
-    // Route pour l'inscription
-    router.post("/signup", authController.signup);
+  app.post(
+    "/api/auth/signup",
+    [
+      verifySignUp.checkDuplicateUsernameOrEmail,
+      verifySignUp.checkRolesExisted
+    ],
+    controller.signup
+  );
 
-    // Route pour l'authentification
-    router.post("/login", authController.login);
-    
-    app.use('/api/auth', router);
+  app.post("/api/auth/signin", controller.signin);
 };

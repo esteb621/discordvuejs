@@ -13,8 +13,8 @@ exports.create = (req, res) => {
 
   const messages = {
     text: req.body.text,
-    channel_id: req.body.idc,
-    user_id: req.body.idu,
+    channel_id: req.body.channel_id,
+    user_id: req.body.user_id,
     published: req.body.published ? req.body.published : false
   };
 

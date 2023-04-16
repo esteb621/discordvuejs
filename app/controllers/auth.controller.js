@@ -1,74 +1,88 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const db = require("../models");
-const auth = require("../config/auth.config");
-const User = db.Users;
+const contr = require("../controllers/roles.controller");
+const config = require("../config/auth.config");
+const Users = db.Users;
+const Roles = db.Roles;
+
+const Op = db.Sequelize.Op;
+
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
-  // Vérification que les champs obligatoires sont bien renseignés
-  if (!req.body.username || !req.body.email || !req.body.password) {
-    return res.status(400).send({ message: "Tous les champs sont obligatoires !" });
-  }
-  // Vérification si le nom d'utilisateur existe déjà dans la base de données
-  User.findOne({ where: { username: req.body.username } })
-    .then(existingUser => {
-      if (existingUser) {
-        return res.status(400).send({ message: "Cette utilisateur existe déjà!" });
-      }
-    });
-
-  // Création d'un objet User
-  const user = {
+  // Save User to Database
+  Users.create({
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
-  };
-
-  // Enregistrement de l'utilisateur dans la base de données
-  User.create(user)
+  })
     .then(user => {
-      // Création du JWT 
-      if (!auth.secret) {
-        console.error("Il manque la clé du JWT");
-        return res.status(500).json({ message: "Internal server error" });
+      if (req.body.roles) {
+        contr.findAll({
+          where: {
+            name: {
+              [Op.or]: req.body.roles
+            }
+          }
+        }).then(roles => {
+          user.setRoles(roles).then(() => {
+            res.send({ message: "User was registered successfully!" });
+          });
+        });
+      } else {
+        // user role = 1
+        user.setRoles([1]).then(() => {
+          res.send({ message: "User was registered successfully!" });
+        });
       }
-      const token = jwt.sign({ id: user.id }, auth.secret, {
-        expiresIn: 86400 // Délai de 24h
-      });
-      console.log("JWT crée: ", token);
-
-      res.status(200).json(token);
     })
     .catch(err => {
-      res.status(500).json({ message: err.message });
+      res.status(500).send({ message: err.message });
     });
 };
 
-exports.login = (req, res) => {
-    console.log("Logging in user...");
-    // Vérification que les champs obligatoires sont bien renseignés
-    if (!req.body.username || !req.body.password) {
-      return res.status(400).json({ message: "Tous les champs sont obligatoires !" });
+exports.signin = (req, res) => {
+  Users.findOne({
+    where: {
+      username: req.body.username
     }
-  
-    // Recherche de l'utilisateur dans la base de données par son username
-    User.findOne({ where: { username: req.body.username } })
-      .then(user => {
-        // Vérification que l'utilisateur existe et que le mot de passe est correct
-        if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
-          return res.status(401).json({ message: "Nom d'utilisateur ou mot de passe incorrect !" });
-        }
-        // Création du JWT
-        const token = jwt.sign({ id: user.id }, auth.secret, {
-          expiresIn: 86400 // Délai de 24h
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: "User Not found." });
+      }
+
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: "Invalid Password!"
         });
-        console.log("JWT token created: ", token);
-        
-        res.status(200).json(token);
-      })
-      .catch(err => {
-        console.log("Error logging in user: ", err.message);
-        res.status(500).json({ message: err.message});
+      }
+
+      var token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: 86400 // 24 hours
       });
-  };
-  
+
+      var authorities = [];
+      user.getRoles().then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+        }
+        res.status(200).send({
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          roles: authorities,
+          accessToken: token
+        });
+      });
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};

@@ -27,8 +27,23 @@ db.sequelize.sync()
      console.log("Failed to sync db: " + err.message);
    });
 
+function initial(){
+  db.Roles.create({
+    id: 1,
+    name: "user"
+  });
+  db.Roles.create({
+    id: 2,
+    name: "moderator"
+  });
+  db.Roles.create({
+    id: 3,
+    name: "admin"
+  });
+}
 require("./app/routes/discord.routes")(app);
 require("./app/routes/auth.routes")(app);
+require('./app/routes/user.routes.js')(app);
 
 const path = __dirname + '/app/views/';
 
