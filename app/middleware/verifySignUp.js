@@ -11,7 +11,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
   }).then(user => {
     if (user) {
       res.status(400).send({
-        message: "Failed! Username is already in use!"
+        message: "Ce nom d'utilisateur existe déja!"
       });
       return;
     }
@@ -24,7 +24,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
     }).then(user => {
       if (user) {
         res.status(400).send({
-          message: "Failed! Email is already in use!"
+          message: "Un compte avec cet email a déjà été crée!"
         });
         return;
       }

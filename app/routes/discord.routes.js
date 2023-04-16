@@ -1,7 +1,7 @@
 
 module.exports = app => {
     const users = require("../controllers/users.controller.js");
-    const roles = require("../controllers/roles.controller.js");
+    const roles = require("../controllers/roles.controller");
     const channels = require("../controllers/channels.controller");
     const messages = require("../controllers/messages.controller");
     const amis = require("../controllers/amis.controller.js");
@@ -47,7 +47,7 @@ module.exports = app => {
     // Update a User or a Role with id
     router.put("/update/users/:id", users.update);
     router.put("/update/roles/:id", roles.update);
-    router.put("/update/channels/:id", channels.update);
+    router.put("/update/channel/:id", channels.update);
     router.put("/update/messages/:id", messages.update);  
     router.put("/update/amis/:id", amis.update);
 
@@ -60,14 +60,14 @@ module.exports = app => {
     router.delete("/delete/amis/:id", amis.delete);
 
 
-  
+   
     // Delete all Users and all Roles
     router.delete("/delete_users", users.deleteAll);
     router.delete("/delete_roles", roles.deleteAll);
     router.delete("/delete_channels", channels.deleteAll);
     router.delete("/delete_messages", messages.deleteAll);
     router.delete("/delete_amis", amis.deleteAll);
-
+    
     app.use('/api/discord', router);
   };
   

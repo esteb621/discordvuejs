@@ -45,8 +45,6 @@ exports.create = (req, res) => {
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-  const username = req.query.username;
-  var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
 
   Users.findAll({attributes: ['id','username', 'email','password'] })
     .then(data => {
@@ -216,8 +214,4 @@ exports.userBoard = (req, res) => {
 
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
-};
-
-exports.moderatorBoard = (req, res) => {
-  res.status(200).send("Moderator Content.");
 };
