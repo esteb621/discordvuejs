@@ -61,15 +61,15 @@ exports.findAll = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
-  const idparam = req.params.id;
-
-  Users.findByPk({ attributes: ['id','username', 'email','password'] , where: {id:idparam}})
+  const idu = req.params.id;
+  Users.findByPk(idu)
     .then(data => {
        res.send(data);
       })
     .catch(err => {
-        res.status(404).send({
-          message: "Error retrieving User with id=" + idparam
+        console.log(err);
+        res.status(500).send({
+          message: "Error retrieving User with id=" + idu
         });
       });
 };

@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:8082"
 };
 
 app.use(cors(corsOptions));
