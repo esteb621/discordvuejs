@@ -22,8 +22,9 @@ class ChannelService {
 
   async addChannel(nom,id) {
     await axios.post(`${baseURL}/createchannel`,{
-      channel:nom,
-      id:id
+      nom:nom,
+      id:id,
+      typologie:1
     });
   }
 

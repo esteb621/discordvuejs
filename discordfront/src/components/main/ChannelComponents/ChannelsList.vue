@@ -10,7 +10,10 @@
                 </span>
             </p>        
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
-            <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom"/>
+            <span v-if="error">Une erreur est survenue. Veuillez réessayer: <a :on-click="fetchChannels()">Rafraichir</a></span>
+            <div v-if="!isloading">
+                <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom"/>
+            </div>
             <ChannelSkeleton v-if="isloading"/>
         </div>
     </div>
@@ -24,10 +27,17 @@ import channelService from '@/services/channel.service';
 
 const channels=ref([]);
 const isloading=ref(false);
+const error=ref(false)
 const fetchChannels= async() => {
+    error.value=false;
     isloading.value=true;
-    const data = await channelService.getChannels();
-    channels.value=data;
+    try{
+        const data = await channelService.getChannels();
+        channels.value=data;
+    }
+    catch{
+        error.value=true;
+    }
     isloading.value=false;
 }
 
@@ -38,11 +48,11 @@ onMounted(async () => {
 });
 
 
-function addChannel() {
+const addChannel = async() => {
     const input = document.createElement('input');
     input.type = 'text';
     input.required='true';
-    input.addEventListener('keydown', (event) => {
+    input.addEventListener('keydown', async (event) => {
     if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
         const channelName = event.target.value;
         try{
@@ -52,7 +62,7 @@ function addChannel() {
                     id:channels.value.length+1
                 });  
             channelService.addChannel(channelName,channels.value.length+1);
-            fetchChannels();
+            await fetchChannels();
         }
         catch(e){
             console.log(e);
