@@ -18,15 +18,15 @@
 </template>
 
 <script setup>
-import router from '@/router';
+import store from '@/store';
 import ToolTip from '../ToolTip.vue';
-import auth from '@/services/auth.service';
+import router from '@/router';
 
-
-function handleLogout(){
-    auth.logout();
-    router.push('/')
+const handleLogout = async () => {
+    store.dispatch('auth/logout');
+    router.push('/login');
 }
+
 </script>
 
 

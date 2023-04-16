@@ -6,7 +6,7 @@ class ChannelService {
 
 
   async getChannels() {
-    const response = await axios.get(`${baseURL}/channels`);
+    const response = await axios.get(`${baseURL}/channels/1`);
     const data = response.data.map(item => ({
       id: item.id,
       nom: item.nom

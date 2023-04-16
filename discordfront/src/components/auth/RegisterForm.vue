@@ -12,7 +12,7 @@
               <label for="username" class="mb-2 text-white font-semibold text-base">Nom d'utilisateur *</label>
               <Field v-model="username" ref="usernameInput" type="username" id="username" name="username" required
                 class=" text-white bg-colors-gray-form border-none w-full px-4 py-2 rounded-md border  focus:outline-none" />
-              <ErrorMessage name="username" class="error-feedback" />
+              <ErrorMessage name="username" class="text-red-700 font-bold" />
             </div>
           </div>
           <!-- Champ email -->
@@ -21,7 +21,7 @@
               <label for="email" class="text-white font-semibold text-base">Adresse mail *</label>
               <Field ref="emailInput" v-model="email" type="email" id="email" name="email" required
                 class="text-white bg-colors-gray-form w-full px-4 py-2 rounded-md border-none   focus:outline-none" />
-              <ErrorMessage name="email" class="error-feedback" />
+              <ErrorMessage name="email" class="text-red-700 font-bold" />
             </div>
           </div>
 
@@ -31,7 +31,7 @@
               <label for="password" class="text-white font-semibold text-base">Mot de passe *</label>
               <Field v-model="password" ref="passwordInput" type="password" id="password" name="password" required
                 class="text-white bg-colors-gray-form w-full px-4 py-2 rounded-md border-none focus:outline-none" />
-              <ErrorMessage name="password" class="error-feedback text-red-500" />
+              <ErrorMessage name="password" class="text-red-700 font-bold" />
             </div>
           </div>
 
@@ -63,7 +63,7 @@
               </label>
               <Field v-model="retypePassword" type="password" id="retypePassword" name="confirmPassword" required="true"
                 class="bg-colors-gray-form text-white w-full px-4 py-2 rounded-md border-none  focus:border-blue-500 focus:outline-none " />
-              <ErrorMessage name="confirmPassword" class="error-feedback" />
+              <ErrorMessage name="confirmPassword" class="text-red-700 font-bold" />
             </div>
           </div>
           <!-- Photo de profil -->
@@ -86,7 +86,7 @@
             </span>
           </button>
         </Form>
-        <p v-if="message" class="text-red-500 col-span-12 text-center mt-3">{{ message }}</p>
+        <p v-if="message" class="text-red-700 font-bold col-span-12 text-center mt-3">{{ message }}</p>
       </div>
       <div class="text-capitalize mt-3">
         <p class="pl-2 text-center">
@@ -128,14 +128,14 @@
   const schema = yup.object().shape({
     username: yup
       .string()
-      .required("Username is required!")
+      .required("Un nom d'utilisateur est requis!")
       .min(3, "Le pseudo doit faire 3 caractères minimum!")
       .max(20, "Le pseudo doit faire 20 characteres maximum!"),
     email: yup
       .string()
-      .required("Email is required!")
-      .email("Email is invalid!")
-      .max(50, "Must be maximum 50 characters!"),
+      .required("Un email est requis!")
+      .email("Cet email n'est pas valide!")
+      .max(50, "Cet email est trop long!"),
 
     password: yup
       .string()
@@ -149,12 +149,6 @@
     .required('Ce champ est obligatoire!')
     .oneOf([yup.ref('password'), null], 'Les mots de passe doivent être identiques')
 
-    // confirmPassword: yup
-    //   .string()
-    //   .required("Password is required!")
-    //   .equals(password, "Votre mot de passe ne correspond pas avec celui retapé")
-    //   .min(6, "Must be at least 6 characters!")
-    //   .max(40, "Must be maximum 40 characters!"),
   });
 
   const username = ref('');
@@ -193,9 +187,8 @@
       loading.value = true;
 
       store.dispatch("auth/register", user).then(
-        (data) => {
-          message.value = data.message;
-          loading.value = false;
+        () => {
+          router.push("/main");
         },
         (error) => {
           message.value =

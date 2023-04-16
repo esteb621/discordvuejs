@@ -11,7 +11,7 @@
               <label for="username" class="mb-2 text-white font-semibold text-base">Nom d'utilisateur *</label>
               <Field v-model="username" ref="usernameInput" type="username" id="username" name="username" required
                 class=" text-white bg-colors-gray-form border-none w-full px-4 py-2 rounded-md border  focus:outline-none"/>
-              <ErrorMessage name="username" class="error-feedback" />
+              <ErrorMessage name="username" class="text-red-700 font-bold " />
             </div>
           </div>
 
@@ -21,7 +21,7 @@
               <label for="password" class="text-white font-semibold text-base">Mot de passe *</label>
               <Field v-model="password" ref="passwordInput" type="password" id="password" name="password" required
                 class="text-white bg-colors-gray-form w-full px-4 py-2 rounded-md border-none focus:outline-none"/>
-              <ErrorMessage name="password" class="error-feedback" />
+              <ErrorMessage name="password" class="text-red-700 font-bold" />
             </div>
           </div>
           <button :class="{
@@ -34,7 +34,7 @@
               <font-awesome-icon :icon="['fas', 'spinner']" spin />
             </span>
           </button>
-          <p v-if="message" class="text-red-500 text-bold col-span-12 text-center mt-3">{{ message }}</p>
+          <p v-if="message" class="text-red-700 font-bold text-bold col-span-12 text-center mt-3">{{ message }}</p>
         </Form>
       </div>
       <div class="text-capitalize mt-3">
@@ -49,7 +49,8 @@
 
 <script setup>
   import {
-    ref,computed
+    onMounted,
+    ref
   } from 'vue';
   import {
     useStore
@@ -63,17 +64,20 @@
     ErrorMessage
   } from "vee-validate";
   import * as yup from "yup";
+import { computed } from '@vue/reactivity';
 
   const store = useStore();
   const router = useRouter();
 
-  const loggedIn = computed(() => {
-    return store.state.auth.status.loggedIn;
-  });
+  const islogged = computed(() => {
+  return store.state.auth.status.loggedIn
+})
 
-  if (loggedIn.value) {
-    router.push('/main');
-  }
+  onMounted(() => {
+    if (islogged.value) {
+      router.push('/main');
+    }
+  })
 
   const schema = yup.object().shape({
     username: yup.string().required("Un nom d'utilisateur est requis!"),
@@ -121,4 +125,5 @@
     background-color: #40444b;
     border: 0;
   }
+  
 </style>
