@@ -2,14 +2,35 @@
     <!-- Liste channels / Amis si MP -->
     <div id="users">
         <h2 class="p-2">Utilisateurs</h2>
-        <div class="p-2 flex row mb-3" id="users-list">
-            <UserComponent/>
+        <div class="p-2 flex flex-col mb-3" id="users-list">
+            <UserComponent v-for="user in users.sort()" :username="user.username" v-bind:key="user.id" :userId="user.id" />
         </div>
     </div>
 </template>
 
 <script setup>
+import userService from '@/services/user.service';
 import UserComponent from './UserComponent.vue';
+import { onMounted, ref } from 'vue';
+
+const users=ref([]);
+
+onMounted(async () => {
+    users.value=await userService.getUsers();
+    users.value.sort(function (a,b){
+        const nameA = a.username.toUpperCase();
+        const nameB = b.username.toUpperCase();
+        
+        let comparison = 0;
+        if (nameA > nameB) {
+            comparison = 1;
+        } else if (nameA < nameB) {
+            comparison = -1;
+        }
+        return comparison;
+    })
+})
+
 </script>
 
 <style>

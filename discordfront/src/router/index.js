@@ -18,7 +18,13 @@ const routes = [
       {
         path: "personal",
         name: "privateMessage",
-        component: MainView
+        component: MainView,
+        children:[
+          {
+            path:"user/:id",
+            component:MainView
+          }
+        ]
       },
       {
         path: "server",

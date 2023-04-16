@@ -1,11 +1,30 @@
 <template>
-<a href="#" class="flex items-center">
+<router-link :to="'/main/personal/user/'+userId" class="flex items-center">
   <img src="@/assets/img/profile-default.jpg" alt="Photo de profil" id="profile-picture">
-  <h4 class="p-2 mb-auto text-sm">Esteban</h4>
-</a>
+  <h4 class="p-2 text-sm">{{ username }}</h4>
+</router-link>
 
 </template>
 
+<script setup>
+import { defineProps, ref } from 'vue';
+
+
+
+const props = defineProps({
+    username:{
+        type:String,
+        required:true
+    },
+    userId:{
+        type:Number,
+        required:true
+    }
+})
+
+const username=ref(props.username).value;
+const userId=ref(props.userId).value;
+</script>
 <style scoped>
 a{
     color: #a9aaab;

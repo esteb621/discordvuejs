@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8081/api/discord';
+const baseURL = 'http://localhost:8080/api/discord';
 
 class MessageService {
 
@@ -23,8 +23,8 @@ class MessageService {
 
   async addChannel(nom,id) {
     await axios.post(`${baseURL}/createchannel`,{
+      id:id,
       channel:nom,
-      id:id
     });
   }
 
