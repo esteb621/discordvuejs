@@ -13,32 +13,15 @@ exports.signup = (req, res) => {
   Users.create({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    role_id: req.body.role ? req.body.role : 1
   })
     .then(user => {
       
       var token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: 86400 // 24 hours
       });
-
-      if (req.body.roles) {
-        Roles.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.roles
-            }
-          }
-        }).then(roles => {
-          user.setRoles(roles).then(() => {
-            res.send({message: "User was registered successfully!",accessToken:token });
-          });
-        });
-      } else {
-        // user role = 1
-        user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
-        });
-      }
+      res.send({message: "User was registered successfully!",accessToken:token });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
