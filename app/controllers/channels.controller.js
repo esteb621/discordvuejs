@@ -2,24 +2,24 @@ const db = require("../models");
 const Channels = db.Channels;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Channel
+// Créer et enregister un nouveau channel
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.nom || !req.body.typologie) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Le contenu ne peut pas etre vide !"
     });
     return;
   }
 
-  // Create a Channel
+  // Créer un channel
   const channels = {
     nom: req.body.nom,
     typologie: req.body.typologie,
     published: req.body.published ? req.body.published : false
   };
 
-  // Save Channel in the database
+  // Enregistrer un channel dans la base de données
   Channels.create(channels)
     .then(data => {
       res.send(data);
@@ -28,18 +28,20 @@ exports.create = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Channel."
+          err.message || "Une erreur s'est produite en voulant récupérer le channel."
       });
       return;
     });
     return;
 };
 
-// Retrieve all Channels from the database.
+// Récupérer tous les channels de la base de données en fonction de leur typologie.
 exports.findAll = (req, res) => {
   const nom = req.query.nom;
+  const type = req.params.type;
   var condition = nom ? { nom: { [Op.like]: `%${nom}%` } } : null;
 
+  if (type == 2){
   Channels.findAll({ where: condition })
     .then(data => {
       res.send(data);
@@ -47,12 +49,33 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving channels."
+          err.message || "Une erreur s'est produite en voulant récupérer les channels"
       });
     });
+  }
+  if (type == 0 || type == 1){
+    Channels.findAll({ where:{typologie:type}})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Une erreur s'est produite en voulant récupérer les channels"
+      });
+    });
+  }
+  else{
+    res.status(404).send({
+      message:
+        "Pas de channel correspondant à cette typologie"
+    })
+
+  }
+
 };
 
-// Find a single Channel with an id
+// Récupérer un seul channel en fonction de son id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -62,42 +85,39 @@ exports.findOne = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Channel with id=${id}.`
+          message: `Il n'y a pas de channel avec id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving Channel with id=" + id
+        message: "Une erreur s'est produite en voulant récupérer le channel avec id=" + id
       });
     });
 };
 
-// Update a Channel by the id in the request
+// Mise à jour d'un channel
 exports.update = (req, res) => {
-  const id = req.params.id;
-  req.body.id = id;
-
-  Channels.update(req.body, {
-    where: { id: id }
-  })
+  const idparam = req.params.id;
+  req.body.id = idparam; 
+  if(req.body.id, req.body.nom){
+      Channels.update(req.body, {
+        where: { id: idparam}
+      })
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Channels was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Channels with id=${id}. Maybe Channels was not found or req.body is empty!`
+          message: "Channel a bien été mis à jour."
         });
       }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating Channel with id=" + id
-      });
+       else {
+        res.send({
+          message: `Impossible de mettre à jour le channel avec id=${idparam}. Le channel n'a pas été trouvé ou le body est vide !`
+        });
+      }
     });
-};
+  }
+}
 
 // Delete a Channel with the specified id in the request
 exports.delete = (req, res) => {
@@ -153,4 +173,4 @@ exports.findAllPublished = (req, res) => {
           err.message || "Some error occurred while retrieving channels."
       });
     });
-};
+}

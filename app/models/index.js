@@ -38,9 +38,21 @@ db.Messages = require("./messages.model.js")(sequelize, Sequelize);
 db.Channels = require("./channels.model.js")(sequelize, Sequelize);
 db.Channels_Roles = require("./channel_roles.model.js")(sequelize, Sequelize);
 db.Users_Roles = require("./users_roles.model.js")(sequelize, Sequelize);
+db.Amis = require("./amis.model.js")(sequelize, Sequelize);
+
+db.Roles.belongsToMany(db.Users, {
+  through: "user_roles",
+  foreignKey: "roleId",
+  otherKey: "userId"
+});
+db.Users.belongsToMany(db.Roles, {
+  through: "user_roles",
+  foreignKey: "userId",
+  otherKey: "roleId"
+});
 
 sequelize.sync();
 
-db.ROLES = ["user","admin", "moderator"];
+db.Roles = ["user","admin", "moderator"];
 
 module.exports = db;
