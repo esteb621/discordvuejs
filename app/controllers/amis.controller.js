@@ -81,7 +81,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
   req.body.id = id;
-  if(req.body.id,req.body.idu1,!req.body.idu2){
   Amis.update(req.body, {
     where: { id: id }
   })
@@ -101,31 +100,7 @@ exports.update = (req, res) => {
         message: "Erreur serveur"
       });
     });
-    return;
 }
-if(req.body.id,!req.body.idu1,req.body.idu2){
-    Amis.update(req.body, {
-        where: { id: id }
-      })
-        .then(num => {
-          if (num == 1) {
-            res.send({
-              message: "l'ami a été correctement mis à jour."
-            });
-          } else {
-            res.send({
-              message: `Il n'existe pas d'ami avec id=${id}.`
-            });
-          }
-        })
-        .catch(err => {
-          res.status(500).send({
-            message: "Erreur serveur"
-          });
-        });
-    }
-    return;
-};
 
 // Effacer un ami spécifique
 exports.delete = (req, res) => {

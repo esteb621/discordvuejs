@@ -90,7 +90,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const idparam = req.params.id;
   req.body.id = idparam; 
-  if(req.body.id, req.body.nom){
       Channels.update(req.body, {
         where: { id: idparam}
       })
@@ -105,9 +104,13 @@ exports.update = (req, res) => {
           message: `Impossible de mettre à jour le channel avec id=${idparam}. Le channel n'a pas été trouvé ou le body est vide !`
         });
       }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Channels with id=" + id
+      });
     });
   }
-}
 
 // Delete a Channel with the specified id in the request
 exports.delete = (req, res) => {
