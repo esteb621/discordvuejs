@@ -11,7 +11,6 @@ db.Users = require("./users.model.js")(sequelize, Sequelize);
 db.Roles = require("./roles.model.js")(sequelize, Sequelize);
 db.Messages = require("./messages.model.js")(sequelize, Sequelize);
 db.Channels = require("./channels.model.js")(sequelize, Sequelize);
-// db.Channels_Roles = require("./channel_roles.model.js")(sequelize, Sequelize);
 db.Amis = require("./amis.model.js")(sequelize, Sequelize);
 
 
