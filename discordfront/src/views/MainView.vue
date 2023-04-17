@@ -25,20 +25,20 @@ import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
 import ProfileSettings from '../components/main/Profile/ProfileSettings.vue';
 import SideBar from '@/components/main/SideBar/SideBar.vue';
 import { ref } from 'vue';
-// import authHeader from '@/services/auth-header';
-// import router from '@/router';
-// import { onMounted } from 'vue';
+import authHeader from '@/services/auth-header';
+import router from '@/router';
+import { onMounted } from 'vue';
 
 const showModal = ref(false);
 
 // A METTRE POUR LA PROD
 
 
-// onMounted(() => {
-//   const headers = authHeader();
-//   if (!headers['x-access-token']) {
-//   router.push('/login');
-// }});
+onMounted(() => {
+  const headers = authHeader();
+  if (!headers['x-access-token']) {
+  router.push('/login');
+}});
 
 </script>
 

@@ -6,7 +6,7 @@ class ChannelService {
 
 
   async getChannels() {
-    const response = await axios.get(`${baseURL}/channels/1`);
+    const response = await axios.get(`${baseURL}/channels`,{typologie:1});
     const data = response.data.map(item => ({
       id: item.id,
       nom: item.nom
@@ -25,6 +25,12 @@ class ChannelService {
       nom:nom,
       id:id,
       typologie:1
+    })
+    .then(() =>{
+      console.log(`Channel ${nom} crée!`);
+    })
+    .catch(error => {
+      console.log(error);
     });
   }
 
