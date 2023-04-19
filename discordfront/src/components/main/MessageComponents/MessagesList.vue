@@ -26,6 +26,7 @@ import messageService from '@/services/message.service';
 import channelService from '@/services/channel.service';
 import { useRouter } from 'vue-router';
 import MessageSkeleton from './MessageSkeleton.vue';
+import router from '@/router';
 const currentChannel = ref('');
 
 
@@ -33,7 +34,7 @@ const route = useRouter();
 const isloading=ref(false);
 const messages = ref([]);
 const messageEmpty = ref(false);
-
+let idChannel = ref(null).value;
 const fetchMessages= async(id) => {
     isloading.value=true;
     const data = await messageService.getMessages(id);
@@ -55,7 +56,6 @@ function sendMessage(message, username) {
 }
 
 function scrollToLastMessage(){
-  console.log("fait");
   const messageList = document.querySelector('#message-container');
   messageList.scrollTo(0, messageList.scrollHeight);
 }
@@ -65,11 +65,14 @@ watchEffect(async () => {
   messages.value=[];
   isloading.value=true;
   const link=route.currentRoute.value;
-  const newId = link.params.id;
-  if (link.path.includes("server/") && newId) {
-    const id = newId;
-    currentChannel.value = await channelService.getChannelName(id);
-    fetchMessages(id);
+  const newId = link.params.id || 1;
+  if (link.path.includes("server") && newId) {
+    idChannel = newId;
+    currentChannel.value = await channelService.getChannelName(idChannel);
+    fetchMessages(idChannel);
+  }
+  else if (!link.path.includes("personal")){
+    router.push("/main/server")
   }
   isloading.value=false;
 });

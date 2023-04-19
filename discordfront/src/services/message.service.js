@@ -1,11 +1,23 @@
-import axios from 'axios';
-
-const baseURL = 'http://localhost:8080/api/discord';
+import axios from './axiosInstance';
 
 class MessageService {
 
+  async sendMessages(idUser,idChannel,message){
+    await axios.post('/createMessage', {
+      user_id: idUser,
+      channel_id: idChannel,
+      text:message
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.warn(error);
+    });
+  }
+  
   async getMessages(idChannel) {
-    const response = await axios.get(`${baseURL}/messages/channel/`+idChannel);
+    const response = await axios.get(`/messages/channel/`+idChannel);
     const data = response.data.map(item => ({
       id: item.id,
       channel: item.channel_id,
@@ -15,14 +27,8 @@ class MessageService {
     return data;
   }
 
-  async getChannelName(id){
-    const response = await axios.get(`${baseURL}/channels/`+id);
-    const data = response.data.nom;
-    return data;
-  }
-
   async addChannel(nom,id) {
-    await axios.post(`${baseURL}/createchannel`,{
+    await axios.post(`/createchannel`,{
       id:id,
       channel:nom,
     });

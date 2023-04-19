@@ -1,31 +1,52 @@
 <template>
     <div id="profile" class="p-2">
         <div class="flex flex-row items-center">
-            <a @click="$emit('show-modal')"
-            class="flex flex-row justify-center 
-            items-start p-2 group cursor-pointer">
-                <img id="profile-picture" src="@/assets/img/profile-default.jpg" alt="Photo profil">
-                <p class="px-2 font-bold">Esteban</p>
-                <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
-            </a>
-            <a @click="handleLogout()" class="p-2 ms-auto group cursor-pointer" >
-                <ToolTip title="Déconnexion" class="origin-bottom bottom-14 left-60"/>
-                <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
-            </a>
-            
+                    <a @click="$emit('show-modal')"
+                    class="flex flex-row justify-center 
+                    items-start p-2 w-44 group cursor-pointer">
+                        <img id="profile-picture" src="@/assets/img/profile-default.jpg" alt="Photo profil">
+                        <p class="px-2 font-bold">{{ username }}</p>
+                        <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
+                    </a>
+                    <a @click="handleLogout()" class="p-2 ms-auto group cursor-pointer" >
+                        <ToolTip title="Déconnexion" class="origin-bottom bottom-14 left-60"/>
+                        <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+                    </a>
         </div>  
     </div>
 </template>
 
 <script setup>
-import store from '@/store';
 import ToolTip from '../ToolTip.vue';
 import router from '@/router';
+import userService from '@/services/user.service';
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const user = userService;
+const username = ref('');
 
 const handleLogout = async () => {
     store.dispatch('auth/logout');
     router.push('/login');
 }
+
+const getUsername = async () => {
+    if(store.getters['auth/getUser'] && store.getters['auth/getUser'].id){
+        await user.getUserById(store.getters['auth/getUser'].id)
+        .then( (response) => {
+            username.value=response
+        })
+        .catch( (error) => {
+            console.warn(error);
+        })
+    }
+}
+
+onMounted(async () => {
+    await getUsername();
+});
 
 </script>
 

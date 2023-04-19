@@ -64,20 +64,16 @@
     ErrorMessage
   } from "vee-validate";
   import * as yup from "yup";
-import { computed } from '@vue/reactivity';
+import authHeader from '@/services/auth-header';
 
   const store = useStore();
   const router = useRouter();
 
-  const islogged = computed(() => {
-  return store.state.auth.status.loggedIn
-})
-
   onMounted(() => {
-    if (islogged.value) {
+    const headers = authHeader();
+    if (headers['x-access-token']) {
       router.push('/main');
-    }
-  })
+  }});
 
   const schema = yup.object().shape({
     username: yup.string().required("Un nom d'utilisateur est requis!"),
@@ -96,22 +92,18 @@ import { computed } from '@vue/reactivity';
   };
 
   function handleLogin(user) {
-    loading.value = true;
-    store.dispatch("auth/login", user).then(
-      () => {
-        router.push("/main");
-      },
-      (error) => {
-        loading.value = false;
-        message.value =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
-  }
+  loading.value = true;
+  store.dispatch("auth/login", user)
+  .then(() => {
+    loading.value = false;
+    router.push("/main");
+  })
+  .catch(error => {
+    loading.value = false;
+    message.value = error;
+  });
+}
+
 </script>
 
 <style scoped>

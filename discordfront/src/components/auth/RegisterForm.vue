@@ -100,7 +100,7 @@
 
 <script setup>
   import {
-    ref,computed
+    ref, onMounted
   } from 'vue';
   import {
     useStore
@@ -114,16 +114,14 @@
     ErrorMessage
   } from "vee-validate";
   import * as yup from "yup";
+  import authHeader from '@/services/auth-header';
   const store = useStore();
   const router = useRouter();
-  
-  const loggedIn = computed(() => {
-    return store.state.auth.status.loggedIn;
-  });
-
-  if (loggedIn.value) {
-    router.push('/main');
-  }
+  onMounted(() => {
+    const headers = authHeader();
+    if (headers['x-access-token']) {
+      router.push('/main');
+  }});
 
   const schema = yup.object().shape({
     username: yup
@@ -186,20 +184,15 @@
       message.value = "";
       loading.value = true;
 
-      store.dispatch("auth/register", user).then(
-        () => {
-          router.push("/main");
-        },
-        (error) => {
-          message.value =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+      store.dispatch("auth/register", user)
+      .then(() => {
           loading.value = false;
-        }
-      );
+          router.push("/main");
+        })
+      .catch(error => {
+          loading.value = false;
+          message.value = error;
+      });
   }
 </script>
 

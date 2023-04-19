@@ -1,6 +1,6 @@
 <template>
     <!-- Liste channels / Amis si MP -->
-    <div id="users">
+    <div id="users" class="w-fit">
         <h2 class="p-2">Utilisateurs</h2>
         <div class="p-2 flex flex-col mb-3" id="users-list">
             <UserComponent v-for="user in users.sort()" :username="user.username" v-bind:key="user.id" :userId="user.id" />
