@@ -5,6 +5,7 @@ import store from '@/store';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080/api/discord',
+  // baseURL: '/api/discord',
 });
 
 axiosInstance.interceptors.request.use(

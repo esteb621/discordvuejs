@@ -1,6 +1,6 @@
 <template>
   <main class="flex justify-center items-center text-left bg-cover bg-center">
-    <div id="login" class="shadow-lg shadow-gray-600 p-6 rounded-lg  bg-gray-700 max-h-75 overflow-y-auto">
+    <div id="login" class=" max-w-xl shadow-lg shadow-gray-600 p-6 rounded-lg  bg-gray-700 max-h-fit overflow-y-auto">
       <h1 class="mb-2 text-white text-center text-3xl font-semibold">Ravi de faire ta connaissance!</h1>
       <h2 class="text-center text-xl font-semibold">Merci de renseigner les informations suivantes pour mieux te
         connaitre</h2>
@@ -67,11 +67,11 @@
             </div>
           </div>
           <!-- Photo de profil -->
-          <div class="flex flex-row-reverse mt-4">
+          <div class="mt-4 w-full">
             <div class="col-span-12">
               <label for="profile_picture" class="text-white font-semibold text-base">Photo de profil
                 (optionnel)</label>
-              <Field name="profilePicture" type="file" accept=".jpg,.jpeg,.gif,.png"
+              <Field v-model="profilePicture" name="profilePicture" type="file" accept=".jpg,.jpeg,.gif,.png,.heic"
                 id="profile_picture" class="w-full" />
             </div>
           </div>
@@ -115,6 +115,8 @@
   } from "vee-validate";
   import * as yup from "yup";
   import authHeader from '@/services/auth-header';
+  import pictureService from '@/services/picture.service';
+
   const store = useStore();
   const router = useRouter();
   onMounted(() => {
@@ -141,18 +143,21 @@
       .min(8, "Le mot de passe doit contenir au moins 8 caractères!")
       .matches(
       /[$&+.,:;=?@#|'"<>^*ඞ()%!-]/,
-      'Le mot de passe doit contenir au moins un chiffre et un caractère spécial'
-    ),
+      'Le mot de passe doit contenir au moins un chiffre et un caractère spécial'),
     confirmPassword: yup.string()
     .required('Ce champ est obligatoire!')
-    .oneOf([yup.ref('password'), null], 'Les mots de passe doivent être identiques')
+    .oneOf([yup.ref('password'), null], 'Les mots de passe doivent être identiques'),
 
+    profilePicture: yup.mixed()
+    .test('fileSize', "Le fichier est trop volumineux", (value) => {
+      return !value || (value && value.size <= 5 * 1024 * 1024)}),
   });
 
   const username = ref('');
   const password = ref('');
   const retypePassword = ref('');
   const email = ref('')
+  const profilePicture = ref(null);
   let message = ref('');
   const loading = ref(false);
   const backgroundColor = ref('#5c6aff');
@@ -167,8 +172,6 @@
     return password.value.length >= 8;
   }
 
-
-
   function isPasswordContainDigit() {
     const digit = /\d/;
     return digit.test(password.value);
@@ -178,22 +181,35 @@
     return specialChars.test(password.value);
   }
 
-
-
-  function handleRegister(user) {
+function handleRegister(user) {
       message.value = "";
+      console.log(user)
       loading.value = true;
-
       store.dispatch("auth/register", user)
-      .then(() => {
-          loading.value = false;
+      .then(async () => {
+          if(profilePicture.value){
+            const idUser = store.getters['auth/getUser'].id;
+            console.log(idUser)
+            await pictureService.uploadProfilePic(idUser,profilePicture.value)
+            .then(response => {
+              loading.value = false
+              message.value = response;
+            })
+            .catch(error => {
+              loading.value = false;
+              message.value = error;
+            })
+          }
           router.push("/main");
         })
       .catch(error => {
           loading.value = false;
           message.value = error;
       });
+      
   }
+
+
 </script>
 
 <style scoped>
@@ -205,6 +221,5 @@
   input:hover,
   input:focus {
     background-color: #40444b;
-    border: 0;
   }
 </style>
