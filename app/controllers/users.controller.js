@@ -78,7 +78,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const idparam = req.params.id;
   req.body.id = idparam; 
-  if(req.body.id, req.body.username, !req.body.email, !req.body.password){
       Users.update(req.body, {
         where: { id: idparam}
       })
@@ -98,53 +97,7 @@ exports.update = (req, res) => {
         message: "Error updating User with id=" + idparam
       });
     });
-    return;
   }
-  if(req.body.id, !req.body.username, req.body.email, !req.body.password){
-      Users.update(req.body, {
-        where: { id: idparam}
-      })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Users was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + idparam
-      });
-    });
-    return;
-  }
-  if(req.body.id, !req.body.username, !req.body.email, req.body.password){
-      Users.update(req.body, {
-        where: { id: idparam}
-      })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Users was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + idparam
-      });
-    });
-  };
-  return;
-}
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {

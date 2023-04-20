@@ -4,7 +4,7 @@ module.exports = app => {
     const roles = require("../controllers/roles.controller");
     const channels = require("../controllers/channels.controller");
     const messages = require("../controllers/messages.controller");
-    const amis = require("../controllers/amis.controller.js");
+    const friends = require("../controllers/friends.controller.js");
   
     var router = require("express").Router();
   
@@ -13,7 +13,7 @@ module.exports = app => {
     router.post("/createRole", roles.create);
     router.post("/createChannel", channels.create);
     router.post("/createMessage", messages.create);
-    router.post("/createAmi", amis.create);
+    router.post("/createAmi", friends.create);
 
 
   
@@ -22,7 +22,7 @@ module.exports = app => {
     router.get("/roles", roles.findAll);
     router.get("/channels/:type", channels.findAll);
     router.get("/messages", messages.findAll);
-    router.get("/amis", amis.findAll);
+    router.get("/friends", friends.findAll);
 
 
 
@@ -31,7 +31,7 @@ module.exports = app => {
     router.get("/published/roles", roles.findAllPublished);
     router.get("/published/channels", channels.findAllPublished);
     router.get("/published/messages", messages.findAllPublished);
-    router.get("/published/amis", amis.findAllPublished);
+    router.get("/published/friends", friends.findAllPublished);
 
 
   
@@ -41,7 +41,7 @@ module.exports = app => {
     router.get("/channel/:id", channels.findOne);
     router.get("/messages/:id", messages.findOne);
     router.get("/messages/channel/:id",messages.getMessagesByChannelId);
-    router.get("/amis/:id", amis.findOne)
+    router.get("/friends/:id", friends.findOne)
 
   
     // Update a User or a Role with id
@@ -49,7 +49,7 @@ module.exports = app => {
     router.put("/update/roles/:id", roles.update);
     router.put("/update/channel/:id", channels.update);
     router.put("/update/messages/:id", messages.update);  
-    router.put("/update/amis/:id", amis.update);
+    router.put("/update/friends/:id", friends.update);
 
   
     // Delete a User or a Role with id
@@ -57,7 +57,7 @@ module.exports = app => {
     router.delete("/delete/roles/:id", roles.delete);
     router.delete("/delete/channels/:id", channels.delete);
     router.delete("/delete/messages/:id", messages.update);
-    router.delete("/delete/amis/:id", amis.delete);
+    router.delete("/delete/friends/:id", friends.delete);
 
 
    
@@ -66,7 +66,7 @@ module.exports = app => {
     router.delete("/delete_roles", roles.deleteAll);
     router.delete("/delete_channels", channels.deleteAll);
     router.delete("/delete_messages", messages.deleteAll);
-    router.delete("/delete_amis", amis.deleteAll);
+    router.delete("/delete_friends", friends.deleteAll);
     
     app.use('/api/discord', router);
   };

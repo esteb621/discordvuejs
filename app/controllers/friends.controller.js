@@ -1,5 +1,5 @@
 const db = require("../models");
-const Amis = db.Amis;
+const Friends = db.Friends;
 const Op = db.Sequelize.Op;
 
 // Créer et Sauvegarder un nouvel Ami
@@ -13,14 +13,14 @@ exports.create = (req, res) => {
   }
 
   // Créer un ami
-  const amis = {
+  const friends = {
     user1_id: req.body.idu1,
     user2_id: req.body.idu2,
     published: req.body.published ? req.body.published : false
   };
 
   // Enregistrer l'ami dans la base de données
-  Amis.create(amis)
+  Friends.create(friends)
     .then(data => {
       res.send(data);
       return;
@@ -34,12 +34,12 @@ exports.create = (req, res) => {
     });
 };
 
-// Récupérer tous les amis de la base de données.
+// Récupérer tous les friends de la base de données.
 exports.findAll = (req, res) => {
   const id = req.query.id;
   var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
 
-  Amis.findAll({ where: condition })
+  Friends.findAll({ where: condition })
     .then(data => {
       res.send(data);
       return;
@@ -47,7 +47,7 @@ exports.findAll = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Une erreur s'est produite en récupérant la table amis."
+          err.message || "Une erreur s'est produite en récupérant la table friends."
       });
       return;
     });
@@ -58,7 +58,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const idparam = req.params.id;
   
-    Amis.findOne({ attributes: ['user1_id','user2_id'] , where: {id:idparam}})
+    Friends.findOne({ attributes: ['user1_id','user2_id'] , where: {id:idparam}})
       .then(data => {
           res.send(data);
           return;
@@ -82,7 +82,7 @@ exports.update = (req, res) => {
   const id = req.params.id;
   req.body.id = id;
   if(req.body.id,req.body.idu1,!req.body.idu2){
-  Amis.update(req.body, {
+    Friends.update(req.body, {
     where: { id: id }
   })
     .then(num => {
@@ -101,10 +101,9 @@ exports.update = (req, res) => {
         message: "Erreur serveur"
       });
     });
-    return;
 }
 if(req.body.id,!req.body.idu1,req.body.idu2){
-    Amis.update(req.body, {
+  Friends.update(req.body, {
         where: { id: id }
       })
         .then(num => {
@@ -131,7 +130,7 @@ if(req.body.id,!req.body.idu1,req.body.idu2){
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Amis.destroy({
+  Friends.destroy({
     where: { id: id }
   })
     .then(num => {
@@ -156,24 +155,24 @@ exports.delete = (req, res) => {
     });
 };
 
-// Effacer tous les amis de la base de données.
+// Effacer tous les friends de la base de données.
 exports.deleteAll = (req, res) => {
-  Amis.destroy({
+  Friends.destroy({
     where: {},
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Tous les amis ont bien été supprimés !` });
+      res.send({ message: `${nums} Tous les friends ont bien été supprimés !` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Une erreur s'est produite en voulant supprimer tous les amis."
+          err.message || "Une erreur s'est produite en voulant supprimer tous les friends."
       });
     });
 };
 
-// Trouver tous les amis publiés
+// Trouver tous les friends publiés
 exports.findAllPublished = (req, res) => {
   Channels_Roles.findAll({ where: { published: true } })
     .then(data => {
@@ -182,7 +181,7 @@ exports.findAllPublished = (req, res) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Une erreur s'est produite en voulant afficher tous les amis."
+          err.message || "Une erreur s'est produite en voulant afficher tous les friends."
       });
     });
 };
