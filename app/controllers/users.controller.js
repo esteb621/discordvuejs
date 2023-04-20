@@ -17,7 +17,7 @@ exports.create = (req, res) => {
   const user = {
     username: req.body.username,
     email: req.body.email,
-    password: req.body.mdp,
+    password: req.body.password,
     published: req.body.published ? req.body.published : false
   };
 

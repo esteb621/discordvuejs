@@ -36,7 +36,7 @@ exports.signin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(404).send({ message: "Nom d'utilisateur inconnu!" });
+        return res.status(401).send({ message: "Nom d'utilisateur inconnu!" });
       }
 
       var passwordIsValid = bcrypt.compareSync(

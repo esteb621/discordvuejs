@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 var corsOptions = {
-  origin: "http://localhost:8082"
+  origin: ["http://localhost:8081","http://localhost:8082"]
 };
 
 app.use(cors(corsOptions));
@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({extended: true}));
 
 const db = require("./app/models");
-
+const faker = require('@faker-js/faker/locale/fr').faker
 
 db.sequelize.sync()
    .then(() => {
@@ -29,19 +29,29 @@ db.sequelize.sync()
 
 // Ajout roles par defaut
 function initial(){
-  db.Roles.create({
-    id: 1,
-    name: "user"
-  });
-  db.Roles.create({
-    id: 2,
-    name: "admin"
-  });
+  // db.Roles.create({
+  //   id: 1,
+  //   name: "user"
+  // });
+  // db.Roles.create({
+  //   id: 2,
+  //   name: "admin"
+  // });
+  for(let i=0; i<10; i++) {
+    const user = {
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+    db.Users.create(user);
+  }
 }
+// initial();
+
 require("./app/routes/discord.routes")(app);
 require("./app/routes/auth.routes")(app);
-require('./app/routes/user.routes.js')(app);
-
+require('./app/routes/user.routes')(app);
+require('./app/routes/picture.routes')(app)
 const path = __dirname + '/app/views/';
 
 app.use(express.static(path));

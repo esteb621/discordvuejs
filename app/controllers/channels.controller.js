@@ -22,7 +22,7 @@ exports.create = (req, res) => {
   // Enregistrer un channel dans la base de données
   Channels.create(channels)
     .then(data => {
-      res.send(data);
+      res.send(data.id);
       return;
     })
     .catch(err => {

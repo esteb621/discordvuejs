@@ -38,7 +38,7 @@ module.exports = app => {
     // Retrieve a single User or a single Role with id
     router.get("/users/:id", users.findOne);
     router.get("/roles/:id", roles.findOne);
-    router.get("/channels/:id", channels.findOne);
+    router.get("/channel/:id", channels.findOne);
     router.get("/messages/:id", messages.findOne);
     router.get("/messages/channel/:id",messages.getMessagesByChannelId);
     router.get("/amis/:id", amis.findOne)
