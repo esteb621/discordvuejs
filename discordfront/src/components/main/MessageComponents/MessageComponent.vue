@@ -1,9 +1,7 @@
 <template>
     <div id="message" class="flex flex-row mb-3">
         <div class="flex-shrink-0 p-2">
-            <img id="profile-picture-message"
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                alt="photo de profil" class="cursor-pointer w-12 h-12 rounded-full">
+            <UserPicture :id="userId"/>
         </div>
         <div class="p-2 flex flex-col flex-wrap text-left">
             <h4>{{ username }}</h4>
@@ -14,6 +12,7 @@
 <script setup>
 import userService from '@/services/user.service';
 import { ref,defineProps, onMounted } from 'vue';
+import UserPicture from '../UserComponents/UserPicture.vue';
 
 const props = defineProps({
     userId:{
@@ -27,8 +26,7 @@ const props = defineProps({
 })
 const userId= ref(props.userId).value;
 const message= ref(props.message);
-const username = ref('')
-
+const username = ref('');
 
 onMounted(async () => {
     username.value= await userService.getUserById(userId);

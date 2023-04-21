@@ -28,6 +28,7 @@ const props = defineProps({
 })
 
 const username=ref(props.username).value;
+const userId=ref(props.userId).value
 </script>
 <style scoped>
 /* a{

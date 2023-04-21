@@ -3,15 +3,19 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
-
+import { defineProps, onMounted, ref } from 'vue';
+import pictureService from '@/services/picture.service';
 
 const props = defineProps({
-    link:{
-        type:String
+    id:{
+        type:Number
     }
 })
-const link = ref(props.link);
+const link = ref("");
 
+const idUser = ref(props.id).value;
 
+onMounted(async () => {
+    link.value = await pictureService.getProfilePicture(idUser);
+})
 </script>

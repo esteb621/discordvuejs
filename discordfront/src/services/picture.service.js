@@ -24,7 +24,7 @@ class PictureService {
   getProfilePicture(idUser) {
     return axios.get(`../picture/${idUser}`)
       .then(response => {
-        return response.data.downloadURL;
+        return response.data.picture;
       })
       .catch(error => {
         console.warn(error.response.data.message);

@@ -115,7 +115,6 @@
   } from "vee-validate";
   import * as yup from "yup";
   import authHeader from '@/services/auth-header';
-  import pictureService from '@/services/picture.service';
 
   const store = useStore();
   const router = useRouter();
@@ -186,18 +185,6 @@ function handleRegister(user) {
       loading.value = true;
       store.dispatch("auth/register", user)
       .then(async () => {
-          if(picture.value){
-            const idUser = store.getters['auth/getUser'].id;
-            await pictureService.uploadProfilePic(idUser,picture.value)
-            .then(response => {
-              loading.value = false
-              message.value = response;
-            })
-            .catch(error => {
-              loading.value = false;
-              message.value = error;
-            })
-          }
           router.push("/main");
         })
       .catch(error => {

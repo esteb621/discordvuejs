@@ -21,11 +21,13 @@ import UserPicture from '@/components/main/UserComponents/UserPicture'
 import ToolTip from '../ToolTip.vue';
 import router from '@/router';
 import userService from '@/services/user.service';
+
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const user = userService;
+// const idUser = ref(store.getters['auth/getUser']).value;
 const idUser = ref(1).value;
 const username = ref('');
 const handleLogout = async () => {

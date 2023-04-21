@@ -3,7 +3,10 @@
     <div id="users" class="w-fit">
         <h2 class="p-2">Utilisateurs</h2>
         <div class="p-2 flex flex-col mb-3" id="users-list">
-            <UserComponent v-for="user in users.sort()" :username="user.username" v-bind:key="user.id" :userId="user.id" :link="user.picture" />
+            <UserSkeleton v-if="isloading"/>
+            <div v-if="!isloading">
+                <UserComponent v-for="user in users.sort()" :username="user.username" v-bind:key="user.id" :userId="user.id" :link="user.picture" />
+            </div>
         </div>
     </div>
 </template>
@@ -11,11 +14,14 @@
 <script setup>
 import userService from '@/services/user.service';
 import UserComponent from './UserComponent.vue';
+import UserSkeleton from './UserSkeleton.vue'
+
 import { onMounted, ref } from 'vue';
 
 const users=ref([]);
-
+const isloading = ref(false);
 onMounted(async () => {
+    isloading.value=true;
     users.value=await userService.getUsers();
     console.log(users.value);
     users.value.sort(function (a,b){
@@ -30,6 +36,7 @@ onMounted(async () => {
         }
         return comparison;
     })
+    isloading.value=false;
 })
 
 </script>

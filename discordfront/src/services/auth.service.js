@@ -18,11 +18,16 @@ class AuthService {
   }
 
   register(user) {
-    return axios.post('../auth/register', {
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      picture:user.profilePicture
+    const formData = new FormData();
+    formData.append("username", user.username);
+    formData.append("email", user.email);
+    formData.append("password", user.password);
+    formData.append("profilePicture", user.profilePicture);
+
+    return axios.post('../auth/register', formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     })
     .then(response => {
         return response.data;
