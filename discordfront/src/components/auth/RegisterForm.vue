@@ -71,7 +71,7 @@
             <div class="col-span-12">
               <label for="profile_picture" class="text-white font-semibold text-base">Photo de profil
                 (optionnel)</label>
-              <Field v-model="profilePicture" name="profilePicture" type="file" accept=".jpg,.jpeg,.gif,.png,.heic"
+              <Field v-model="picture" name="picture" type="file" accept=".jpg,.jpeg,.gif,.png,.heic"
                 id="profile_picture" class="w-full" />
             </div>
           </div>
@@ -148,16 +148,16 @@
     .required('Ce champ est obligatoire!')
     .oneOf([yup.ref('password'), null], 'Les mots de passe doivent être identiques'),
 
-    profilePicture: yup.mixed()
-    .test('fileSize', "Le fichier est trop volumineux", (value) => {
-      return !value || (value && value.size <= 5 * 1024 * 1024)}),
+    picture: yup
+  .string()
+  .nullable()
   });
 
   const username = ref('');
   const password = ref('');
   const retypePassword = ref('');
   const email = ref('')
-  const profilePicture = ref(null);
+  const picture = ref(null);
   let message = ref('');
   const loading = ref(false);
   const backgroundColor = ref('#5c6aff');
@@ -183,14 +183,12 @@
 
 function handleRegister(user) {
       message.value = "";
-      console.log(user)
       loading.value = true;
       store.dispatch("auth/register", user)
       .then(async () => {
-          if(profilePicture.value){
+          if(picture.value){
             const idUser = store.getters['auth/getUser'].id;
-            console.log(idUser)
-            await pictureService.uploadProfilePic(idUser,profilePicture.value)
+            await pictureService.uploadProfilePic(idUser,picture.value)
             .then(response => {
               loading.value = false
               message.value = response;

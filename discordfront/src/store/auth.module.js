@@ -52,7 +52,7 @@ export const auth = {
     },
     setToken(state, token) {
       state.user.accessToken = token;
-    }
+    },
   },
   getters: {
     getUser: (state) => {

@@ -3,7 +3,7 @@
     <div id="users" class="w-fit">
         <h2 class="p-2">Utilisateurs</h2>
         <div class="p-2 flex flex-col mb-3" id="users-list">
-            <UserComponent v-for="user in users.sort()" :username="user.username" v-bind:key="user.id" :userId="user.id" />
+            <UserComponent v-for="user in users.sort()" :username="user.username" v-bind:key="user.id" :userId="user.id" :link="user.picture" />
         </div>
     </div>
 </template>
@@ -17,6 +17,7 @@ const users=ref([]);
 
 onMounted(async () => {
     users.value=await userService.getUsers();
+    console.log(users.value);
     users.value.sort(function (a,b){
         const nameA = a.username.toUpperCase();
         const nameB = b.username.toUpperCase();

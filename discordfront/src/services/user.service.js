@@ -12,7 +12,8 @@ class UserService {
     const response = await axios.get(`/users`);
     const data = response.data.map(item => ({
       id: item.id,
-      username: item.username
+      username: item.username,
+      picture: item.picture
     }));
     return data;
   }

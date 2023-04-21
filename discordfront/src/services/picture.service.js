@@ -3,7 +3,6 @@ import axios from "./axiosInstance";
 
 class PictureService {
     uploadProfilePic(id,image){
-        console.log(id)
         const formData = new FormData();
         formData.append('image',image);
         formData.append('id',id);
@@ -20,7 +19,18 @@ class PictureService {
           console.warn(e.response.data.message);
           return e.response.data.message;
         })
-      }
+    }
+
+  getProfilePicture(idUser) {
+    return axios.get(`../picture/${idUser}`)
+      .then(response => {
+        return response.data.downloadURL;
+      })
+      .catch(error => {
+        console.warn(error.response.data.message);
+        return error.response.data.message;
+      });
+  }
 }
 
 export default new PictureService();

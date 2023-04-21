@@ -11,7 +11,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     if (store.getters['auth/getUser']) {
-      console.log(config);
       config.headers['Authorization'] = `Bearer ${store.state.auth.user.accessToken}`;
     }
     return config;
@@ -26,7 +25,6 @@ axiosInstance.interceptors.response.use(
   (response) => {
     const token = response.headers.authorization;
     if (token) {
-      console.log(token);
       store.commit('auth/setToken', token.split(' ')[1]);
     }
     return response;

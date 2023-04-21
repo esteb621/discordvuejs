@@ -21,7 +21,8 @@ class AuthService {
     return axios.post('../auth/register', {
       username: user.username,
       email: user.email,
-      password: user.password
+      password: user.password,
+      picture:user.profilePicture
     })
     .then(response => {
         return response.data;

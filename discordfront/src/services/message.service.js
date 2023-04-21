@@ -10,6 +10,7 @@ class MessageService {
     })
     .then(response => {
       console.log(response);
+      return response;
     })
     .catch(error => {
       console.warn(error);
