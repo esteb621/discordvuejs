@@ -8,10 +8,10 @@ module.exports = app => {
 
     var router = require("express").Router();
     // Route pour télécharger une image
-    router.post('/upload', upload.single('image'), picture.uploadImage);
+    router.post('/upload', upload.single('picture'), picture.uploadImage);
 
     // Route pour accéder à une image
-    router.get('/image/:filename', picture.getImage);
+    router.get('/:id', picture.getImage);
 
     module.exports = router
     app.use('/api/picture', router);

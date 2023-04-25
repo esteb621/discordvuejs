@@ -37,7 +37,6 @@ exports.create = (req, res) => {
 
 // Récupérer tous les channels de la base de données en fonction de leur typologie.
 exports.findAll = (req, res) => {
-  const nom = req.query.nom;
   const type = req.params.type;
   var condition = type ? { type: { [Op.like]: `%${type}%` } } : null;
 

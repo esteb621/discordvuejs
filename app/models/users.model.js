@@ -16,6 +16,10 @@ module.exports = (sequelize, Sequelize) => {
         key: 'id'
     }
     },
+    picture:{
+      type:Sequelize.STRING,
+      defaultValue:"https://firebasestorage.googleapis.com/v0/b/discordjs-ded7c.appspot.com/o/public%2Fprofile-default.jpg?alt=media&token=694e0cd3-627d-4f6a-aa4b-597743c47439"
+    },
     published: {
       type: Sequelize.BOOLEAN
     }

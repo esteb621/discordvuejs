@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 var corsOptions = {
-  origin: ["http://localhost:8081","http://localhost:8082"]
+  origin: ["http://localhost:8081","http://localhost:8082", "http://localhost:80"]
 };
 
 app.use(cors(corsOptions));
@@ -42,6 +42,8 @@ function initial(){
       username: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
+      role_id:1,
+      picture : faker.internet.avatar()
     };
     db.Users.create(user);
   }
@@ -60,7 +62,7 @@ app.get('*', function (req,res) {
     res.sendFile(path + "index.html");
   });
 // set port, listen for requests
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

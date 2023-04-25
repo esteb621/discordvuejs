@@ -52,7 +52,6 @@ exports.findAll = (req, res) => {
 
 exports.getMessagesByChannelId = async (req, res) => {
   const { id } = req.params;
-  console.log(id)
   try {
     const messages = await Messages.findAll({
       where: { channel_id: id }

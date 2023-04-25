@@ -1,6 +1,7 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Users = db.Users;
+const pictureController = require("../controllers/picture.controller")
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -12,12 +13,12 @@ exports.create = (req, res) => {
     return;
   }
 
-
   // Create a User
   const user = {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    picture: req.body.picture,
     published: req.body.published ? req.body.published : false
   };
 
@@ -46,7 +47,7 @@ exports.create = (req, res) => {
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
 
-  Users.findAll({attributes: ['id','username', 'email','password'] })
+  Users.findAll({attributes: ['id','username', 'email','picture'] })
     .then(data => {
       res.send(data);
       return;
