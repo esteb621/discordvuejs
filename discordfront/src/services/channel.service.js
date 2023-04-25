@@ -17,19 +17,18 @@ class ChannelService {
     return data;
   }
 
-  async addChannel(nom,id) {
-    await axios.post(`/createchannel`,{
-      nom:nom,
-      id:id,
-      typologie:1
-    })
-    .then(createdChannel =>{
-      return createdChannel.data;
-    })
-    .catch(error => {
-      return error.response.data.message;
-    });
+  async addChannel(nom) {
+    try {
+      const response = await axios.post(`/createchannel`,{
+        nom:nom,
+        typologie:1
+      });
+      return response.data;
+    } catch(e) {
+      throw e.response.data.message;
+    }
   }
+  
 
 }
 

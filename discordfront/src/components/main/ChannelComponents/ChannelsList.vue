@@ -10,7 +10,7 @@
                 </span>
             </p>        
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
-            <span v-if="error">Une erreur est survenue. Veuillez réessayer: <a :on-click="fetchChannels()">Rafraichir</a></span>
+            <span v-if="error" class="text-red-600 font-bold">{{ error }}</span>
             <div v-if="!isloading">
                 <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom"/>
             </div>
@@ -27,7 +27,7 @@ import channelService from '@/services/channel.service';
 
 const channels=ref([]);
 const isloading=ref(false);
-const error=ref(false)
+const error=ref('test');
 const fetchChannels= async() => {
     error.value=false;
     isloading.value=true;
@@ -55,15 +55,15 @@ const addChannel = async() => {
     input.addEventListener('keydown', async (event) => {
     if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
         const channelName = event.target.value;
-        try{
-            const response = await channelService.addChannel(channelName);
+        await channelService.addChannel(channelName)
+        .then(response=>{
             console.log(response);
             channels.value.push(response);
-        }
-        catch(e){
-            console.warn(e);
-        }
-        event.target.remove();
+            event.target.remove(); 
+        })
+        .catch(e=>{
+            error.value=e;            
+        })  
     }
     else if(event.key==='Escape'){
         event.target.remove();
