@@ -1,4 +1,5 @@
 import AuthService from '@/services/auth.service';
+import pictureService from '@/services/picture.service';
 
 export const auth = {
   namespaced: true,
@@ -24,6 +25,11 @@ export const auth = {
     register({ commit }, user) {
       return AuthService.register(user)
         .then(response => {
+          if(user.picture){
+            console.log("Photo détecté");
+            console.log(response.id);
+            pictureService.uploadProfilePic(response.id,user.picture)
+          }
           if (response.accessToken){
             commit('registerSuccess', response);
             return Promise.resolve(response);

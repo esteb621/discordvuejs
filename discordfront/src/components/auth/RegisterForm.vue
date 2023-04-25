@@ -75,9 +75,9 @@
                 id="profile_picture" class="w-full" />
             </div>
           </div>
-          <button :class="{
+          <button :disabled="isFormEmpty()" :class="{
           'bg-green-500 cursor-wait': loading
-        }" :disabled="isFormEmpty()"
+          }" 
             :style="{ backgroundColor: loading ? clickedButton : backgroundColor }" type="submit"
             class="mt-5 block w-full px-4 py-2 rounded-md font-bold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-blue-500 hover:bg-blue-600 duration-200">
             <span v-if="!loading">Inscription</span>
@@ -144,12 +144,12 @@
       /[$&+.,:;=?@#|'"<>^*ඞ()%!-]/,
       'Le mot de passe doit contenir au moins un chiffre et un caractère spécial'),
     confirmPassword: yup.string()
-    .required('Ce champ est obligatoire!')
-    .oneOf([yup.ref('password'), null], 'Les mots de passe doivent être identiques'),
+      .required('Ce champ est obligatoire!')
+      .oneOf([yup.ref('password'), null], 'Les mots de passe doivent être identiques'),
 
     picture: yup
-  .string()
-  .nullable()
+      .string()
+      .nullable()
   });
 
   const username = ref('');
@@ -184,7 +184,9 @@ function handleRegister(user) {
       message.value = "";
       loading.value = true;
       store.dispatch("auth/register", user)
-      .then(async () => {
+      .then(async response => {
+        loading.value = false;
+        message.value = response.data;
           router.push("/main");
         })
       .catch(error => {

@@ -60,7 +60,7 @@ const addChannel = async() => {
             await fetchChannels();
         }
         catch(e){
-            console.log(e);
+            console.warn(e);
         }
         event.target.remove();
     }

@@ -4,7 +4,7 @@ import axios from "./axiosInstance";
 class PictureService {
     uploadProfilePic(id,image){
         const formData = new FormData();
-        formData.append('image',image);
+        formData.append('picture',image);
         formData.append('id',id);
         return axios.post('../picture/upload',formData,
         {
@@ -12,7 +12,10 @@ class PictureService {
             'Content-Type': 'multipart/form-data'
         }
         })
-        .then(response => {
+        .then(async response => {
+          await axios.put("/update/users/"+id,{
+            picture: response.data.downloadURL
+          });
           return response.data;
         })
         .catch(e => {

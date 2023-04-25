@@ -27,8 +27,7 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const user = userService;
-// const idUser = ref(store.getters['auth/getUser']).value;
-const idUser = ref(1).value;
+const idUser = ref(store.getters['auth/getUser'].id).value;
 const username = ref('');
 const handleLogout = async () => {
     store.dispatch('auth/logout');

@@ -9,13 +9,19 @@ import pictureService from '@/services/picture.service';
 const props = defineProps({
     id:{
         type:Number
+    },
+    link:{
+        type:String
     }
 })
-const link = ref("");
+let link = ref(props.link);
 
 const idUser = ref(props.id).value;
 
 onMounted(async () => {
-    link.value = await pictureService.getProfilePicture(idUser);
+    if(!link.value && idUser)
+    {
+        link.value = await pictureService.getProfilePicture(idUser);
+    }
 })
 </script>

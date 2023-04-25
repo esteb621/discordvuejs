@@ -28,7 +28,8 @@ const props = defineProps({
 })
 
 const username=ref(props.username).value;
-const userId=ref(props.userId).value
+const userId=ref(props.userId).value;
+const link=ref(props.link).value;
 </script>
 <style scoped>
 /* a{

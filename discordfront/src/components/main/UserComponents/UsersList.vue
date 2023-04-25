@@ -23,7 +23,6 @@ const isloading = ref(false);
 onMounted(async () => {
     isloading.value=true;
     users.value=await userService.getUsers();
-    console.log(users.value);
     users.value.sort(function (a,b){
         const nameA = a.username.toUpperCase();
         const nameB = b.username.toUpperCase();

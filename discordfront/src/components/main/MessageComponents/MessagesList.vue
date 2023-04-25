@@ -48,7 +48,6 @@ const fetchMessages= async(id) => {
 
 
 function sendMessage(message, username) {
-  console.log(message);
   messages.value.push({username:username,text:message});
   nextTick(() => {
     scrollToLastMessage();
