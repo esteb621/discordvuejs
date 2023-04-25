@@ -47,8 +47,9 @@ const fetchMessages= async(id) => {
 
 
 
-function sendMessage(message, username) {
-  messages.value.push({username:username,text:message});
+function sendMessage(userId,channelId,message) {
+  messages.value.push({ user:userId ,channel:channelId, text:message });
+  messageService
   nextTick(() => {
     scrollToLastMessage();
   });

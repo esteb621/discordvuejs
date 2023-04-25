@@ -55,9 +55,10 @@ const addChannel = async() => {
     input.addEventListener('keydown', async (event) => {
     if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
         const channelName = event.target.value;
-        try{ 
-            await channelService.addChannel(channelName,channels.value.length+1);
-            await fetchChannels();
+        try{
+            const response = await channelService.addChannel(channelName);
+            console.log(response);
+            channels.value.push(response);
         }
         catch(e){
             console.warn(e);

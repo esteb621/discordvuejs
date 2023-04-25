@@ -28,13 +28,6 @@ class MessageService {
     return data;
   }
 
-  async addChannel(nom,id) {
-    await axios.post(`/createchannel`,{
-      id:id,
-      channel:nom,
-    });
-  }
-
 }
 
 export default new MessageService();

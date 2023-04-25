@@ -23,11 +23,11 @@ class ChannelService {
       id:id,
       typologie:1
     })
-    .then(() =>{
-      console.log(`Channel ${nom} crée!`);
+    .then(createdChannel =>{
+      return createdChannel.data;
     })
     .catch(error => {
-      console.log(error);
+      return error.response.data.message;
     });
   }
 

@@ -16,13 +16,20 @@
 
 <script setup>
 import { ref,defineEmits } from 'vue';
+import { useRouter } from 'vue-router';
+// import { useStore } from 'vuex';
 
+// const store = useStore();
+const route = useRouter();
 const message = ref('');
+// const idUser = ref(store.getters['auth/getUser'].id).value;
+const idUser = ref(1).value;
 
 const emit = defineEmits(['send-message']);
 function submitMessage() {
-    
-    emit('send-message', message.value,"Esteban");
+    const link=route.currentRoute.value;
+    const idChannel=link.params.id || 1;
+    emit('send-message',idUser,idChannel,message.value);
     message.value = '';
 
 }
