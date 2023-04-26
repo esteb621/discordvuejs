@@ -8,9 +8,9 @@
                 transition-all duration-200 ease-linear" id="plus">
                     <font-awesome-icon :icon="['fa', 'plus']" size="lg" />
                 </span>
-            </p>        
+            </p>
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
-            <span v-if="error" class="text-red-600 font-bold">{{ error }}</span>
+            <span v-if="error" class="text-red-600 font-bold p-2">{{ error }}</span>
             <div v-if="!isloading">
                 <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom"/>
             </div>
@@ -27,7 +27,7 @@ import channelService from '@/services/channel.service';
 
 const channels=ref([]);
 const isloading=ref(false);
-const error=ref('test');
+const error=ref('');
 const fetchChannels= async() => {
     error.value=false;
     isloading.value=true;

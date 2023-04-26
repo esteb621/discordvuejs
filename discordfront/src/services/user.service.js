@@ -4,7 +4,7 @@ class UserService {
 
   async getUserById(id) {
     const response = await axios.get(`/users/`+id);
-    const data = response.data.username;
+    const data = response.data;
     return data;
   }
 

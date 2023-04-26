@@ -1,21 +1,22 @@
 <template>
     <div class="flex flex-row h-screen" id="discord">
-        <div class="flex flex-row max-[768px]:hidden">
-            <SideBar/>
-            <div id="channel" class="flex flex-col">
-                <ChannelsList class="grow"/>
-                <ProfileBanner @show-modal="showModal = true" />
-            </div>
+      <div class="flex flex-row max-[768px]:hidden">
+        <component :is="SideBar"/>
+        <div id="channel" class="flex flex-col">
+          <component :is="ChannelsList" class="grow" />
+          <component :is="ProfileBanner" @show-modal="showModal = true" />
         </div>
-        <MessagesList/>
-        <div class="flex flex-col max-[768px]:hidden">
-            <UsersList/>
-        </div>
-        <Transition name="fade">
-            <ProfileSettings v-if="showModal" @close="showModal = false" />
-        </Transition>
+      </div>
+        <component :is="MessagesList"/>
+      <div class="flex flex-col max-[768px]:hidden">
+        <component :is="UsersList"/>
+      </div>
+      <Transition name="fade">
+        <component :is="ProfileSettings" v-if="showModal" @close="showModal = false" />
+      </Transition>
     </div>
 </template>
+  
 
 <script setup>
 import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
@@ -30,7 +31,6 @@ import authHeader from '@/services/auth-header';
 import { onMounted } from 'vue';
 
 const showModal = ref(false);
-
 // A METTRE POUR LA PROD
 
 

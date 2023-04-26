@@ -1,4 +1,4 @@
-<template>
+<template>  
     <!-- Message conversation -->
     <div class="flex-grow flex flex-col items-stretch" id="messages-field">
         <div class="mb-auto text-left text-lg  shadow-md bg-gray-700 font-bold p-3">
@@ -6,12 +6,12 @@
           <div v-if="isloading" class="animate-pulse bg-gray-600 rounded-md w-20 h-6"></div>
         </div>
         <div id="message-container" class="flex flex-col w-100 snap-y " >
-          <div v-if="messageEmpty" class="flex flex-col p-2 ml-3 space-y-2 text-left">
+          <div v-if="!isloading" class="flex flex-col p-2 ml-3 space-y-2 text-left">
             <font-awesome-icon :icon="['fa', 'hashtag']" class="p-4 rounded-full text-3xl w-10 h-10 bg-gray-600 text-gray-300  " />
             <h2 class="text-gray-100 text-3xl font-bold w-fit">Bienvenue dans #{{ currentChannel }}!</h2>
             <h3 class="text-gray-300">C'est le début du salon #{{ currentChannel }}.</h3>
           </div>
-            <MessageComponent class="snap" v-for="message in messages" v-bind:key="message.id" :userId="message.user" :message="message.text"/>
+            <MessageComponent v-for="message in messages" v-bind:key="message.id" :userId="message.user" :message="message.text"/>
             <MessageSkeleton v-if="isloading"/>
           </div>
         <TextBarComponent @send-message="sendMessage"/>
@@ -49,7 +49,7 @@ const fetchMessages= async(id) => {
 
 function sendMessage(userId,channelId,message) {
   messages.value.push({ user:userId ,channel:channelId, text:message });
-  messageService
+  messageService.sendMessages(userId,channelId,message);
   nextTick(() => {
     scrollToLastMessage();
   });
@@ -60,7 +60,7 @@ function scrollToLastMessage(){
   messageList.scrollTo(0, messageList.scrollHeight);
 }
 
-watchEffect(async () => {
+watchEffect(async () => { 
   messageEmpty.value=false;
   messages.value=[];
   isloading.value=true;
