@@ -12,8 +12,7 @@
                 Modifier votre profil
               </h2>
               <form class="space-y-6 flex flex-row" action="#">
-                  <input type="image" src="" alt="">
-                  <UserPicture :id="idUser" class="w-24 h-24 rounded-full self-center mr-10 cursor-pointer hover:opacity-50"/>
+                  <img :src="picture" alt="" class="w-24 h-24 rounded-full self-center mr-10 cursor-pointer hover:opacity-50">
                   <div class="flex flex-col justify-end w-64">
                     <div>
                         <label for="username" class="block mb-2 text-sm font-medium text-gray-200 dark:text-white">Pseudo</label>
@@ -52,18 +51,17 @@
 <script setup>
 import pictureService from '@/services/picture.service';
 import { defineEmits, onMounted, ref } from 'vue';
-import UserPicture from '../UserComponents/UserPicture.vue';
 import userService from '@/services/user.service';
-// import { useStore } from 'vuex';
-// const store = useStore()
+import { useStore } from 'vuex';
+const store = useStore()
 const emit = defineEmits(['close']);
 function closeModal() {
       emit('close');
 }
 
-const picture = ref('');
-// const idUser = ref(store.getters['auth/getUser'].id).value;
-const idUser = ref(1).value;
+
+const idUser = ref(store.getters['auth/getUser'].id).value;
+const picture = ref(pictureService.getProfilePicture(idUser));
 const email=ref('')
 const username=ref('')
 onMounted(async()=>{

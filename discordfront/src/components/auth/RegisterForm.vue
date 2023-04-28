@@ -114,13 +114,12 @@
     ErrorMessage
   } from "vee-validate";
   import * as yup from "yup";
-  import authHeader from '@/services/auth-header';
 
   const store = useStore();
   const router = useRouter();
   onMounted(() => {
-    const headers = authHeader();
-    if (headers['x-access-token']) {
+    const loggedIn=store.state.auth.status.loggedIn;
+    if (loggedIn) {
       router.push('/main');
   }});
 

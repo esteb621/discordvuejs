@@ -9,6 +9,7 @@ class AuthService {
         password: user.password
       })
       .then(response => {
+        localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
       })
       .catch(e => {
@@ -30,6 +31,7 @@ class AuthService {
       },
     })
     .then(response => {
+        localStorage.setItem('user', JSON.stringify(response.data));
         return response.data;
     })
     .catch(e => {
@@ -37,6 +39,11 @@ class AuthService {
       return e.response.data.message;
     });
   }
+
+  logout() {
+    localStorage.removeItem('user');
+  }
+
 }
 
 export default new AuthService();

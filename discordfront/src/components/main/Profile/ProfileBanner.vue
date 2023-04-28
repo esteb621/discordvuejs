@@ -4,7 +4,7 @@
                     <a @click="$emit('show-modal')"
                     class="flex flex-row justify-center 
                     items-start p-2 w-44 group cursor-pointer">
-                        <UserPicture :id="idUser"/>
+                        <UserPicture/>
                         <p class="px-2 font-bold">{{ username }}</p>
                         <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
                     </a>
@@ -26,9 +26,6 @@ import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-const user = userService;
-const idUser = ref(1).value;
-// const idUser = ref(store.getters['auth/getUser'].id).value;
 const username = ref('');
 const handleLogout = async () => {
     store.dispatch('auth/logout');
@@ -36,11 +33,11 @@ const handleLogout = async () => {
 }
 
 const getUsername = async () => {
-    if(store.getters['auth/getUser'] && idUser){
-        await user.getUserById(idUser)
+    const user=store.getters['auth/getUser'];
+    if(user && user.id){
+        await userService.getUserById(user.id)
         .then( (response) => {
-            console.log(response);
-            username.value=response
+            username.value=response.username
         })
         .catch( (error) => {
             username.value="undefined";

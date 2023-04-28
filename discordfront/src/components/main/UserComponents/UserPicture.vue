@@ -1,10 +1,12 @@
 <template>
-    <img class="w-10 h-10 rounded-full" :src="link" alt="Photo de profil" id="profile-picture">
+    <div v-if="isloading" class="w-10 h-10 rounded-full bg-gray-600 animate-pulse" alt="Photo de profil" id="profile-picture"></div>
+    <img v-if="!isloading" class="w-10 h-10 rounded-full" :src="link" alt="Photo de profil" id="profile-picture">
 </template>
 
 <script setup>
 import { defineProps, onMounted, ref } from 'vue';
 import pictureService from '@/services/picture.service';
+import store from '@/store';
 
 const props = defineProps({
     id:{
@@ -14,14 +16,21 @@ const props = defineProps({
         type:String
     }
 })
-let link = ref(props.link);
 
-const idUser = ref(props.id).value;
+let link = ref(props.link);
+let idUser = ref(props.id).value;
+let isloading=ref(false).value;
 
 onMounted(async () => {
-    if(!link.value && idUser)
-    {
+    if(!link.value){
+        isloading=true;
+        if(!idUser && store.getters['auth/getUser'])
+        {
+            idUser=store.getters['auth/getUser'].id
+        }
         link.value = await pictureService.getProfilePicture(idUser);
+        isloading=false;        
     }
+
 })
 </script>

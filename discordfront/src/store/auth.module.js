@@ -1,11 +1,14 @@
 import AuthService from '@/services/auth.service';
 import pictureService from '@/services/picture.service';
 
+const user = JSON.parse(localStorage.getItem('user'));
+const initialState = user
+  ? { status: { loggedIn: true }, user }
+  : { status: { loggedIn: false }, user: null };
+
 export const auth = {
   namespaced: true,
-  state: {
-    user: null,
-  },
+  state: initialState,
   actions: {
     login({ commit }, user) {
       return AuthService.login(user)
@@ -20,14 +23,14 @@ export const auth = {
         });
     },
     logout({ commit }) {
+      AuthService.logout();
       commit('logout');
     },
     register({ commit }, user) {
       return AuthService.register(user)
         .then(response => {
           if(user.picture){
-            console.log("Photo détecté");
-            console.log(response.id);
+            console.log("Photo détectée");
             pictureService.uploadProfilePic(response.id,user.picture)
           }
           if (response.accessToken){
@@ -42,27 +45,27 @@ export const auth = {
   },
   mutations: {
     loginSuccess(state, user) {
-      state.user = { id: user.id, accessToken: user.accessToken };
+      state.status.loggedIn = true;
+      state.user = user;
     },
     loginFailure(state) {
+      state.status.loggedIn = false;
       state.user = null;
     },
     logout(state) {
+      state.status.loggedIn = false; 
       state.user = null;
     },
-    registerSuccess(state, user) {
-      state.user = { id: user.id, accessToken: user.accessToken };
+    registerSuccess(state) {
+      state.status.loggedIn = false;
     },
     registerFailure(state) {
-      state.user = null;
-    },
-    setToken(state, token) {
-      state.user.accessToken = token;
-    },
+      state.status.loggedIn = false;
+    }
   },
   getters: {
     getUser: (state) => {
       return state.user;
     }
-  },  
+  },
 };

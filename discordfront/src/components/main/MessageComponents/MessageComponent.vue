@@ -1,7 +1,7 @@
 <template>
     <div id="message" class="flex flex-row mb-3">
         <div class="flex-shrink-0 p-2 ml-3">
-            <component :is="UserPicture" :id="userId"/>
+            <UserPicture :id="userId"/>
         </div>
         <div class="p-2 flex flex-col flex-wrap text-left">
             <h4>{{ username }}</h4>
@@ -29,7 +29,7 @@ const message= ref(props.message);
 const username = ref('');
 
 onMounted(async () => {
-    username.value= (await userService.getUserById(userId)).username;
+    username.value=(await userService.getUserById(userId)).username;
 });
 </script>
 <style scoped>
