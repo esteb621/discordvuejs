@@ -1,2 +1,2 @@
 "use strict";(self["webpackChunkdiscordfront"]=self["webpackChunkdiscordfront"]||[]).push([[443],{7381:function(n,r,t){t.r(r),t.d(r,{default:function(){return f}});var s=t(3396);const u={class:"about"},a=(0,s._)("h1",null,"This is an about page",-1),c=[a];function e(n,r){return(0,s.wg)(),(0,s.iD)("div",u,c)}var o=t(89);const i={},d=(0,o.Z)(i,[["render",e]]);var f=d}}]);
-//# sourceMappingURL=about.2bef8742.js.map
+//# sourceMappingURL=about.22c82ac5.js.map

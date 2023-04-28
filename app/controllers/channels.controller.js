@@ -22,13 +22,16 @@ exports.create = (req, res) => {
   // Enregistrer un channel dans la base de données
   Channels.create(channels)
     .then(data => {
-      res.send(data.id);
+      res.send({
+        id:data.id,
+        nom:data.nom
+      });
       return;
     })
-    .catch(err => {
+    .catch(() => {
       res.status(500).send({
         message:
-          err.message || "Une erreur s'est produite en voulant récupérer le channel."
+          "Ce channel existe déjà!"
       });
       return;
     });
