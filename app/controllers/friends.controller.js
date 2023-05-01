@@ -5,33 +5,47 @@ const Op = db.Sequelize.Op;
 // Créer et Sauvegarder un nouvel Ami
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.idu1 || !req.body.idu2) {
+  if (!req.body.user1_id || !req.body.user2_id) {
     res.status(400).send({
-      message: "Le contenu du body ne peut pas etre vide !"
+      message: "Les utilisateurs n'existent pas ou le body est vide !"
     });
+    return;
+  }
+  if (req.body.user1_id == req.body.user2_id){
+    res.status(400).send({
+      message: "Un utilisateur ne peut pas etre ami avec lui meme !"
+    });
+    return;
+  }
+  if ((Friends.user1_id == req.body.user1_id||req.body.user2_id) && (Friends.user2_id == req.body.user1_id||req.body.user2_id)){
+    res.status(404).send({
+      message: "Ces 2 utilisateurs sont déjà ami !"
+    })
     return;
   }
 
   // Créer un ami
   const friends = {
-    user1_id: req.body.idu1,
-    user2_id: req.body.idu2,
+    user1_id: req.body.user1_id,
+    user2_id: req.body.user2_id,
     published: req.body.published ? req.body.published : false
   };
 
   // Enregistrer l'ami dans la base de données
   Friends.create(friends)
-    .then(data => {
+    data => {
+      try {
       res.send(data);
       return;
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Une erreur s'est produite en créant un ami."
-      });
-      return;
-    });
+      }
+      catch{err =>
+        res.status(500).send({
+          message:
+            err.message || "Une erreur s'est produite en créant un ami."
+        });
+        return;
+      };
+    }
 };
 
 // Récupérer tous les friends de la base de données.
@@ -57,8 +71,7 @@ exports.findAll = (req, res) => {
 // Trouver un seul ami avec un id
 exports.findOne = (req, res) => {
     const idparam = req.params.id;
-  
-    Friends.findOne({ attributes: ['user1_id','user2_id'] , where: {id:idparam}})
+    Friends.findByPk(idparam)
       .then(data => {
           res.send(data);
           return;
@@ -68,20 +81,14 @@ exports.findOne = (req, res) => {
             message: "Erreur serveur"
           });
           return;
-        });
-      if (typeof data==='undefined'){
-        res.status(404).send({
-          message: "Il n'y a pas d'ami avec id=" + idparam
-        });
-        return;
-      }
+        })
 }
 
 // Mettre à jour un ami à l'aide de son id
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const id= req.params.id;
   req.body.id = id;
-  if(req.body.id,req.body.idu1,!req.body.idu2){
+  
     Friends.update(req.body, {
     where: { id: id }
   })
@@ -102,29 +109,6 @@ exports.update = (req, res) => {
       });
     });
 }
-if(req.body.id,!req.body.idu1,req.body.idu2){
-  Friends.update(req.body, {
-        where: { id: id }
-      })
-        .then(num => {
-          if (num == 1) {
-            res.send({
-              message: "l'ami a été correctement mis à jour."
-            });
-          } else {
-            res.send({
-              message: `Il n'existe pas d'ami avec id=${id}.`
-            });
-          }
-        })
-        .catch(err => {
-          res.status(500).send({
-            message: "Erreur serveur"
-          });
-        });
-    }
-    return;
-};
 
 // Effacer un ami spécifique
 exports.delete = (req, res) => {
