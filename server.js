@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 var corsOptions = {
-  origin: "http://localhost:8082"
+  origin: ["http://localhost:8081","http://localhost:8082", "http://localhost:80"]
 };
 
 app.use(cors(corsOptions));
@@ -43,6 +43,38 @@ require("./app/routes/auth.routes")(app);
 require('./app/routes/user.routes.js')(app);
 
 const path = __dirname + '/app/views/';
+
+app.use(express.static(path));
+
+// Ajout roles par defaut
+function initial(){
+  // db.Roles.create({
+  //   id: 1,
+  //   name: "user"
+  // });
+  // db.Roles.create({
+  //   id: 2,
+  //   name: "admin"
+  // });
+  for(let i=0; i<10; i++) {
+    const user = {
+      username: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      role_id:1,
+      picture : faker.internet.avatar()
+    };
+    db.Users.create(user);
+  }
+}
+// initial();
+
+require("./app/routes/discord.routes")(app);
+require("./app/routes/auth.routes")(app);
+require('./app/routes/user.routes')(app);
+require('./app/routes/picture.routes')(app)
+
+const path = __dirname + '/app/dist/';
 
 app.use(express.static(path));
 

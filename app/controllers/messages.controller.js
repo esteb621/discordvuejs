@@ -1,5 +1,6 @@
 const db = require("../models");
 const Messages = db.Messages;
+const Users = db.Users;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
@@ -52,11 +53,10 @@ exports.findAll = (req, res) => {
 
 exports.getMessagesByChannelId = async (req, res) => {
   const { id } = req.params;
-  console.log(id)
   try {
     const messages = await Messages.findAll({
       where: { channel_id: id }
-    });
+    })
 
     res.json(messages);
   } catch (error) {

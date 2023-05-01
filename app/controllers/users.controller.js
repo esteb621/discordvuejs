@@ -1,6 +1,8 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Users = db.Users;
+const pictureController = require("../controllers/picture.controller")
+var bcrypt = require("bcryptjs");
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -12,12 +14,12 @@ exports.create = (req, res) => {
     return;
   }
 
-
   // Create a User
   const user = {
     username: req.body.username,
     email: req.body.email,
-    password: req.body.mdp,
+    password: req.body.password,
+    picture: req.body.picture,
     published: req.body.published ? req.body.published : false
   };
 
@@ -46,7 +48,7 @@ exports.create = (req, res) => {
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
 
-  Users.findAll({attributes: ['id','username', 'email','password'] })
+  Users.findAll({attributes: ['id','username', 'email','picture'] })
     .then(data => {
       res.send(data);
       return;
@@ -77,73 +79,48 @@ exports.findOne = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const idparam = req.params.id;
-  req.body.id = idparam; 
-  if(req.body.id, req.body.username, !req.body.email, !req.body.password){
+  req.body.id = idparam;
+  Users.findOne({
+    where: {
+      id: req.body.id
+    }
+  }).then(async user => {
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+      
+      if (!passwordIsValid) {
+        res.status(401).send({
+          message: "Le mot de passe est incorrect!"
+        });
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(req.body.password, 8);
+      req.body.password=hashedPassword;
+
       Users.update(req.body, {
         where: { id: idparam}
       })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Users was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + idparam
-      });
-    });
-    return;
-  }
-  if(req.body.id, !req.body.username, req.body.email, !req.body.password){
-      Users.update(req.body, {
-        where: { id: idparam}
+      .then(num => {
+        if (num == 1) {
+          return res.send({
+            message: "Votre profil a bien été mis à jour"
+          });
+          
+        } else {
+          return res.status(400).send({
+            message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
+          });
+        }
       })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Users was updated successfully."
+      .catch(err => {
+        return res.status(500).send({
+          message: "Error updating User with id=" + idparam
         });
-      } else {
-        res.send({
-          message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + idparam
       });
-    });
-    return;
-  }
-  if(req.body.id, !req.body.username, !req.body.email, req.body.password){
-      Users.update(req.body, {
-        where: { id: idparam}
-      })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Users was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + idparam
-      });
-    });
-  };
-  return;
+  })
 }
 
 // Delete a User with the specified id in the request
