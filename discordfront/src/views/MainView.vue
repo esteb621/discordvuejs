@@ -3,16 +3,19 @@
       <div class="flex flex-row max-[768px]:hidden">
         <component :is="SideBar"/>
         <div id="channel" class="flex flex-col">
-          <component :is="ChannelsList" class="grow" />
+          <component :is="ChannelsList" class="grow" @info-message="handleInfoMessage" />
           <component :is="ProfileBanner" @show-modal="showModal = true" />
         </div>
       </div>
+      <div class="flex flex-col w-full">
+        <Alert v-if="info" :info="info" />
         <component :is="MessagesList"/>
+      </div>  
       <div class="flex flex-col max-[768px]:hidden">
         <component :is="UsersList"/>
       </div>
       <Transition name="fade">
-        <component :is="ProfileSettings" v-if="showModal" @close="showModal = false" />
+        <component :is="ProfileSettings" v-if="showModal" @close="showModal = false" @info-message="handleInfoMessage" />
       </Transition>
     </div>
 </template>
@@ -22,6 +25,7 @@
 import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
 import MessagesList from '@/components/main/MessageComponents/MessagesList.vue'
 import UsersList from '@/components/main/UserComponents/UsersList.vue';
+import Alert from '@/components/main/AlertComponent.vue';
 import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
 import ProfileSettings from '../components/main/Profile/ProfileSettings.vue';
 import SideBar from '@/components/main/SideBar/SideBar.vue';
@@ -31,7 +35,15 @@ import router from '@/router';
 import { onMounted } from 'vue';
 
 const showModal = ref(false);
+const info = ref("");
 
+
+function handleInfoMessage(infoMessage) {
+  info.value = infoMessage;
+  setTimeout(() => {
+     info.value = '';
+  }, 3000);
+}
 
 onMounted(() => {
   const headers = authHeader();

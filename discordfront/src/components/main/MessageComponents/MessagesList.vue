@@ -33,14 +33,12 @@ const currentChannel = ref('');
 const route = useRouter();
 const isloading=ref(false);
 const messages = ref([]);
-const messageEmpty = ref(false);
 let idChannel = ref(null).value;
 const fetchMessages= async(id) => {
     isloading.value=true;
     const data = await messageService.getMessages(id);
     messages.value=data;
     isloading.value=false;
-    if(messages.value.length==0){messageEmpty.value=true}
 }
 
 
@@ -61,7 +59,6 @@ function scrollToLastMessage(){
 }
 
 watchEffect(async () => { 
-  messageEmpty.value=false;
   messages.value=[];
   isloading.value=true;
   const link=route.currentRoute.value;

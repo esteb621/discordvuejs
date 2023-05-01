@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require("tailwindcss/colors");
 
 module.exports = {
   content: [
@@ -18,9 +17,20 @@ module.exports = {
               transform: 'translateY(0%)',
             },
           },
+          'slide-in-top': {
+            from: {
+              opacity: '0%',
+              transform: 'translateY(-100%)',
+            },
+            to: {
+              opacity: '100%',
+              transform: 'translateY(0%)',
+            },
+          },
         },
         animation: {
           'slide-in': 'slide-in 1s forwards',
+          'slide-in-top':'slide-in-top 1s forwards'
         },
       colors:{
         primary: '#202225',

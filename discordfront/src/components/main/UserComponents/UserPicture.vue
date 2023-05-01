@@ -19,18 +19,18 @@ const props = defineProps({
 
 let link = ref(props.link);
 let idUser = ref(props.id).value;
-let isloading=ref(false).value;
+let isloading=ref(false);
 
 onMounted(async () => {
-    if(!link.value){
-        isloading=true;
+    isloading.value=true;
+    if(!link.value){  
         if(!idUser && store.getters['auth/getUser'])
         {
             idUser=store.getters['auth/getUser'].id
         }
-        link.value = await pictureService.getProfilePicture(idUser);
-        isloading=false;        
+        link.value = await pictureService.getProfilePicture(idUser);        
     }
+    isloading.value=false;
 
 })
 </script>

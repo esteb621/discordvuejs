@@ -12,14 +12,14 @@
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
             <span v-if="error" class="text-red-600 font-bold p-2">{{ error }}</span>
             <div v-if="!isloading">
-                <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom"/>
+                <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom" @delete-channel="deleteChannel"/>
             </div>
             <ChannelSkeleton v-if="isloading"/>
         </div>
     </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref ,defineEmits} from 'vue';
 import ChannelComponent from './ChannelComponent.vue';
 import ChannelSkeleton from './ChannelSkeleton.vue';
 import channelService from '@/services/channel.service';
@@ -47,7 +47,7 @@ onMounted(async () => {
     await fetchChannels();
 });
 
-
+const emit = defineEmits(['info-message']);
 const addChannel = async() => {
     const input = document.createElement('input');
     input.type = 'text';
@@ -57,9 +57,9 @@ const addChannel = async() => {
         const channelName = event.target.value;
         await channelService.addChannel(channelName)
         .then(response=>{
-            console.log(response);
             channels.value.push(response);
             event.target.remove(); 
+            emit('info-message', `Le channel ${channelName} a bien été crée!`);
         })
         .catch(e=>{
             error.value=e;            
@@ -75,6 +75,16 @@ const addChannel = async() => {
     input.focus();
 }
 
+async function deleteChannel(id){
+    console.log(`Suppression... de ${id}`)
+    const index = channels.value.findIndex(channel => channel.id === id);
+    if (index !== -1) {
+        const deletedChannel = channels.value[index].nom;
+        channels.value = channels.value.filter(channel => channel.id !== id);
+        await channelService.delete(id);
+        emit('info-message', `Le channel ${deletedChannel} a bien été supprimé!`);
+    }
+}
 
 </script>
 

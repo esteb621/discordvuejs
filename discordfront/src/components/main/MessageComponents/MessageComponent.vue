@@ -4,7 +4,8 @@
             <UserPicture :id="userId"/>
         </div>
         <div class="p-2 flex flex-col flex-wrap text-left">
-            <h4>{{ username }}</h4>
+            <div v-if="!username" class="w-16 h-6 rounded-md bg-gray-600 animate-pulse"></div>
+            <h4 v-if="username">{{ username }}</h4>
             <p>{{ message }}</p>
         </div>
     </div>
