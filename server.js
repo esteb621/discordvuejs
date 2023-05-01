@@ -38,13 +38,6 @@ function initial(){
     name: "admin"
   });
 }
-require("./app/routes/discord.routes")(app);
-require("./app/routes/auth.routes")(app);
-require('./app/routes/user.routes.js')(app);
-
-const path = __dirname + '/app/views/';
-
-app.use(express.static(path));
 
 // Ajout roles par defaut
 function initial(){
