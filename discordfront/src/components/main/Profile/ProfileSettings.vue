@@ -13,8 +13,12 @@
               Modifier votre profil
             </h2>
             <Form class="space-y-6 flex flex-row" @submit="handleUpdate" :validation-schema="schema">
-              <img v-if="picture" :src="picture" alt=""
-                class="w-24 h-24 rounded-full self-center mr-10 cursor-pointer hover:opacity-50 ">
+              <div class=" hover:opacity-50 w-fit h-fit self-center mr-10">
+                <img v-if="picture" :src="picture" alt=""
+                    class="w-24 h-24 rounded-full fixed self-center">
+                <input v-on="newPicture" type="file" ref="fileInput" class="opacity-0 w-24 h-24 cursor-pointer"
+                      @change="handleFileInputChange">
+              </div>
               <div class="flex flex-col justify-end w-64 space-y-4">
                 <div>
                   <label for="username"
@@ -102,6 +106,7 @@
   const email = ref('');
   const username = ref('');
   const password = ref('');
+  const newPicture = ref(null);
 
 
   const schema = yup.object().shape({
@@ -134,6 +139,12 @@
   isloading.value = false;
 }
 
+  async function handleFileInputChange(){
+    const file = event.target.files[0];
+      if (file) {
+        this.uploadPicture(file);
+      }
+  }
 
   onMounted(async () => {
     picture.value = await pictureService.getProfilePicture(idUser);

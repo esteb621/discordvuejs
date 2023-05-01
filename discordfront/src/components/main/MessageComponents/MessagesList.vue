@@ -5,7 +5,7 @@
           <h2 v-if="!isloading" class="text-gray-300"><font-awesome-icon :icon="['fa', 'hashtag']" class="text-gray-500" /> {{ currentChannel }}</h2>
           <div v-if="isloading" class="animate-pulse bg-gray-600 rounded-md w-20 h-6"></div>
         </div>
-        <div id="message-container" class="flex flex-col w-100 snap-y " >
+        <div v-if="route.currentRoute.value.params.id" id="message-container" class="flex flex-col w-100 snap-y " >
           <div v-if="!isloading" class="flex flex-col p-2 ml-3 space-y-2 text-left">
             <font-awesome-icon :icon="['fa', 'hashtag']" class="p-4 rounded-full text-3xl w-10 h-10 bg-gray-600 text-gray-300  " />
             <h2 class="text-gray-100 text-3xl font-bold w-fit">Bienvenue dans #{{ currentChannel }}!</h2>
@@ -13,7 +13,7 @@
           </div>
             <MessageComponent v-for="message in messages" v-bind:key="message.id" :userId="message.user" :message="message.text"/>
             <MessageSkeleton v-if="isloading"/>
-          </div>
+        </div>
         <TextBarComponent @send-message="sendMessage"/>
     </div>
 </template>
@@ -62,7 +62,8 @@ watchEffect(async () => {
   messages.value=[];
   isloading.value=true;
   const link=route.currentRoute.value;
-  const newId = link.params.id || 1;
+  const newId = link.params.id;
+  currentChannel.value="Veuillez selectionner un channel"
   if (link.path.includes("server") && newId) {
     idChannel = newId;
     currentChannel.value = await channelService.getChannelName(idChannel);

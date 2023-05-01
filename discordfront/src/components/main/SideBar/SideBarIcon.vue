@@ -1,5 +1,5 @@
 <template> 
-<router-link :to="!$route.path.includes('/main/') ? '/main/' + props.id : ''"
+<router-link :to="'/main/'+ props.id"
     :class="{selected: $route.path.includes(props.id) }"
     class="relative flex items-center justify-center 
                 h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
