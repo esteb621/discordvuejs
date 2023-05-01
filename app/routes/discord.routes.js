@@ -41,7 +41,7 @@ module.exports = app => {
     router.get("/role/:id", roles.findOne);
     router.get("/channel/:id", channels.findOne);
     router.get("/message/:id", messages.findOne);
-    router.get("/message/channel/:id",messages.getMessagesByChannelId);
+    router.get("/messages/channel/:id",messages.getMessagesByChannelId);
     router.get("/friend/:id", friends.findOne)
 
   

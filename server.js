@@ -54,7 +54,8 @@ require("./app/routes/discord.routes")(app);
 require("./app/routes/auth.routes")(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/picture.routes')(app)
-const path = __dirname + '/app/views/';
+
+const path = __dirname + '/app/dist/';
 
 app.use(express.static(path));
 
