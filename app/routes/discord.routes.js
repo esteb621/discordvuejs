@@ -5,7 +5,8 @@ module.exports = app => {
     const channels = require("../controllers/channels.controller");
     const messages = require("../controllers/messages.controller");
     const friends = require("../controllers/friends.controller.js");
-  
+    const { verifySignUp } = require("../middleware");
+
     var router = require("express").Router();
   
     // Create new value
@@ -44,9 +45,9 @@ module.exports = app => {
     router.get("/friend/:id", friends.findOne)
 
   
-    // Update a value
-    router.put("/update/user/:id", users.update);
-    router.put("/update/role/:id", roles.update);
+    // Update a User or a Role with id
+    router.put("/update/users/:id",verifySignUp.checkDuplicateUsernameOrEmail,users.update);
+    router.put("/update/roles/:id", roles.update);
     router.put("/update/channel/:id", channels.update);
     router.put("/update/message/:id", messages.update);  
     router.put("/update/friend/:id", friends.update);

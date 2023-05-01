@@ -2,6 +2,7 @@ const { where } = require("sequelize");
 const db = require("../models");
 const Users = db.Users;
 const pictureController = require("../controllers/picture.controller")
+var bcrypt = require("bcryptjs");
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -78,27 +79,49 @@ exports.findOne = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const idparam = req.params.id;
-  req.body.id = idparam; 
+  req.body.id = idparam;
+  Users.findOne({
+    where: {
+      id: req.body.id
+    }
+  }).then(async user => {
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+      
+      if (!passwordIsValid) {
+        res.status(401).send({
+          message: "Le mot de passe est incorrect!"
+        });
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(req.body.password, 8);
+      req.body.password=hashedPassword;
+
       Users.update(req.body, {
         where: { id: idparam}
       })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Users was updated successfully."
+      .then(num => {
+        if (num == 1) {
+          return res.send({
+            message: "Users was updated successfully."
+          });
+          
+        } else {
+          return res.status(400).send({
+            message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        return res.status(500).send({
+          message: "Error updating User with id=" + idparam
         });
-      } else {
-        res.send({
-          message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + idparam
       });
-    });
-  }
+  })
+}
 
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
