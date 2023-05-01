@@ -106,7 +106,7 @@ exports.update = (req, res) => {
       .then(num => {
         if (num == 1) {
           return res.send({
-            message: "Users was updated successfully."
+            message: "Votre profil a bien été mis à jour"
           });
           
         } else {

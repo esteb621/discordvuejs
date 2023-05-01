@@ -3,24 +3,19 @@ const Roles = db.Roles;
 const Users = db.Users;
 
 checkDuplicateUsernameOrEmail = (req, res, next) => {
-  
-  if(req.body.username){
-    // Username
-    Users.findOne({
-      where: {
-        username: req.body.username
-      }
-    }).then(user => {
-      if (user) {
-        res.status(400).send({
-          message: "Ce nom d'utilisateur existe déja!"
-        });
-        return;
-      }
-      next();
-    })
-  }
-  else if(req.body.email){
+  // Username
+  Users.findOne({
+    where: {
+      username: req.body.username
+    }
+  }).then(user => {
+    if (user) {
+      res.status(400).send({
+        message: "Ce nom d'utilisateur existe déja!"
+      });
+      return;
+    }
+
     // Email
     Users.findOne({
       where: {
@@ -29,14 +24,16 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
     }).then(user => {
       if (user) {
         res.status(400).send({
-          message: "Il existe déjà un compte avec cet email!"
+          message: "Un compte avec cet email a déjà été crée!"
         });
         return;
       }
+
       next();
     });
-  }
-}
+  });
+};
+
 checkRolesExisted = (req, res, next) => {
   if (req.body.role) {
       if (!Roles.includes(req.body.role)) {

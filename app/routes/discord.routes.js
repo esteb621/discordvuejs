@@ -46,7 +46,7 @@ module.exports = app => {
 
   
     // Update a User or a Role with id
-    router.put("/update/users/:id",verifySignUp.checkDuplicateUsernameOrEmail,users.update);
+    router.put("/update/users/:id",users.update);
     router.put("/update/roles/:id", roles.update);
     router.put("/update/channel/:id", channels.update);
     router.put("/update/messages/:id", messages.update);  
