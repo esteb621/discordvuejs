@@ -67,7 +67,7 @@ require("./app/routes/auth.routes")(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/picture.routes')(app)
 
-const path = __dirname + '/app/dist/';
+const path = __dirname + '/app/views/';
 
 app.use(express.static(path));
 
