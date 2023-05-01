@@ -9,12 +9,12 @@ module.exports = app => {
 
     var router = require("express").Router();
   
-    // Create new values
+    // Create new value
     router.post("/createUser",users.create);
     router.post("/createRole", roles.create);
     router.post("/createChannel", channels.create);
     router.post("/createMessage", messages.create);
-    router.post("/createAmi", friends.create);
+    router.post("/createFriend", friends.create);
 
 
   
@@ -36,24 +36,24 @@ module.exports = app => {
 
 
   
-    // Retrieve a single User or a single Role with id
-    router.get("/users/:id", users.findOne);
-    router.get("/roles/:id", roles.findOne);
+    // Retrieve a single value
+    router.get("/user/:id", users.findOne);
+    router.get("/role/:id", roles.findOne);
     router.get("/channel/:id", channels.findOne);
-    router.get("/messages/:id", messages.findOne);
-    router.get("/messages/channel/:id",messages.getMessagesByChannelId);
-    router.get("/friends/:id", friends.findOne)
+    router.get("/message/:id", messages.findOne);
+    router.get("/message/channel/:id",messages.getMessagesByChannelId);
+    router.get("/friend/:id", friends.findOne)
 
   
     // Update a User or a Role with id
     router.put("/update/users/:id",users.update);
     router.put("/update/roles/:id", roles.update);
     router.put("/update/channel/:id", channels.update);
-    router.put("/update/messages/:id", messages.update);  
-    router.put("/update/friends/:id", friends.update);
+    router.put("/update/message/:id", messages.update);  
+    router.put("/update/friend/:id", friends.update);
 
   
-    // Delete a User or a Role with id
+    // Delete a value
     router.delete("/delete/users/:id", users.delete);
     router.delete("/delete/roles/:id", roles.delete);
     router.delete("/delete/channels/:id", channels.delete);
@@ -62,7 +62,7 @@ module.exports = app => {
 
 
    
-    // Delete all Users and all Roles
+    // Delete all
     router.delete("/delete_users", users.deleteAll);
     router.delete("/delete_roles", roles.deleteAll);
     router.delete("/delete_channels", channels.deleteAll);
