@@ -22,7 +22,8 @@ class UserService {
     try {
       const response = await axios.put(`/update/users/${id}`, {
         username: user.username,
-        password: user.password
+        password: user.password,
+        email: user.email
       });
       console.log(response.data.message);
       return response.data.message;
