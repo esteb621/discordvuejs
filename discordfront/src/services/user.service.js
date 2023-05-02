@@ -3,7 +3,7 @@ import axios from './axiosInstance';
 class UserService {
 
   async getUserById(id) {
-    const response = await axios.get(`/users/`+id);
+    const response = await axios.get(`/user/`+id);
     const data = response.data;
     return data;
   }
