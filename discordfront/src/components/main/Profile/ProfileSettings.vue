@@ -16,7 +16,7 @@
               <div class=" hover:opacity-50 w-fit h-fit self-center mr-10">
                 <img v-if="picture" :src="picture" alt=""
                     class="w-24 h-24 rounded-full fixed self-center">
-                <input v-on="newPicture" type="file" ref="fileInput" class="opacity-0 w-24 h-24 cursor-pointer"
+                <input type="file" ref="fileInput" class="opacity-0 w-24 h-24 cursor-pointer"
                       @change="handleFileInputChange">
               </div>
               <div class="flex flex-col justify-end w-64 space-y-4">
@@ -106,7 +106,6 @@
   const email = ref('');
   const username = ref('');
   const password = ref('');
-  const newPicture = ref(null);
 
 
   const schema = yup.object().shape({

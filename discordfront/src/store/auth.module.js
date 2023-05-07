@@ -62,6 +62,9 @@ export const auth = {
     },
     registerFailure(state) {
       state.status.loggedIn = false;
+    },
+    setToken(state,token){
+      state.user.accessToken=token;
     }
   },
   getters: {

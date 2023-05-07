@@ -8,7 +8,7 @@ import { defineProps, onMounted, ref } from 'vue';
 import pictureService from '@/services/picture.service';
 import store from '@/store';
 
-const props = defineProps({
+const props = defineProps({ 
     id:{
         type:Number
     },

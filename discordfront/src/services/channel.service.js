@@ -29,8 +29,12 @@ class ChannelService {
     }
   }
   async delete(id){
-    const response = await axios.delete(`/delete/channels/${id}`)
-    return response;
+    try {
+      const response = await axios.delete(`/delete/channels/${id}`);
+      return response.data;
+    } catch(e) {
+      throw e.response.data.message;
+    }
   }
 
 }

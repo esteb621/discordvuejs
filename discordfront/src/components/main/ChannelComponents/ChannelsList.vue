@@ -59,10 +59,11 @@ const addChannel = async() => {
         .then(response=>{
             channels.value.push(response);
             event.target.remove(); 
+            error.value="";
             emit('info-message', `Le channel ${channelName} a bien été crée!`);
         })
         .catch(e=>{
-            error.value=e;            
+            emit('info-message', e);
         })  
     }
     else if(event.key==='Escape'){
@@ -76,13 +77,17 @@ const addChannel = async() => {
 }
 
 async function deleteChannel(id){
-    console.log(`Suppression... de ${id}`)
     const index = channels.value.findIndex(channel => channel.id === id);
     if (index !== -1) {
-        const deletedChannel = channels.value[index].nom;
-        channels.value = channels.value.filter(channel => channel.id !== id);
-        await channelService.delete(id);
-        emit('info-message', `Le channel ${deletedChannel} a bien été supprimé!`);
+        await channelService.delete(id)
+        .then(() => {
+            const deletedChannel = channels.value[index].nom;
+            channels.value = channels.value.filter(channel => channel.id !== id);
+            emit('info-message', `Le channel ${deletedChannel} a bien été supprimé!`);
+        })
+        .catch(e => {
+            emit('info-message', e);
+        })
     }
 }
 

@@ -16,6 +16,7 @@ class PictureService {
           await axios.put("/update/users/"+id,{
             picture: response.data.downloadURL
           });
+          console.log("photo de profil uploadé")
           return response.data;
         })
         .catch(e => {
