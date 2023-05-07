@@ -4,7 +4,7 @@ const db = require("../models");
 const Users = db.Users;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.headers['authorization'];
 
   if (!token) {
     return res.status(403).send({
@@ -24,13 +24,14 @@ verifyToken = (req, res, next) => {
 };
 
 isAdmin = (req, res, next) => {
-  Users.findByPk(req.userId).then(user => {
+  const userId = req.headers['userid'];
+  Users.findByPk(userId).then(user => {
     if(user.role_id==2){
       next();
       return;
     }
     res.status(403).send({
-      message: "Vous devez être administrateur pour pouvoir accéder a cette fonction!"
+      message: "Vous devez être administrateur pour pouvoir accéder à cette fonction!"
     });
     return;    
   });
