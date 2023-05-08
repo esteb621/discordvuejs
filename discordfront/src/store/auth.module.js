@@ -1,5 +1,5 @@
-import AuthService from '@/services/auth.service.mjs';
-import pictureService from '@/services/picture.service.mjs';
+import AuthService from '@/services/auth.service';
+import pictureService from '@/services/picture.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
