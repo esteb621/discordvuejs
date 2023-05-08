@@ -18,12 +18,11 @@
         </div>
     </div>
 </template>
-<script setup>
+<script type="module" setup>
 import { onMounted, ref ,defineEmits} from 'vue';
 import ChannelComponent from './ChannelComponent.vue';
 import ChannelSkeleton from './ChannelSkeleton.vue';
-import channelService from '@/services/channel.service';
-
+import ChannelService from '../../../services/channel.service.mjs';
 
 const channels=ref([]);
 const isloading=ref(false);
@@ -32,7 +31,7 @@ const fetchChannels= async() => {
     error.value=false;
     isloading.value=true;
     try{
-        const data = await channelService.getChannels();
+        const data = await ChannelService.getChannels();
         channels.value=data;
     }
     catch{
