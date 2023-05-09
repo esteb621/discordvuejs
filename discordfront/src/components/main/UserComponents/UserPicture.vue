@@ -4,10 +4,10 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref } from 'vue';
-import pictureService from '@/services/picture.service';
-import store from '@/store';
+import { defineProps, ref,onMounted } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const props = defineProps({ 
     id:{
         type:Number
@@ -18,19 +18,13 @@ const props = defineProps({
 })
 
 let link = ref(props.link);
-let idUser = ref(props.id).value;
+let userId = ref(props.id).value;
 let isloading=ref(false);
 
 onMounted(async () => {
-    isloading.value=true;
-    if(!link.value){  
-        if(!idUser && store.getters['auth/getUser'])
-        {
-            idUser=store.getters['auth/getUser'].id
-        }
-        link.value = await pictureService.getProfilePicture(idUser);        
+    if(!store.getters['user/getPicture'](userId)){
+        await store.dispatch('user/fetchPicture',userId);
     }
-    isloading.value=false;
-
-})
+    link.value=store.getters['user/getPicture'](userId);
+});
 </script>

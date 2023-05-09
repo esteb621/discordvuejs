@@ -5,7 +5,7 @@
     ">
     <font-awesome-icon :icon="['fa', 'hashtag']" size="lg" class="text-gray-400" />
     <p class="text-gray-300 hover:text-gray-200 grow ">{{ props.name }}</p>
-    <div class="mr-auto">
+    <div class="mr-auto" v-if="admin">
       <font-awesome-icon @click="deleteChannel" :icon="['fa', 'trash']" size="sm" class="text-gray-400 cursor-pointer hover:text-gray-300" />
     </div>
   </router-link>
@@ -16,7 +16,8 @@ import { defineProps,defineEmits } from 'vue';
 
   const props = defineProps({
     name: String,
-    id: Number
+    id: Number,
+    admin: Boolean
   })
 const emit = defineEmits(['delete-channel']);
 

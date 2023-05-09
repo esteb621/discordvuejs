@@ -11,10 +11,12 @@
     </div>
 </template>
 <script setup>
-import userService from '@/services/user.service';
 import { ref,defineProps, onMounted } from 'vue';
 import UserPicture from '../UserComponents/UserPicture.vue';
+import { useStore } from 'vuex';
 
+
+const store = useStore();
 const props = defineProps({
     userId:{
         type:Number,
@@ -30,7 +32,10 @@ const message= ref(props.message);
 const username = ref('');
 
 onMounted(async () => {
-    username.value=(await userService.getUserById(userId)).username;
+    if(!store.getters['user/getUsername'](userId)){
+        await store.dispatch('user/fetchUser',userId);
+    }
+    username.value=store.getters['user/getUsername'](userId);
 });
 </script>
 <style scoped>

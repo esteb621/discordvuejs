@@ -9,7 +9,6 @@ class MessageService {
       text:message
     })
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(error => {

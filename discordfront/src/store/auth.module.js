@@ -30,8 +30,7 @@ export const auth = {
       return AuthService.register(user)
         .then(response => {
           if(user.picture){
-            console.log("Photo détectée");
-            pictureService.uploadProfilePic(response.id,user.picture)
+            pictureService.uploadProfilePic(response.id,user.picture);
           }
           if (response.accessToken){
             commit('registerSuccess', response);
