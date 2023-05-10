@@ -129,6 +129,7 @@
   isloading.value = true;
   try {
     const response = await userService.updateProfile(idUser, user);
+    console.log(response);
     emit('info-message', response);
     closeModal();
   } catch (e) {

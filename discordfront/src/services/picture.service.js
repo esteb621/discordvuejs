@@ -13,9 +13,14 @@ class PictureService {
         }
         })
         .then(async response => {
+          await axios.put("/update/users/"+id,{
+            picture: response.data.downloadURL
+          });
+          console.log("photo de profil uploadé")
           return response.data;
         })
         .catch(e => {
+          console.warn(e.response.data.message);
           return e.response.data.message;
         })
     }
@@ -26,6 +31,7 @@ class PictureService {
         return response.data.picture;
       })
       .catch(error => {
+        console.warn(error.response.data.message);
         return error.response.data.message;
       });
   }

@@ -11,6 +11,7 @@ import { defineProps, ref } from 'vue';
 import UserPicture from '@/components/main/UserComponents/UserPicture.vue'
 
 
+
 const props = defineProps({
     userId:{
         type:Number,
@@ -30,3 +31,13 @@ const username=ref(props.username).value;
 const userId=ref(props.userId).value;
 const link=ref(props.link).value;
 </script>
+<style scoped>
+/* a{
+    color: #a9aaab;
+    margin:0.2em 1em;
+    border-radius: 5px;
+    width: 90%;
+    padding:5px 10px;
+} */
+
+</style>

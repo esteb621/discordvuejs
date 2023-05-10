@@ -4,7 +4,7 @@
                     <a @click="$emit('show-modal')"
                     class="flex flex-row justify-center 
                     items-start p-2 w-44 group cursor-pointer">
-                        <UserPicture :id="store.getters['auth/getUser'].id"/>
+                        <UserPicture/>
                         <p class="px-2 font-bold">{{ username }}</p>
                         <ToolTip class="origin-bottom bottom-14" title="Modifier le profil"/>
                     </a>

@@ -27,15 +27,19 @@ import channelService from '@/services/channel.service';
 import { useRouter } from 'vue-router';
 import MessageSkeleton from './MessageSkeleton.vue';
 import router from '@/router';
-import { useStore } from 'vuex';
 const currentChannel = ref('');
 
 
 const route = useRouter();
 const isloading=ref(false);
 const messages = ref([]);
-const store = useStore();
 let idChannel = ref(null).value;
+const fetchMessages= async(id) => {
+    isloading.value=true;
+    const data = await messageService.getMessages(id);
+    messages.value=data;
+    isloading.value=false;
+}
 
 
 
@@ -54,17 +58,16 @@ function scrollToLastMessage(){
   messageList.scrollTo(0, messageList.scrollHeight);
 }
 
-watchEffect(async () => {
+watchEffect(async () => { 
+  messages.value=[];
+  isloading.value=true;
   const link=route.currentRoute.value;
   const newId = link.params.id;
-  currentChannel.value = await channelService.getChannelName(newId);
+  currentChannel.value="Veuillez selectionner un channel"
   if (link.path.includes("server") && newId) {
     idChannel = newId;
-    if(!store.getters['message/getMessagesByChannelId'](idChannel)){
-      isloading.value=true;
-      await store.dispatch('message/fetchMessages', idChannel);      
-    }
-    messages.value=store.getters['message/getMessagesByChannelId'](idChannel);
+    currentChannel.value = await channelService.getChannelName(idChannel);
+    fetchMessages(idChannel);
   }
   else if (!link.path.includes("personal")){
     router.push("/main/server")

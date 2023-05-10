@@ -192,6 +192,7 @@ function handleRegister(user) {
           loading.value = false;
           message.value = error;
       });
+      
   }
 
 

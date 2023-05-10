@@ -2,7 +2,7 @@
     <!-- Liste channels / Amis si MP -->
     <div class="w-100 flex-grow bg-gray-800">
             <p class="mt-4 p-2 pl-3 text-left text-xs cursor-default text-gray-500 hover:text-gray-300 font-bold uppercase">Salons textuels
-                <span v-if="isAdmin" @click="addChannel()"
+                <span @click="addChannel()"
                 class="text-gray-100 opacity-50
                 cursor-pointer hover:opacity-100 p-1
                 transition-all duration-200 ease-linear" id="plus">
@@ -12,7 +12,7 @@
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
             <span v-if="error" class="text-red-600 font-bold p-2">{{ error }}</span>
             <div v-if="!isloading">
-                <ChannelComponent :admin="isAdmin" v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom" @delete-channel="deleteChannel"/>
+                <ChannelComponent v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom" @delete-channel="deleteChannel"/>
             </div>
             <ChannelSkeleton v-if="isloading"/>
         </div>
@@ -23,13 +23,11 @@ import { onMounted, ref ,defineEmits} from 'vue';
 import ChannelComponent from './ChannelComponent.vue';
 import ChannelSkeleton from './ChannelSkeleton.vue';
 import channelService from '@/services/channel.service';
-import userService from '@/services/user.service';
-import store from '@/store';
+
 
 const channels=ref([]);
 const isloading=ref(false);
 const error=ref('');
-const isAdmin=ref(false);
 const fetchChannels= async() => {
     error.value=false;
     isloading.value=true;
@@ -47,13 +45,6 @@ const fetchChannels= async() => {
 
 onMounted(async () => {
     await fetchChannels();
-    await userService.getUserById(store.getters['auth/getUser'].id)
-    .then(response => {
-        if(response.role_id==2){
-            isAdmin.value=true;
-        }
-    })
-    
 });
 
 const emit = defineEmits(['info-message']);
