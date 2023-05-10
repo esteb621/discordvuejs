@@ -8,7 +8,9 @@ module.exports = app => {
     const { verifySignUp, authJwt } = require("../middleware");
 
     var router = require("express").Router();
-  
+
+    router.use(authJwt.verifyToken);
+    
     // Create new value
     router.post("/createUser",users.create);
     router.post("/createRole", roles.create);
