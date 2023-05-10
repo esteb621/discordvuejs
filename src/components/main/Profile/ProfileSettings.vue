@@ -99,7 +99,7 @@
 
 
 
-  const idUser = ref('').value;
+  const idUser = ref(store.getters['auth/getUser'].id).value;
   const message = ref('');
   const isloading = ref(false);
   const picture = ref('');
@@ -128,12 +128,9 @@
   async function handleUpdate(user) {
   isloading.value = true;
   try {
-    if(store.getters['auth/getUser'].id){
-      const response = await userService.updateProfile(idUser, user);
-      console.log(response);
-      emit('info-message', response);
-      closeModal();
-    }
+    const response = await userService.updateProfile(idUser, user);
+    emit('info-message', response);
+    closeModal();
   } catch (e) {
     message.value = e;
   }
