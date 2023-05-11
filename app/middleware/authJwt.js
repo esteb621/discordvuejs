@@ -3,25 +3,32 @@ const config = require("../config/auth.config.js");
 const db = require("../models");
 const Users = db.Users;
 
-verifyToken = (req, res, next) => {
-  let token = req.headers['authorization'];
+const { TokenExpiredError } = jwt;
+
+const catchError = (err, res) => {
+  if (err instanceof TokenExpiredError) {
+    return res.status(401).send({ message: "Unauthorized! Access Token was expired!" });
+  }
+
+  return res.sendStatus(401).send({ message: "Unauthorized!" });
+}
+
+const verifyToken = (req, res, next) => {
+  let token = req.headers["authorization"];
 
   if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
-    });
+    return res.status(403).send({ message: "No token provided!" });
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-      return res.status(401).send({
-        message: "Accès refusé!"
-      });
+      return catchError(err, res);
     }
     req.userId = decoded.id;
     next();
   });
 };
+
 
 isAdmin = (req, res, next) => {
   const userId = req.headers['userid'];

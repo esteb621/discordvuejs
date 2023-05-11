@@ -12,8 +12,15 @@ db.Roles = require("./roles.model.js")(sequelize, Sequelize);
 db.Messages = require("./messages.model.js")(sequelize, Sequelize);
 db.Channels = require("./channels.model.js")(sequelize, Sequelize);
 db.Friends = require("./friends.model.js")(sequelize, Sequelize);
+db.refreshToken = require("./refreshtoken.model.js")(sequelize, Sequelize);
 
+db.refreshToken.belongsTo(db.Users, {
+    foreignKey: 'userId', targetKey: 'id'
+});
 
+db.Users.hasOne(db.refreshToken, {
+    foreignKey: 'userId', targetKey: 'id'
+});
 
 sequelize.sync();
 
