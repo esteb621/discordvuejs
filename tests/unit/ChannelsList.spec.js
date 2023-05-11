@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue'
+import ChannelsList from '@/components/main/Channels/ChannelsList.vue'
 
 describe('ChannelsList.vue', () => {
   it('fetches channels and renders them', async () => {

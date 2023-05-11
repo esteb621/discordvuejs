@@ -22,24 +22,43 @@
   
 
 <script setup>
-import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
-import MessagesList from '@/components/main/MessageComponents/MessagesList.vue'
-import UsersList from '@/components/main/UserComponents/UsersList.vue';
+import ChannelsList from '@/components/main/Channels/ChannelsList.vue';
+import MessagesList from '@/components/main/Messages/MessagesList.vue'
+import UsersList from '@/components/main/Users/UsersList.vue';
 import Alert from '@/components/main/AlertComponent.vue';
 import ProfileBanner from '../components/main/Profile/ProfileBanner.vue';
 import ProfileSettings from '../components/main/Profile/ProfileSettings.vue';
 import SideBar from '@/components/main/SideBar/SideBar.vue';
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import EventBus from '@/common/EventBus';
 
 const showModal = ref(false);
 const info = ref("");
-
+const store = useStore()
+const router = useRouter();
 function handleInfoMessage(infoMessage) {
   info.value = infoMessage;
   setTimeout(() => {
      info.value = '';
   }, 3000);
 }
+
+const logOut = () => {
+  store.dispatch('auth/logout');
+  router.push('/login');
+};
+
+onMounted(() => {
+  EventBus.on("logout", () => {
+    logOut();
+  });
+});
+
+onBeforeUnmount(() => {
+  EventBus.remove("logout");
+});
 </script>
 
 <style>

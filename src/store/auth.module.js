@@ -40,6 +40,9 @@ export const auth = {
             return Promise.reject(response);
           }
         });
+    },
+    refreshToken({ commit }, accessToken) {
+      commit('refreshToken', accessToken);
     }
   },
   mutations: {
@@ -64,6 +67,10 @@ export const auth = {
     },
     setToken(state,token){
       state.user.accessToken=token;
+    },
+    refreshToken(state, accessToken) {
+      state.status.loggedIn = true;
+      state.user = { ...state.user, accessToken: accessToken };
     }
   },
   getters: {

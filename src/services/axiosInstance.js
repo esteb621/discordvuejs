@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from '@/store';
 import router from '@/router';
-
+import TokenService from './token.service';
 
 
 const axiosInstance = axios.create({
@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     if (store.getters['auth/getUser']) {
       config.headers['userId'] = store.getters['auth/getUser'].id;
-      config.headers['Authorization'] = store.state.auth.user.accessToken;
+      config.headers['x-access-token'] = store.state.auth.user.accessToken;
     }
     else{
       router.push('/login');
@@ -25,16 +25,35 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+
 axiosInstance.interceptors.response.use(
-  (response) => {
-    const token = response.headers.authorization;
-    if (token) {
-      store.commit('auth/setToken', token.split(' ')[1]);
-    }
-    return response;
+  (res) => {
+    return res;
   },
-  (error) => {
-    return Promise.reject(error);
+  async (err) => {
+    const originalConfig = err.config;
+
+    if (originalConfig.url !== "../auth/signin" && err.response) {
+      // Access Token was expired
+      if (err.response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true;
+        try {
+          const rs = await axiosInstance.post("../auth/refreshtoken", {
+            refreshToken: TokenService.getLocalRefreshToken(),
+          });
+          const { accessToken } = rs.data;
+
+          store.dispatch('auth/refreshToken', accessToken);
+          TokenService.updateLocalAccessToken(accessToken);
+          console.log("Access Token mis a jour!")
+          return axiosInstance(originalConfig);
+        } catch (_error) {
+          return Promise.reject(_error);
+        }
+      }
+    }
+
+    return Promise.reject(err);
   }
 );
 

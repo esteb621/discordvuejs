@@ -100,7 +100,8 @@
 
 <script setup>
   import {
-    ref, onMounted
+    ref, 
+    // onMounted
   } from 'vue';
   import {
     useStore
@@ -117,11 +118,11 @@
 
   const store = useStore();
   const router = useRouter();
-  onMounted(() => {
-    const loggedIn=store.state.auth.status.loggedIn;
-    if (loggedIn) {
-      router.push('/main');
-  }});
+  // onMounted(() => {
+  //   const loggedIn=store.state.auth.status.loggedIn;
+  //   if (loggedIn) {
+  //     router.push('/main');
+  // }});
 
   const schema = yup.object().shape({
     username: yup

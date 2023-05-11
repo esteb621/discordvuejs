@@ -4,8 +4,8 @@ import router from "./router";
 import store from "./store";
 import "./assets/style.css"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 import "@/plugins/icons";
+
 
 createApp(App)
   .use(router)

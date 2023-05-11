@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import UserPicture from '@/components/main/UserComponents/UserPicture'
+import UserPicture from '../Users/UserPicture'
 import ToolTip from '../ToolTip.vue';
 import router from '@/router';
 import userService from '@/services/user.service';

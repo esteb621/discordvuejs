@@ -1,24 +1,26 @@
 import axios from './axiosInstance';
+import TokenService from './token.service';
 
 
 class AuthService {
-  login(user) {
+  async login(user) {
     return axios
       .post('../auth/login', {
         username: user.username,
-        password: user.password
+        password: user.password 
       })
       .then(response => {
-        localStorage.setItem('user', JSON.stringify(response.data));
+        if (response.data.accessToken) {
+          TokenService.setUser(response.data);
+        }        
         return response.data;
       })
       .catch(e => {
-        console.warn(e.response.data.message);
         return e.response.data.message;
       });
   }
 
-  register(user) {
+  async register(user) {
     const formData = new FormData();
     formData.append("username", user.username);
     formData.append("email", user.email);
@@ -31,17 +33,18 @@ class AuthService {
       },
     })
     .then(response => {
-        localStorage.setItem('user', JSON.stringify(response.data));
-        return response.data;
+      if (response.data.accessToken) {
+        TokenService.setUser(response.data);
+      }
+      return response.data;
     })
     .catch(e => {
-      console.warn(e.response.data.message);
       return e.response.data.message;
     });
   }
 
   logout() {
-    localStorage.removeItem('user');
+    TokenService.removeUser();
   }
 
 }

@@ -89,6 +89,7 @@
     ErrorMessage
   } from "vee-validate";
   import * as yup from "yup";
+  import EventBus from '@/common/EventBus';
 
   const store = useStore()
   const emit = defineEmits(['close','info-message']);
@@ -128,9 +129,16 @@
   async function handleUpdate(user) {
   isloading.value = true;
   try {
-    const response = await userService.updateProfile(idUser, user);
-    emit('info-message', response);
-    closeModal();
+    await userService.updateProfile(idUser, user)
+    .then(response => {
+      emit('info-message', response);
+      closeModal();
+    })
+    .catch(e => {
+        if (e.response && e.response.status === 403) {
+            EventBus.dispatch("logout");
+        }
+    })
   } catch (e) {
     message.value = e;
   }
@@ -152,7 +160,10 @@
         email.value = response.email;
       })
       .catch(e => {
-        console.warn(e);
-      })
+        if (e.response && e.response.status === 403) {
+            EventBus.dispatch("logout");
+        }
+    })
+      
   })
 </script>

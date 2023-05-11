@@ -49,7 +49,7 @@
 
 <script setup>
   import {
-    onMounted,
+    // onMounted,
     ref
   } from 'vue';
   import {
@@ -68,11 +68,11 @@
   const store = useStore();
   const router = useRouter();
 
-  onMounted(() => {
-    const loggedIn=store.state.auth.status.loggedIn;
-    if (loggedIn) {
-      router.push('/main');
-  }});
+  // onMounted(() => {
+  //   const loggedIn=store.state.auth.status.loggedIn;
+  //   if (loggedIn) {
+  //     router.push('/main');
+  // }});
 
   const schema = yup.object().shape({
     username: yup.string().required("Un nom d'utilisateur est requis!"),
