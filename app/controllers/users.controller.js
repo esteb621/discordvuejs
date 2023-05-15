@@ -89,7 +89,7 @@ exports.update = (req, res) => {
         req.body.password,
         user.password
       );
-      
+        
       if (!passwordIsValid) {
         res.status(401).send({
           message: "Le mot de passe est incorrect!"

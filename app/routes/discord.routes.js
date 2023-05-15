@@ -5,14 +5,16 @@ module.exports = app => {
     const channels = require("../controllers/channels.controller");
     const messages = require("../controllers/messages.controller");
     const friends = require("../controllers/friends.controller.js");
-    const { verifySignUp } = require("../middleware");
+    const { verifySignUp, authJwt } = require("../middleware");
 
     var router = require("express").Router();
-  
+
+    router.use(authJwt.verifyToken);
+    
     // Create new value
     router.post("/createUser",users.create);
     router.post("/createRole", roles.create);
-    router.post("/createChannel", channels.create);
+    router.post("/createChannel",[authJwt.isAdmin], channels.create);
     router.post("/createMessage", messages.create);
     router.post("/createFriend", friends.create);
 
@@ -56,18 +58,18 @@ module.exports = app => {
     // Delete a value
     router.delete("/delete/users/:id", users.delete);
     router.delete("/delete/roles/:id", roles.delete);
-    router.delete("/delete/channels/:id", channels.delete);
+    router.delete("/delete/channels/:id",[authJwt.verifyToken, authJwt.isAdmin], channels.delete);
     router.delete("/delete/messages/:id", messages.update);
     router.delete("/delete/friends/:id", friends.delete);
 
 
    
     // Delete all
-    router.delete("/delete_users", users.deleteAll);
-    router.delete("/delete_roles", roles.deleteAll);
-    router.delete("/delete_channels", channels.deleteAll);
-    router.delete("/delete_messages", messages.deleteAll);
-    router.delete("/delete_friends", friends.deleteAll);
+    router.delete("/delete_users",[authJwt.isAdmin], users.deleteAll);
+    router.delete("/delete_roles",[authJwt.isAdmin], roles.deleteAll);
+    router.delete("/delete_channels",[authJwt.isAdmin], channels.deleteAll);
+    router.delete("/delete_messages",[authJwt.isAdmin], messages.deleteAll);
+    router.delete("/delete_friends",[authJwt.isAdmin], friends.deleteAll);
     
     app.use('/api/discord', router);
   };

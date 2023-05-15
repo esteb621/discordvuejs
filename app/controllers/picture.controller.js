@@ -22,6 +22,9 @@ exports.uploadImage = async (req, res) => {
   await uploadBytes(storageRef, image.buffer,metadata)
   .then(async ()=> {
     const downloadURL = await getDownloadURL(storageRef);
+    Users.update({picture:downloadURL}, {
+      where: { id: id}
+    })
     res.status(200).json({ downloadURL });
     console.log("Photo de profil uploadé!");
   })
