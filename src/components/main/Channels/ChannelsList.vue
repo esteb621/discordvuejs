@@ -70,6 +70,7 @@ watchEffect(async () => {
     }
     if(link.path.includes("personal")==true){
         title.value="Messages privés";
+        isAdmin.value=false;
         channels.value={};
     }
 });

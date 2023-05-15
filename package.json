@@ -24,6 +24,7 @@
     "gsap": "^3.11.5",
     "jquery": "^3.6.4",
     "mock": "^0.1.1",
+    "moxios": "^0.4.0",
     "process": "^0.11.10",
     "tailwindcss-animation-delay": "^1.0.7",
     "vee-validate": "^4.9.1",

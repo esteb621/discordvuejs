@@ -25,7 +25,6 @@ class UserService {
         password: user.password,
         email: user.email
       });
-      console.log(response.data.message);
       return response.data.message;
     } catch (e) {
       throw e.response.data.message;

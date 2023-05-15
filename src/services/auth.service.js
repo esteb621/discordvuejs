@@ -12,7 +12,7 @@ class AuthService {
       .then(response => {
         if (response.data.accessToken) {
           TokenService.setUser(response.data);
-        }        
+        }
         return response.data;
       })
       .catch(e => {

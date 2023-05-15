@@ -25,15 +25,15 @@ class ChannelService {
       });
       return response.data;
     } catch(e) {
-      throw e.response.data.message;
-    }
+        throw e.response.data.message;    
+      }
   }
   async delete(id){
     try {
       const response = await axios.delete(`/delete/channels/${id}`);
       return response.data;
     } catch(e) {
-      throw e.response.data.message;
+        throw e.response.data.message;
     }
   }
 

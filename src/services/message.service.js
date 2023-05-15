@@ -2,7 +2,7 @@ import axios from './axiosInstance';
 
 class MessageService {
 
-  async sendMessages(idUser,idChannel,message){
+  async sendMessage(idUser,idChannel,message){
     await axios.post('/createMessage', {
       user_id: idUser,
       channel_id: idChannel,

@@ -42,7 +42,7 @@ let idChannel = ref(null).value;
 
 function sendMessage(userId,channelId,message) {
   messages.value.push({ user:userId ,channel:channelId, text:message });
-  messageService.sendMessages(userId,channelId,message);
+  messageService.sendMessage(userId,channelId,message);
   nextTick(() => {
     scrollToLastMessage();
   });
