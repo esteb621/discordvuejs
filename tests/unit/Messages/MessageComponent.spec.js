@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import MessageComponent from '@/components/main/MessageComponents/MessageComponent.vue';
+import MessageComponent from '../../../src/components/main/Messages/MessageComponent.vue';
 import { nextTick } from 'process';
 
 describe('MessageComponent', () => {

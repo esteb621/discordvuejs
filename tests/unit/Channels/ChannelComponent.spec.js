@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import { RouterLink } from 'vue-router';
-import ChannelComponent from '@/components/main/ChannelComponents/ChannelComponent.vue';
+import ChannelComponent from '../../../src/components/main/Channels/ChannelComponent.vue';
 
 describe('ChannelComponent', () => {
   it('affiche correctement le nom du channel', () => {

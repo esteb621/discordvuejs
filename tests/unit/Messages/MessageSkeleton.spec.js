@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
-import MessageComponent from '@/components/main/MessageComponents/MessageComponent.vue';
-import UserPicture from '@/components/main/UserComponents/UserPicture.vue';
-import userService from '@/services/user.service';
+import MessageComponent from '../../../src/components/main/Messages/MessageComponent.vue';
+import UserPicture from '../../../src/components/main/Users/UserPicture.vue';
+import userService from '../../../src/services/user.service.js';
 
 jest.mock('@/services/user.service');
 

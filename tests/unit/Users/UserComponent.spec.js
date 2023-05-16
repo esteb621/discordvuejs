@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { RouterLink } from 'vue-router';
-import UserComponent from '@/components/main/UserComponents/UserComponent.vue';
-import UserPicture from '@/components/main/UserComponents/UserPicture.vue';
+import UserComponent from '../../../src/components/main/Users/UserComponent.vue';
+import UserPicture from '../../../src/components/main/Users/UserPicture.vue';
 
 describe('YourComponent', () => {
   it('renders correctly', () => {

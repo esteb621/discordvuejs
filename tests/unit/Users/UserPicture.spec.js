@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import UserPicture from '@/components/main/UserComponents/UserPicture.vue';
+import UserPicture from '../../../src/components/main/Users/UserPicture.vue';
 
 describe('YourComponent', () => {
   it('renders correctly when loading', () => {

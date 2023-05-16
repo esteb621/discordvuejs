@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import ChannelSkeleton from '@/components/main/ChannelComponents/ChannelSkeleton.vue';
+import ChannelSkeleton from '../../../src/components/main/Channels/ChannelSkeleton.vue';
 
 describe('SkeletonComponent', () => {
   it('renders correctly', () => {

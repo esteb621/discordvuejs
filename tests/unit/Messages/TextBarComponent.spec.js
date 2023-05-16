@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import TextBarComponent from '@/components/main/MessageComponents/TextBarComponent.vue';
+import TextBarComponent from '../../../src/components/main/Messages/TextBarComponent.vue';
 
 describe('TextBarComponent', () => {
   it('emits a "send-message" event when the form is submitted', async () => {

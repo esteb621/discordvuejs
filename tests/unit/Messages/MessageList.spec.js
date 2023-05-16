@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import MessagesList from '@/components/main/MessageComponents/MessagesList.vue';
-import MessageComponent from '@/components/main/MessageComponents/MessageComponent.vue';
-import MessageSkeleton from '@/components/main/MessageComponents/MessageSkeleton.vue';
-import TextBarComponent from '@/components/main/MessageComponents/TextBarComponent.vue';
+import MessagesList from '../../../src/components/main/Messages/MessagesList.vue';
+import MessageComponent from '../../../src/components/main/Messages/MessageComponent.vue';
+import MessageSkeleton from '../../../src/components/main/Messages/MessageSkeleton.vue';
+import TextBarComponent from '../../../src/components/main/Messages/TextBarComponent.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 

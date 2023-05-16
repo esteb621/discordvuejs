@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import ProfileSettings from '@/components/main/Profile/ProfileSettings.vue';
+import ProfileSettings from '../../../src/components/main/Profile/ProfileSettings.vue';
 
 describe('ProfileSettings', () => {
   it('emits a "close" event when the cancel button is clicked', async () => {

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import UserSkeleton from '@/components/main/UserComponents/UserSkeleton.vue';
+import UserSkeleton from '../../../src/components/main/Users/UserSkeleton.vue';
 
 describe('YourComponent', () => {
   it('renders correctly', () => {

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
-import ChannelsList from '@/components/main/ChannelComponents/ChannelsList.vue';
-import ChannelComponent from '@/components/main/ChannelComponents/ChannelComponent.vue';
-import ChannelSkeleton from '@/components/main/ChannelComponents/ChannelSkeleton.vue';
+import ChannelsList from '../../../src/components/main/Channels/ChannelsList.vue';
+import ChannelComponent from '../../../src/components/main/Channels/ChannelComponent.vue';
+import ChannelSkeleton from '../../../src/components/main/Channels/ChannelSkeleton.vue';
 
 describe('ChannelsList', () => {
   it('renders correctly', () => {

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import SideBar from '@/components/main/SideBar/SideBar.vue';
-import SideBarIcon from '@/components/main/SideBar/SideBarIcon.vue';
+import SideBar from '../../../src/components/main/SideBar/SideBar.vue';
+import SideBarIcon from '../../../src/components/main/SideBar/SideBarIcon.vue';
 
 describe('SideBar', () => {
   it('renders correctly', () => {

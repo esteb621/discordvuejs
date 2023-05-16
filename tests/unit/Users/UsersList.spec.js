@@ -1,8 +1,8 @@
 
 import { mount } from '@vue/test-utils';
-import UsersList from '@/components/main/UserComponents/UsersList.vue';
-import UserComponent from '@/components/main/UserComponents/UserComponent.vue';
-import UserSkeleton from '@/components/main/UserComponents/UserSkeleton.vue';
+import UsersList from '../../../src/components/main/Users/UsersList.vue';
+import UserComponent from '../../../src/components/main/Users/UserComponent.vue';
+import UserSkeleton from '../../../src/components/main/Users/UserSkeleton.vue';
 import userService from '@/services/user.service.js';
 
 jest.mock('@/services/user.service');

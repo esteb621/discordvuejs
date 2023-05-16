@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import ProfileComponent from '@/components/main/Profile/ProfileBanner.vue';
+import ProfileComponent from '../../../src/components/main/Profile/ProfileBanner.vue';
 
 describe('ProfileComponent', () => {
   it('emits a "show-modal" event when the profile link is clicked', async () => {
