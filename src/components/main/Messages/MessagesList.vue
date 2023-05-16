@@ -21,7 +21,7 @@
 <script setup>
 import TextBarComponent from './TextBarComponent.vue';
 import MessageComponent from './MessageComponent.vue';
-import { ref, nextTick, watchEffect } from 'vue';
+import { ref, nextTick, watchEffect, onBeforeUnmount } from 'vue';
 import messageService from '@/services/message.service';
 import { useRouter } from 'vue-router';
 import MessageSkeleton from './MessageSkeleton.vue';
@@ -54,23 +54,36 @@ function scrollToLastMessage(){
 }
 
 watchEffect(async () => {
-  const link=route.currentRoute.value;
+  const link = route.currentRoute.value;
   const newId = link.params.id;
-  if (link.path.includes("server") && newId) {
+  
+  if (link.path.includes('server') && newId) {
     idChannel = newId;
-    if(!store.getters['message/getMessagesByChannelId'](idChannel)){
-      isloading.value=true;
+    
+    if (!store.getters['message/getMessagesByChannelId'](idChannel)) {
+      isloading.value = true;
       await store.dispatch('message/fetchMessages', idChannel);
     }
-    messages.value=store.getters['message/getMessagesByChannelId'](idChannel);
+    
+    messages.value = store.getters['message/getMessagesByChannelId'](idChannel);
     currentChannel.value = store.getters['message/getChannelNameById'](idChannel);
+  
+  } else if (!link.path.includes('personal')) {
+    router.push('/main/server');
   }
-  else if (!link.path.includes("personal")){  
-    router.push("/main/server")
-  }
-  isloading.value=false;
+  
+  isloading.value = false;
 });
 
+    // Définir une intervalle de 5 secondes pour appeler store.dispatch
+    const intervalId = setInterval(async () => {
+      await store.dispatch('message/fetchMessages', idChannel);
+    }, 5000);
+
+    // Avant de détruire le composant ou l'effet, effacer l'intervalle
+    onBeforeUnmount(() => {
+      clearInterval(intervalId);
+    });
 </script>
 
 <style>
