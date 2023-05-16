@@ -21,18 +21,18 @@ describe('MessageService', () => {
           text: message,
         },
       };
-      axios.post.mockResolvedValueOnce(mockResponse);
-
+      axios.post.mockResolvedValueOnce({ data: mockResponse });
+    
       const response = await MessageService.sendMessage(idUser, idChannel, message);
-
+    
       expect(axios.post).toHaveBeenCalledWith('/createMessage', {
         user_id: idUser,
         channel_id: idChannel,
         text: message,
       });
-      expect(response).toBe();
+      expect(response).toEqual(mockResponse.data);
     });
-
+        
     it('should log an error if sending a message fails', async () => {
       const idUser = 1;
       const idChannel = 1;

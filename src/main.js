@@ -5,6 +5,7 @@ import store from "./store";
 import "./assets/style.css"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "@/plugins/icons";
+import store from './store'
 
 
 createApp(App)
