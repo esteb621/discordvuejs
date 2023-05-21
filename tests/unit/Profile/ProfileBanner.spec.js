@@ -1,9 +1,20 @@
 import { mount } from '@vue/test-utils';
 import ProfileComponent from '../../../src/components/main/Profile/ProfileBanner.vue';
+import moxios from 'moxios';
+import axios from 'axios';
 
 describe('ProfileComponent', () => {
-  it('emits a "show-modal" event when the profile link is clicked', async () => {
+  beforeEach(()=>{
     const wrapper = mount(ProfileComponent);
+    moxios.install(axios);
+  });
+
+  afterEach(()=>{
+    wrapper.unmount();
+    moxios.uninstall();
+  })
+  
+  it('emits a "show-modal" event when the profile link is clicked', async () => {
 
     // Cliquer sur le lien du profil
     const link = wrapper.find('.group.cursor-pointer');

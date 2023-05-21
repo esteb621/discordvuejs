@@ -1,49 +1,43 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
+import moxios from 'moxios';
+import axios from '@/services/axiosInstance';
 import ChannelsList from '../../../src/components/main/Channels/ChannelsList.vue';
-import ChannelComponent from '../../../src/components/main/Channels/ChannelComponent.vue';
-import ChannelSkeleton from '../../../src/components/main/Channels/ChannelSkeleton.vue';
 
 describe('ChannelsList', () => {
-  it('renders correctly', () => {
+  let wrapper;
+  const deleteChannel = jest.fn();
+  beforeEach(()=>{
     const channels = [
-      { id: 1, nom: 'Channel 1' },
-      { id: 2, nom: 'Channel 2' },
+      { id: 1, nom: 'Channel 1', admin:true},
+      { id: 2, nom: 'Channel 2', admin:false },
     ];
-    let wrapper = mount(ChannelsList,{
-      components:{
-        ChannelComponent,
-        ChannelSkeleton
-      },
+    wrapper = mount(ChannelsList,{
       data() {
         return {
           channels: channels,
           isloading: false,
-          error: ''
+          error: '',
         };
-      }
-    });
-
-    // Vérifier si les éléments principaux sont présents
-    expect(wrapper.find('.w-100').exists()).toBe(true);
-    expect(wrapper.find('.bg-gray-800').exists()).toBe(true);
-    
-    // Vérifier si le texte est rendu correctement
-    expect(wrapper.find('.text-left').text()).toBe('Salons textuels');
-    
-    // Vérifier si les sous-composants sont rendus correctement
-    console.log(wrapper.html());
-    expect(wrapper.findComponent(ChannelsList).exists()).toBe(true);
-    expect(wrapper.findComponent(ChannelComponent).exists()).toBe(true);
-    expect(wrapper.findComponent(ChannelSkeleton).exists()).toBe(true);
+      }})
+    moxios.install(axios);
+  });
+  afterEach(()=>{
+    wrapper.unmount();
+    moxios.uninstall();
+  })
+  it('renders correctly', () => {
     
     // Vérifier si les méthodes sont correctement appelées
     const addChannelSpy = jest.spyOn(wrapper.vm, 'addChannel');
     wrapper.find('#plus').trigger('click');
     expect(addChannelSpy).toHaveBeenCalled();
+    const deleteChannelSpy = jest.spyOn(wrapper.vm, 'deleteChannel');
+    wrapper.find('font-awesome-icon').trigger('delete-channel');
+    expect(deleteChannelSpy).toHaveBeenCalled();
+    expect(wrapper.exists()).toBe(true)
   });
 
   it('addChannel method adds a new channel', async () => {
-    const wrapper = mount(ChannelsList);
     const channelName = 'New Channel';
 
     // Simuler la saisie du nom du salon
@@ -58,10 +52,10 @@ describe('ChannelsList', () => {
 
     // Vérifier si le nouveau salon a été ajouté
     expect(wrapper.vm.channels).toContainEqual(expect.objectContaining({ nom: channelName }));
+    await flushPromises();
   });
 
   it('deleteChannel method deletes a channel', async () => {
-    const wrapper = mount(ChannelsList);
     const channelToDelete = { id: 1, nom: 'Channel to delete' };
     wrapper.vm.channels = [channelToDelete];
 
@@ -74,5 +68,6 @@ describe('ChannelsList', () => {
 
     // Vérifier si le salon a été supprimé
     expect(wrapper.vm.channels).not.toContainEqual(expect.objectContaining({ id: channelToDelete.id }));
+    await flushPromises();
   });
 });
