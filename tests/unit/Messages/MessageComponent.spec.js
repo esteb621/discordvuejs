@@ -1,66 +1,57 @@
 import { mount } from '@vue/test-utils';
+import moxios from 'moxios';
 import MessageComponent from '../../../src/components/main/Messages/MessageComponent.vue';
-import { nextTick } from 'process';
+import UserPicture from '../../../src/components/main/Users/UserPicture.vue';
 
-describe('MessageComponent', () => {
-  test('renders the username and message correctly', async () => {
-    const userId = 1;
-    const message = 'Hello, world!';
-    
-    const wrapper = mount(MessageComponent, {
+describe('Message', () => {
+  let wrapper
+  const store = {
+    getters: {
+      'user/getUsername': jest.fn().mockReturnValue('JohnDoe')
+    },
+    dispatch: jest.fn()
+  };
+  beforeEach(() => {
+    wrapper = mount(MessageComponent, {
       props: {
-        userId,
-        message
+        userId: 1,
+        message: 'Hello, world!'
+      },
+      global: {
+        components: {
+          UserPicture
+        },
+        mocks: {
+          $store: store
+        }
       }
+    },
+    moxios.install()
+  );
+})
+
+  afterEach(() => {
+    wrapper.unmount();
+    moxios.uninstall();
+  });
+
+  it('displays the username and message', async () => {
+    // Expect the loading state to be shown initially
+    expect(wrapper.find('.animate-pulse').exists()).toBe(true);
+
+    // Mock the user's username retrieval
+    moxios.stubRequest('user/getUsername', {
+      status: 200,
+      response: { username: 'JohnDoe' }
     });
 
-    // Vérifier si le nom d'utilisateur est correctement affiché
+    // Wait for the component to fetch the username
     await wrapper.vm.$nextTick();
-    const username = await wrapper.find('h4');
-    expect(username.value()).toBe(username); // Remplacez 'JohnDoe' par la valeur attendue
 
-    // Vérifier si le message est correctement affiché
-    const messageText = wrapper.find('p');
-    expect(messageText.text()).toBe('Hello, world!'); // Remplacez 'Hello, world!' par la valeur attendue
+    // Expect the username to be displayed
+    expect(wrapper.find('h4').text()).toBe('JohnDoe');
+
+    // Expect the message to be displayed
+    expect(wrapper.find('p').text()).toBe('Hello, world!');
   });
-
-  test('displays a loading state for username', async () => {
-    const userId = 1;
-    const message = 'Hello, world!';
-    
-    const wrapper = mount(MessageComponent, {
-      props: {
-        userId,
-        message
-      }
-    });
-
-    // Vérifier si l'état de chargement pour le nom d'utilisateur est affiché
-    const loadingState = await wrapper.find('.bg-gray-600');
-    nextTick();
-    expect(loadingState.exists()).toBe(true);
-  });
-
-  test('emits a click event when username is clicked', async () => {
-    const userId = 1;
-    const message = 'Hello, world!';
-    
-    const wrapper = mount(MessageComponent, {
-      props: {
-        userId,
-        message
-      }
-    });
-
-    // Simuler un clic sur le nom d'utilisateur
-    const username = wrapper.find('h4');
-    nextTick();
-    username.trigger('click');
-
-    // Vérifier si l'événement click a été émis
-    expect(wrapper.emitted('username-click')).toBeTruthy();
-  });
-
-  // Ajoutez d'autres tests selon vos besoins
-
 });

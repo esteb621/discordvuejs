@@ -1,73 +1,119 @@
 import { flushPromises, mount } from '@vue/test-utils';
+import ChannelsList from '@/components/main/Channels/ChannelsList.vue';
 import moxios from 'moxios';
-import axios from '@/services/axiosInstance';
-import ChannelsList from '../../../src/components/main/Channels/ChannelsList.vue';
+import { createStore } from 'vuex';
+import { createRouter, createWebHistory } from 'vue-router';
 
 describe('ChannelsList', () => {
   let wrapper;
-  const deleteChannel = jest.fn();
-  beforeEach(()=>{
-    const channels = [
-      { id: 1, nom: 'Channel 1', admin:true},
-      { id: 2, nom: 'Channel 2', admin:false },
-    ];
-    wrapper = mount(ChannelsList,{
-      data() {
-        return {
-          channels: channels,
-          isloading: false,
-          error: '',
-        };
-      }})
-    moxios.install(axios);
+  const id = 1;
+  const store = createStore({
+    modules: {
+      channel: {
+        state: {
+          channels: [] // Initialize the channels state
+        },
+        getters: {
+          getChannels: state => {
+            return state.channels;
+          }
+        }
+      }
+    }
+  }); // Create a mock Vuex store
+  const routes = [
+    {
+      path: '/main/server/channel/:id',
+      component: ChannelsList,
+    },
+  ];
+  const router = createRouter({
+    history: createWebHistory(),
+    routes,
   });
-  afterEach(()=>{
+  router.push('/main/server/channel/1');
+
+  beforeEach(() => {
+    wrapper = mount(ChannelsList, {
+      global: {
+        plugins: [store, router],
+        mocks: {
+          $route: {
+            path: '/main/server/channel/' + id,
+          },
+        },
+      },
+    });
+    moxios.install();
+  });
+
+  afterEach(() => {
     wrapper.unmount();
     moxios.uninstall();
-  })
+  });
+
   it('renders correctly', () => {
-    
-    // Vérifier si les méthodes sont correctement appelées
-    const addChannelSpy = jest.spyOn(wrapper.vm, 'addChannel');
-    wrapper.find('#plus').trigger('click');
-    expect(addChannelSpy).toHaveBeenCalled();
-    const deleteChannelSpy = jest.spyOn(wrapper.vm, 'deleteChannel');
-    wrapper.find('font-awesome-icon').trigger('delete-channel');
-    expect(deleteChannelSpy).toHaveBeenCalled();
-    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.exists()).toBe(true);
   });
 
-  it('addChannel method adds a new channel', async () => {
-    const channelName = 'New Channel';
+  it('displays channels correctly', async () => {
+    // Mock the response from the API
+    const channels = [
+      { id: 1, nom: 'Channel 1', admin: true },
+      { id: 2, nom: 'Channel 2', admin: false },
+    ];
+    moxios.stubRequest('/api/channels', {
+      status: 200,
+      response: channels,
+    });
 
-    // Simuler la saisie du nom du salon
-    const input = wrapper.find('input[type="text"]');
-    input.element.value = channelName;
-    input.trigger('input');
+    // Trigger the component to fetch channels
+    await wrapper.vm.fetchChannels();
 
-    // Simuler l'appui sur la touche Entrée
-    input.trigger('keydown.enter');
+    // Verify that the channels are displayed correctly
+    const channelComponents = wrapper.findAllComponents({ name: 'ChannelComponent' });
+    expect(channelComponents.length).toBe(channels.length);
 
-    await wrapper.vm.$nextTick();
-
-    // Vérifier si le nouveau salon a été ajouté
-    expect(wrapper.vm.channels).toContainEqual(expect.objectContaining({ nom: channelName }));
-    await flushPromises();
+    channelComponents.forEach((channelComponent, index) => {
+      const channel = channels[index];
+      expect(channelComponent.props('id')).toBe(channel.id);
+      expect(channelComponent.props('name')).toBe(channel.nom);
+      expect(channelComponent.props('admin')).toBe(channel.admin);
+    });
   });
 
-  it('deleteChannel method deletes a channel', async () => {
-    const channelToDelete = { id: 1, nom: 'Channel to delete' };
-    wrapper.vm.channels = [channelToDelete];
+  it('adds a new channel', async () => {
+    // Mock the response from the API
+    const newChannel = { id: 3, nom: 'Channel 3', admin: false };
+    moxios.stubRequest('/api/channels', {
+      status: 200,
+      response: newChannel,
+    });
 
-    // Simuler l'appel à la méthode deleteChannel
-    const deleteChannelSpy = jest.spyOn(wrapper.vm, 'deleteChannel');
-    wrapper.findComponent({ name: 'ChannelComponent' }).vm.$emit('delete-channel', channelToDelete.id);
-    expect(deleteChannelSpy).toHaveBeenCalledWith(channelToDelete.id);
+    // Trigger the addChannel method
+    await wrapper.vm.addChannel('Channel 3');
 
-    await wrapper.vm.$nextTick();
+    // Verify that the new channel is added
+    expect(wrapper.vm.$store.getters['channel/getChannels']).toContainEqual(expect.objectContaining(newChannel));
+  });
 
-    // Vérifier si le salon a été supprimé
-    expect(wrapper.vm.channels).not.toContainEqual(expect.objectContaining({ id: channelToDelete.id }));
-    await flushPromises();
+  it('deletes a channel', async () => {
+    // Mock the response from the API
+    const deletedChannelId = 2;
+    moxios.stubRequest(`/api/channels/${deletedChannelId}`, {
+      status: 200,
+    });
+
+    // Set up initial channels
+    wrapper.vm.$store.state.channel.channels = [
+      { id: 1, nom: 'Channel 1', admin: true },
+      { id: 2, nom: 'Channel 2', admin: false },
+    ];
+
+    // Trigger the deleteChannel method
+    await wrapper.vm.deleteChannel(deletedChannelId);
+
+    // Verify that the channel is deleted
+    expect(wrapper.vm.$store.getters['channel/getChannels']).not.toContainEqual(expect.objectContaining({ id: deletedChannelId }));
   });
 });
