@@ -2,7 +2,7 @@ import axios from "./axiosInstance";
 
 
 class PictureService {
-    uploadProfilePic(id,image){
+    async uploadProfilePic(id,image){
         const formData = new FormData();
         formData.append('picture',image);
         formData.append('id',id);

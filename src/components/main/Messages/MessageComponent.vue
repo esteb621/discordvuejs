@@ -14,7 +14,7 @@
 import { ref,defineProps, onMounted } from 'vue';
 import UserPicture from '../Users/UserPicture.vue';
 import { useStore } from 'vuex';
-
+    
 
 const store = useStore();
 const props = defineProps({

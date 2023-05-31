@@ -5,7 +5,7 @@
           <h2 v-if="!isloading" class="text-gray-300"><font-awesome-icon :icon="['fa', 'hashtag']" class="text-gray-500" /> {{ currentChannel }}</h2>
           <div v-if="isloading" class="animate-pulse bg-gray-600 rounded-md w-20 h-6"></div>
         </div>
-        <div v-if="route.currentRoute.value.params.id" id="message-container" class="flex flex-col w-100 snap-y " >
+        <div v-if="route.currentRoute.value.params.id" id="message-container" class="flex flex-col w-100 snap-y bg-gray-00" >
           <div v-if="!isloading" class="flex flex-col p-2 ml-3 space-y-2 text-left">
             <font-awesome-icon :icon="['fa', 'hashtag']" class="p-4 rounded-full text-3xl w-10 h-10 bg-gray-600 text-gray-300  " />
             <h2 class="text-gray-100 text-3xl font-bold w-fit">Bienvenue dans #{{ currentChannel }}!</h2>
@@ -77,7 +77,9 @@ watchEffect(async () => {
 
     // Définir une intervalle de 5 secondes pour appeler store.dispatch
     const intervalId = setInterval(async () => {
-      await store.dispatch('message/fetchMessages', idChannel);
+      if(idChannel){
+        await store.dispatch('message/fetchMessages', idChannel);
+      }
     }, 5000);
 
     // Avant de détruire le composant ou l'effet, effacer l'intervalle
@@ -105,7 +107,5 @@ h2{
     padding: 0 ;
 
 }
-
-
 
 </style>

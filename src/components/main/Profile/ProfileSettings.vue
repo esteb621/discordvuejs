@@ -12,14 +12,15 @@
             <h2 class="text-xl text-center leading-6 font-medium text-gray-200">
               Modifier votre profil
             </h2>
-            <Form class="space-y-6 flex flex-row" @submit="handleUpdate" :validation-schema="schema">
+            <Form @submit="handleUpdate" :validation-schema="schema">
+              <div class="space-y-6 flex flex-row">
               <div class=" hover:opacity-50 w-fit h-fit self-center mr-10">
-                <img v-if="picture" :src="picture" alt=""
+                <img v-if="url" :src="url" alt="" id="picture"
                     class="w-24 h-24 rounded-full fixed self-center">
-                <input type="file" ref="fileInput" class="opacity-0 w-24 h-24 cursor-pointer"
-                      @change="handleFileInputChange">
+                <Field v-model="inputPicture" name="picture" @change="loadFile" type="file" accept=".jpg,.jpeg,.gif,.png,.heic"
+                id="profile_picture" class="opacity-0 w-24 h-24 cursor-pointer" />
               </div>
-              <div class="flex flex-col justify-end w-64 space-y-4">
+              <div class="flex flex-col justify-end w-full space-y-4">
                 <div>
                   <label for="username"
                     class="block mb-2 text-sm font-medium text-gray-200 dark:text-white">Pseudo</label>
@@ -44,11 +45,10 @@
                     required />
                   <ErrorMessage name="password" class="text-red-700 font-bold " />
                 </div>
-                <!-- <div>
-                        <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-200 dark:text-white">Confirmer le mot de passe</label>
-                        <Field type="password" name="confirmPassword" id="confirmPassword" placeholder="••••••••" class="bg-colors-gray-form text-white w-full px-4 py-2 rounded-md border-none  focus:border-blue-500 focus:outline-none" required/>
-                    </div> -->
-                <div class="sm:px-6 flex flex-row justify-end">
+              </div>
+              </div>
+              <div class="flex flex-row justify-end">
+                  <button type="button" class="self-start mt-3 w-full inline-flex justify-center rounded-md shadow-sm px-4 py-2 bg-gray-500 text-base font-medium text-gray-300 hover:bg-gray-600 duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Supprimer le compte</button>
                   <button type="button" @click="closeModal()"
                     class="mt-3 w-full inline-flex justify-center rounded-md shadow-sm px-4 py-2 bg-gray-500 text-base font-medium text-gray-300 hover:bg-gray-600 duration-200  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                     Annuler
@@ -62,7 +62,6 @@
                     </span>
                   </button>
                 </div>
-              </div>
             </Form>
               <p v-if="message" class="text-red-700 font-bold text-bold col-span-12 text-center mt-3">{{ message }}</p>
           </div>
@@ -103,7 +102,8 @@
   const idUser = ref(store.getters['auth/getUser'].id).value;
   const message = ref('');
   const isloading = ref(false);
-  const picture = ref('');
+  const inputPicture = ref(null);
+  const url = ref(null);
   const email = ref('');
   const username = ref('');
   const password = ref('');
@@ -122,22 +122,33 @@
       .max(50, "Cet email est trop long!"),
     password: yup
       .string()
-      .required("Votre mot de passe est requis pour confirmer les changements!")
+      .required("Votre mot de passe est requis pour confirmer les changements!"),
+    inputPicture: yup
+      .string()
+      .nullable()
   });
+
+
+  function loadFile(event) {
+    const file = event.target.files[0];
+    url.value=URL.createObjectURL(file);
+
+  }
 
 
   async function handleUpdate(user) {
   isloading.value = true;
   try {
-    await userService.updateProfile(idUser, user)
-    .then(response => {
+    await userService.updateProfile(idUser, user,url.value)
+    .then(async response => {
+      if(inputPicture.value){
+        await pictureService.uploadProfilePic(idUser,inputPicture.value);
+      }
       emit('info-message', response);
       closeModal();
     })
     .catch(e => {
-        if (e.response && e.response.status === 403) {
-            EventBus.dispatch("logout");
-        }
+      message.value=e;
     })
   } catch (e) {
     message.value = e;
@@ -145,15 +156,8 @@
   isloading.value = false;
 }
 
-  async function handleFileInputChange(){
-    const file = event.target.files[0];
-      if (file) {
-        this.uploadPicture(file);
-      }
-  }
-
   onMounted(async () => {
-    picture.value = await pictureService.getProfilePicture(idUser);
+    url.value = await pictureService.getProfilePicture(idUser);
     await userService.getUserById(idUser)
       .then(response => {
         username.value = response.username;
@@ -163,7 +167,7 @@
         if (e.response && e.response.status === 403) {
             EventBus.dispatch("logout");
         }
-    })
+    })  
       
   })
 </script>
