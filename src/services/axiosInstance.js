@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '@/store';
-import router from '@/router';
+// import router from '@/router';
 import TokenService from './token.service';
 
 
@@ -11,12 +11,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (store.getters['auth/getUser']) {
+    const token = TokenService.getLocalAccessToken();
+    if (token) {
       config.headers['userId'] = store.getters['auth/getUser'].id;
-      config.headers['x-access-token'] = store.state.auth.user.accessToken;
-    }
-    else{
-      router.push('/login');
+      config.headers["x-access-token"] = token;
     }
     return config;
   },
@@ -33,7 +31,7 @@ axiosInstance.interceptors.response.use(
   async (err) => {
     const originalConfig = err.config;
 
-    if (originalConfig.url !== "../auth/signin" && err.response) {
+    if (originalConfig.url !== "../auth/login" && err.response) {
       // Access Token was expired
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;

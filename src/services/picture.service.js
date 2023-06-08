@@ -2,7 +2,7 @@ import axios from "./axiosInstance";
 
 
 class PictureService {
-    uploadProfilePic(id,image){
+    async uploadProfilePic(id,image){
         const formData = new FormData();
         formData.append('picture',image);
         formData.append('id',id);
@@ -20,7 +20,7 @@ class PictureService {
         })
     }
 
-  getProfilePicture(idUser) {
+  async getProfilePicture(idUser) {
     return axios.get(`../picture/${idUser}`)
       .then(response => {
         return response.data.picture;
@@ -29,6 +29,7 @@ class PictureService {
         return error.response.data.message;
       });
   }
+
 }
 
 export default new PictureService();
