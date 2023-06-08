@@ -22,6 +22,12 @@ db.Users.hasOne(db.refreshToken, {
     foreignKey: 'userId', targetKey: 'id'
 });
 
+db.Users.hasMany(db.refreshToken, {
+    foreignKey: 'userId',
+    targetKey: 'id',
+    onDelete: 'CASCADE'
+});
+
 sequelize.sync();
 
 

@@ -1,7 +1,7 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Users = db.Users;
-const pictureController = require("../controllers/picture.controller")
+const Messages = db.Messages;
 var bcrypt = require("bcryptjs");
 
 // Create and Save a new User
@@ -179,28 +179,36 @@ exports.updatePassword = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Users.destroy({
-    where: { id: id }
+  Messages.destroy({
+    where: {user_id:id},
+    truncate: false
   })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "User was deleted successfully!"
-        });
-        return;
-      } else {
-        res.send({
-          message: `Cannot delete User with id=${id}. Maybe User was not found!`
-        });
-        return;
-      }
+  .then(()=> {
+    Users.destroy({
+      where: { id: id },
+      cascade: true
     })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete User with id=" + id
-      });
-      return;
-    });
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Votre compte a bien été supprimé. Merci d'avoir utilisé nos services!"
+          });
+          return;
+        } else {
+          res.send({
+            message: `Cannot delete User with id=${id}. Maybe User was not found!`
+          });
+          return;
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Could not delete User with id=" + id,
+          error:err
+        });
+        return;
+      });    
+  });
 };
 
 // Delete all Users from the database.

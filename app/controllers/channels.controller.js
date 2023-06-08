@@ -1,5 +1,6 @@
 const db = require("../models");
 const Channels = db.Channels;
+const Messages = db.Messages;
 const Op = db.Sequelize.Op;
 
 // Créer et enregister un nouveau channel
@@ -98,7 +99,7 @@ exports.update = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Channel a bien été mis à jour."
+          message: "Le channel a bien été mis à jour."
         });
       }
        else {
@@ -118,25 +119,32 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Channels.destroy({
-    where: { id: id }
+  Messages.destroy({
+    where: {channel_id:id},
+    truncate: false
   })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Channel was deleted successfully!"
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Channel with id=${id}. Maybe Channel was not found!`
-        });
-      }
+  .then(()=> {
+    Channels.destroy({
+      where: { id: id }
     })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete Channel with id=" + id
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Le channel a bien été supprimé"
+          });
+        } else {
+          res.send({
+            message: `Cannot delete Channel with id=${id}. Maybe Channel was not found!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Une erreur interne est survenue. Veuillez réessayer",
+          error:err
+        });
       });
-    });
+  })
 };
 
 // Delete all Channels from the database.
