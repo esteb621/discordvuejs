@@ -86,13 +86,16 @@ const addChannel = async() => {
 }
 
 async function deleteChannel(id){
-    store.dispatch("channel/deleteChannel",{id})
-    .then(response=> {
-        emit('info-message', response);
-    })
-    .catch(e => {
-        emit('info-message', e);
-    })
+    console.log(id)
+    await channelService.delete(id)
+          .then(async (response)=>{
+              store.dispatch("channel/fetchChannels");
+              route.push('./1')
+              emit('info-message', response.message);
+          })
+          .catch(e => {
+            emit('info-message',e);
+          })
 }
 
 </script>

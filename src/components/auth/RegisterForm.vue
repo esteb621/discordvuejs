@@ -118,12 +118,6 @@
 
   const store = useStore();
   const router = useRouter();
-  // onMounted(() => {
-  //   const loggedIn=store.state.auth.status.loggedIn;
-  //   if (loggedIn) {
-  //     router.push('/main');
-  // }});
-
   const schema = yup.object().shape({
     username: yup
       .string()
@@ -184,10 +178,11 @@ function handleRegister(user) {
       message.value = "";
       loading.value = true;
       store.dispatch("auth/register", user)
-      .then(async response => {
+      .then(response => {
+        console.log("compté crée")
         loading.value = false;
         message.value = response.data;
-          router.push("/main");
+        router.push("/main");
         })
       .catch(error => {
           loading.value = false;

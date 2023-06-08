@@ -10,7 +10,7 @@ export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-    login({ commit }, user) {
+    async login({ commit }, user) {
       return AuthService.login(user)
         .then(response => {
           if (response.accessToken) {
@@ -26,13 +26,15 @@ export const auth = {
       AuthService.logout();
       commit('logout');
     },
-    register({ commit }, user) {
+    async register({ commit }, user) {
       return AuthService.register(user)
         .then(response => {
+          console.log(response);
           if(user.picture){
             pictureService.uploadProfilePic(response.id,user.picture);
           }
           if (response.accessToken){
+            console.log(response.accessToken);
             commit('registerSuccess', response);
             return Promise.resolve(response);
           } else {

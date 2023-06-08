@@ -20,17 +20,6 @@ export const channel = {
           }
       })
       },
-      async deleteChannel({ id }){
-        console.log(id);
-        // await channelService.delete(id)
-        //   .then(async (response)=>{
-        //       await this.fetchChannels();
-        //       Promise.resolve(response.data.message);          
-        //   })
-        //   .catch(e => {
-        //       Promise.reject(e.response.data.message);
-        //   })
-      }
     },
     mutations: {
         setChannels(state, { channels }) {

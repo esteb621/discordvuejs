@@ -43,6 +43,16 @@ class UserService {
     }
   }
 
+  async deleteAccount(idUser){
+    try{
+      await axios.delete(`../picture/delete/${idUser}`);
+      const response = axios.delete(`/delete/users/${idUser}`);
+      return response;
+    }
+    catch(e){
+      throw e.response.data.message;
+    }
+  }
 }
 
 export default new UserService();
