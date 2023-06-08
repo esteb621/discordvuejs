@@ -2,6 +2,7 @@ const { where } = require("sequelize");
 const db = require("../models");
 const Users = db.Users;
 const Messages = db.Messages;
+const picture = require("../controllers/picture.controller");
 var bcrypt = require("bcryptjs");
 
 // Create and Save a new User
@@ -178,7 +179,6 @@ exports.updatePassword = (req, res) => {
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-
   Messages.destroy({
     where: {user_id:id},
     truncate: false

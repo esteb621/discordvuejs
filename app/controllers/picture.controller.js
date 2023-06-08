@@ -1,9 +1,10 @@
-const { getStorage, ref, uploadBytes, getDownloadURL } = require("firebase/storage");
+const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = require("firebase/storage");
 const app = require('../config/firebase.config');
 const { response } = require("express");
 const storage = getStorage(app);
 const db = require("../models");
 const Users = db.Users;
+
 
 exports.uploadImage = async (req, res) => {
 
@@ -49,3 +50,15 @@ exports.getImage = async (req, res) => {
     return;
   });
 }
+
+exports.deleteImage = async (req, res) => {
+  const fileName = req.params.id;
+  try {
+    const fileRef = ref(storage, `public/${fileName}`);
+    await deleteObject(fileRef);
+    res.status(200).send('File deleted successfully');
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).send('Failed to delete file');
+  }
+};
