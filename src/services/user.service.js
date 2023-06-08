@@ -31,6 +31,18 @@ class UserService {
     }
   }
 
+  async updatePassword(id, user) {
+    try {
+      const response = await axios.put(`/update/password/${id}`, {
+        currentPassword: user.currentPassword,
+        newPassword: user.newPassword
+      });
+      return response.data.message;
+    } catch (e) {
+      throw e.response.data.message;
+    }
+  }
+
 }
 
 export default new UserService();

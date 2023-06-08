@@ -161,7 +161,6 @@
   const loading = ref(false);
   const backgroundColor = ref('#5c6aff');
   const clickedButton = ref('#3aa55c');
-  const specialChars = ref(/[$&+.,:;=?@#|'"<>^*ඞ()%!-]/).value;
   const isFormEmpty = () => {
     return !(username.value && password.value && retypePassword.value && email.value);
   };
@@ -177,6 +176,7 @@
   }
 
   function isPasswordContainSpecialChars(){
+    const specialChars = /[$&+.,:;=?@#|'"<>^*ඞ()%!-]/;
     return specialChars.test(password.value);
   }
 
