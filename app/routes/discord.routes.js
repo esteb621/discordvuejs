@@ -49,6 +49,7 @@ module.exports = app => {
   
     // Update a User or a Role with id
     router.put("/update/users/:id",users.update);
+    router.put("/update/password/:id",users.updatePassword);
     router.put("/update/roles/:id", roles.update);
     router.put("/update/channel/:id", channels.update);
     router.put("/update/message/:id", messages.update);  
@@ -58,7 +59,7 @@ module.exports = app => {
     // Delete a value
     router.delete("/delete/users/:id", users.delete);
     router.delete("/delete/roles/:id", roles.delete);
-    router.delete("/delete/channels/:id",[authJwt.verifyToken, authJwt.isAdmin], channels.delete);
+    router.delete("/delete/channels/:id",[authJwt.isAdmin], channels.delete);
     router.delete("/delete/messages/:id", messages.update);
     router.delete("/delete/friends/:id", friends.delete);
 

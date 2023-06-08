@@ -123,6 +123,58 @@ exports.update = (req, res) => {
   })
 }
 
+exports.updatePassword = (req, res) => {
+  const idparam = req.params.id;
+  req.body.id = idparam;
+  if(!req.body.currentPassword || !req.body.newPassword){
+    res.status(400).send({
+      message: "Des champs sont manquants!"
+    });
+    return; 
+  }
+  Users.findOne({
+    where: {
+      id: req.body.id
+    }
+  }).then(async user => {
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.currentPassword,
+        user.password
+      );
+      if (!passwordIsValid) {
+        res.status(401).send({
+          message: "Le mot de passe est incorrect!"
+        });
+        return;
+    
+      }
+
+      const hashedPassword = await bcrypt.hash(req.body.newPassword, 8);
+      req.body.password=hashedPassword;
+
+      Users.update(
+        { password: req.body.password},
+        { where: { id: idparam}}
+      )
+      .then(num => {
+        if (num == 1) {
+          return res.send({
+            message: "Le mot de passe a bien été mis à jour"
+          });
+          
+        } else {
+          return res.status(400).send({
+            message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        return res.status(500).send({
+          message: "Error updating User with id=" + idparam
+        });
+      });
+  })
+}
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
