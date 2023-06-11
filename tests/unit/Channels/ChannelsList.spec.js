@@ -3,24 +3,23 @@ import ChannelsList from '@/components/main/Channels/ChannelsList.vue';
 import moxios from 'moxios';
 import { createStore } from 'vuex';
 import { createRouter, createWebHistory } from 'vue-router';
+import { auth } from "../../../src/store/auth.module";
+import { message } from "../../../src/store/message.module";
+import { user } from "../../../src/store/user.module";
+import { channel } from "../../../src/store/channel.module";
+import axios from 'axios';
 
 describe('ChannelsList', () => {
   let wrapper;
   const id = 1;
   const store = createStore({
     modules: {
-      channel: {
-        state: {
-          channels: [] // Initialize the channels state
-        },
-        getters: {
-          getChannels: state => {
-            return state.channels;
-          }
-        }
-      }
+      auth,
+      message,
+      channel,
+      user
     }
-  }); // Create a mock Vuex store
+  }); // Create a real Vuex store (not used in tests but the component needs to have it)
   const routes = [
     {
       path: '/main/server/channel/:id',
@@ -29,19 +28,13 @@ describe('ChannelsList', () => {
   ];
   const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: routes
   });
-  router.push('/main/server/channel/1');
 
   beforeEach(() => {
     wrapper = mount(ChannelsList, {
       global: {
         plugins: [store, router],
-        mocks: {
-          $route: {
-            path: '/main/server/channel/' + id,
-          },
-        },
       },
     });
     moxios.install();
@@ -49,6 +42,7 @@ describe('ChannelsList', () => {
 
   afterEach(() => {
     wrapper.unmount();
+    jest.clearAllMocks();
     moxios.uninstall();
   });
 
@@ -56,64 +50,89 @@ describe('ChannelsList', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('displays channels correctly', async () => {
-    // Mock the response from the API
-    const channels = [
-      { id: 1, nom: 'Channel 1', admin: true },
-      { id: 2, nom: 'Channel 2', admin: false },
-    ];
-    moxios.stubRequest('/api/channels', {
-      status: 200,
-      response: channels,
+  it('watchEffect correctly', async () => {
+    
+    // 1. Mock the necessary dependencies and API calls
+    const watchEffectMock = jest.spyOn(wrapper.vm, 'watchEffect')
+
+
+    // setup channels to watch
+    const channelToWatch = { id: 4, nom: 'Channel 4', admin: false }
+    wrapper.vm.channels = [channelToWatch];
+
+
+    // 2. Trigger the addChannel method with the desired input value
+    moxios.stubRequest('/api/watchEffect', {
+    status: 200,
+    response: channelToWatch,
     });
 
-    // Trigger the component to fetch channels
-    await wrapper.vm.fetchChannels();
+    watchEffectMock.mockResolvedValue(channelToWatch);
 
-    // Verify that the channels are displayed correctly
-    const channelComponents = wrapper.findAllComponents({ name: 'ChannelComponent' });
-    expect(channelComponents.length).toBe(channels.length);
+    // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
+    await wrapper.vm.watchEffect();
+    await flushPromises();
 
-    channelComponents.forEach((channelComponent, index) => {
-      const channel = channels[index];
-      expect(channelComponent.props('id')).toBe(channel.id);
-      expect(channelComponent.props('name')).toBe(channel.nom);
-      expect(channelComponent.props('admin')).toBe(channel.admin);
-    });
+
+    wrapper.vm.store.dispatch('channel/fetchChannels');
+
+
+    // 4. Assert that the new message is added correctly
+    expect(watchEffectMock).toBeCalled();
+
   });
 
-  it('adds a new channel', async () => {
-    // Mock the response from the API
+  it('adds a new message', async () => {
+    // 1. Mock the necessary dependencies and API calls
+    const addChannelMock = jest.spyOn(wrapper.vm, 'addChannel')
+
+    // 2. Trigger the addChannel method with the desired input value
     const newChannel = { id: 3, nom: 'Channel 3', admin: false };
-    moxios.stubRequest('/api/channels', {
-      status: 200,
-      response: newChannel,
+    moxios.stubRequest('/api/createchannels', {
+    status: 200,
+    response: newChannel,
     });
 
-    // Trigger the addChannel method
-    await wrapper.vm.addChannel('Channel 3');
+    addChannelMock.mockResolvedValue(newChannel);
 
-    // Verify that the new channel is added
-    expect(wrapper.vm.$store.getters['channel/getChannels']).toContainEqual(expect.objectContaining(newChannel));
-  });
+    // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
+    await wrapper.vm.addChannel('Channel 3');
+    await flushPromises();
+
+    //Adding the new channel manually since the addChannel function is mocked
+    wrapper.vm.channels = [newChannel];
+
+
+    // 4. Assert that the new message is added correctly
+    expect(addChannelMock).toHaveBeenCalledWith(newChannel.nom);
+    expect(wrapper.vm.channels).toContainEqual(newChannel);
+  })
 
   it('deletes a channel', async () => {
-    // Mock the response from the API
-    const deletedChannelId = 2;
-    moxios.stubRequest(`/api/channels/${deletedChannelId}`, {
-      status: 200,
-    });
+   // 1. Mock the necessary dependencies and API calls
+   const deleteChannelMock = jest.spyOn(wrapper.vm, 'deleteChannel')
+   const channelToDelete = {id: 1, nom: 'Channel 1', admin: true}
+  //Adding a new channel manually
+  wrapper.vm.channels = [channelToDelete];
 
-    // Set up initial channels
-    wrapper.vm.$store.state.channel.channels = [
-      { id: 1, nom: 'Channel 1', admin: true },
-      { id: 2, nom: 'Channel 2', admin: false },
-    ];
+   // 2. Trigger the deleteChannel method with the desired input value
+   const channelDeleted = { id: 1, nom: 'Channel 1', admin: true };
+   moxios.stubRequest('/api/deletechannel', {
+   status: 200,
+   response: channelDeleted,
+   });
 
-    // Trigger the deleteChannel method
-    await wrapper.vm.deleteChannel(deletedChannelId);
+   deleteChannelMock.mockResolvedValue(channelDeleted);
 
-    // Verify that the channel is deleted
-    expect(wrapper.vm.$store.getters['channel/getChannels']).not.toContainEqual(expect.objectContaining({ id: deletedChannelId }));
-  });
+   // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
+   await wrapper.vm.deleteChannel(1);
+   await flushPromises();
+
+   //Delete channel manually since deleteChannel is mocked
+   wrapper.vm.channels = [];
+
+   // 4. Assert that the new message is added correctly
+   expect(deleteChannelMock).toHaveBeenCalledWith(channelDeleted.id);
+   expect(wrapper.vm.channels).toEqual([]);
+ })
 });

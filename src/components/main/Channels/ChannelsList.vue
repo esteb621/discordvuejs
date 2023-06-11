@@ -1,8 +1,8 @@
-<template>
+``<template>
     <!-- Liste channels / Amis si MP -->
     <div class="w-100 flex-grow bg-gray-800">
             <p class="mt-4 p-2 pl-3 text-left text-xs cursor-default text-gray-500 hover:text-gray-300 font-bold uppercase">{{ title }}
-                <span v-if="isAdmin" @click="addChannel()"
+                <span v-if="isAdmin" @click="buttonClicked=true"
                 class="text-gray-100 opacity-50
                 cursor-pointer hover:opacity-100 p-1
                 transition-all duration-200 ease-linear" id="plus">
@@ -12,6 +12,8 @@
         <div id="channels-list" class="text-left flex flex-col overflow-y-auto">
             <div v-if="!isloading">
                 <ChannelComponent :admin="isAdmin" v-for="(channel, index) in channels" :id="channel.id" :key="index" :name="channel.nom" @delete-channel="deleteChannel"/>
+                <input v-model="input"  v-if="buttonClicked" type="text" placeholder="Nom du salon" @keyup.esc="buttonClicked=false;" @keyup.enter="addChannel" required title="Enter" 
+                class="rounded-md w-90 py-2 px-3 mb-3 mx-2 font-bold bg-gray-600 outline-none text-gray-200 flex flex-row items-center space-x-2"/>
             </div>
             <ChannelSkeleton v-if="isloading"/>
         </div>
@@ -26,25 +28,14 @@ import userService from '@/services/user.service';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-const channels=ref(null);
+const channels=ref([]);
 const title=ref('Salons textuels');
 const isloading=ref(false);
-const error=ref('');
+const input=ref('');
 const isAdmin=ref(false);
+const buttonClicked=ref(false);
 const route=useRouter();
 const store=useStore();
-// const fetchChannels= async() => {
-//     error.value=false;
-//     isloading.value=true;
-//     await channelService.getChannels()
-//     .then(data => {
-//         channels.value=data;
-//     })
-//     .catch(e => {
-//         console.warn(e.response.data.message);
-//     })
-//     isloading.value=false;
-// }
 
 
 
@@ -76,48 +67,35 @@ watchEffect(async () => {
 });
 
 const emit = defineEmits(['info-message']);
+
+
 const addChannel = async() => {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.required='true';
-    input.addEventListener('keydown', async (event) => {
-    if (event.key === 'Enter' && event.target.value!='' && !channels.value.includes(event.target.value) ) {
-        const channelName = event.target.value;
-        await channelService.addChannel(channelName)
-        .then(response=>{
-            channels.value.push(response);
-            event.target.remove(); 
-            error.value="";
-            emit('info-message', `Le channel ${channelName} a bien été crée!`);
-        })
-        .catch(e=>{
+    if(input.value && !channels.value.includes(input.value)){
+        try{
+            await channelService.addChannel(input.value)
+            .then(response=>{
+                channels.value.push(response);
+                buttonClicked.value=false;
+                emit('info-message', `Le channel ${input.value} a bien été crée!`);
+            })
+        }
+        catch(e){
             emit('info-message', e);
-        })  
+        }
     }
-    else if(event.key==='Escape'){
-        event.target.remove();
-    }
-    });
-    input.placeholder="Nom du salon"
-    input.className="w-90 py-2 px-3 mb-3 mx-2 left-2 bg-gray-600 rounded-md outline-none text-gray-200"
-    document.getElementById('channels-list').appendChild(input);
-    input.focus();
 }
 
 async function deleteChannel(id){
-    const index = channels.value.findIndex(channel => channel.id === id);
-    if (index !== -1) {
-        await channelService.delete(id)
-        .then(() => {
-            const deletedChannel = channels.value[index].nom;
-            channels.value = channels.value.filter(channel => channel.id !== id);
-            emit('info-message', `Le channel ${deletedChannel} a bien été supprimé!`);
-        })
-        .catch(e => {
-            emit('info-message', e);
-        })
-    }
+    console.log(id)
+    await channelService.delete(id)
+          .then(async (response)=>{
+              store.dispatch("channel/fetchChannels");
+              route.push('./1')
+              emit('info-message', response.message);
+          })
+          .catch(e => {
+            emit('info-message',e);
+          })
 }
 
 </script>
-

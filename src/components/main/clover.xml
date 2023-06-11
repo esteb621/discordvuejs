@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1686525943900" clover="3.2.0">
+  <project timestamp="1686525943901" name="All files">
+    <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2" elements="15" coveredelements="15" complexity="0" loc="11" ncloc="11" packages="1" files="1" classes="1"/>
+    <file name="TextBarComponent.vue" path="C:\Users\etudiant\Web_DiscordVueJS\discordvuejs\src\components\main\Messages\TextBarComponent.vue">
+      <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="95" count="1" type="stmt"/>
+      <line num="98" count="1" type="stmt"/>
+      <line num="99" count="1" type="stmt"/>
+      <line num="100" count="1" type="stmt"/>
+      <line num="103" count="1" type="stmt"/>
+      <line num="105" count="4" type="stmt"/>
+      <line num="106" count="4" type="stmt"/>
+      <line num="115" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="125" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>

@@ -1,14 +1,16 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
+import { auth } from "./auth.module";
+import { message } from "./message.module";
+import { user } from "./user.module";
+import { channel } from "./channel.module";
 
-export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+const store = createStore({
   modules: {
-  }
-})
+    auth,
+    message,
+    channel,
+    user
+  },
+});
+
+export default store;

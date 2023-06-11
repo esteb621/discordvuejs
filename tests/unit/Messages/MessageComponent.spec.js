@@ -1,57 +1,73 @@
 import { mount } from '@vue/test-utils';
 import moxios from 'moxios';
+import { createStore } from 'vuex';
+import { user } from '../../../src/store/user.module';
+import { message } from '../../../src/store/message.module';
+import { auth } from '../../../src/store/auth.module';
+import { channel } from '../../../src/store/channel.module';
 import MessageComponent from '../../../src/components/main/Messages/MessageComponent.vue';
-import UserPicture from '../../../src/components/main/Users/UserPicture.vue';
 
-describe('Message', () => {
-  let wrapper
-  const store = {
-    getters: {
-      'user/getUsername': jest.fn().mockReturnValue('JohnDoe')
-    },
-    dispatch: jest.fn()
-  };
+describe('MessageComponent', () => {
+  let wrapper;
+  let store;
+
   beforeEach(() => {
+    // Create a fresh Vuex store instance
+    store = createStore({
+      modules: {
+        user,
+        message,
+        auth,
+        channel
+      }
+    });
+
+    // Mount the component with the store
     wrapper = mount(MessageComponent, {
       props: {
         userId: 1,
         message: 'Hello, world!'
       },
       global: {
-        components: {
-          UserPicture
-        },
-        mocks: {
-          $store: store
-        }
+        plugins: [store]
       }
-    },
-    moxios.install()
-  );
-})
+    });
+
+    // Install Moxios for HTTP mocking
+    moxios.install();
+  });
 
   afterEach(() => {
+    // Unmount the component and restore Moxios
     wrapper.unmount();
     moxios.uninstall();
   });
 
-  it('displays the username and message', async () => {
-    // Expect the loading state to be shown initially
-    expect(wrapper.find('.animate-pulse').exists()).toBe(true);
+  it('fetches user data and displays username', async () => {
+    // Mock the response for the getUsername API call
+    const mockedUsername = 'JohnDoe';
+    jest.spyOn(store.getters['user'], 'getUsername').mockReturnValue(mockedUsername);
 
-    // Mock the user's username retrieval
-    moxios.stubRequest('user/getUsername', {
-      status: 200,
-      response: { username: 'JohnDoe' }
-    });
+    // Simulate the component's mounted hook
+    await wrapper.vm.$options.setup(props);
 
-    // Wait for the component to fetch the username
-    await wrapper.vm.$nextTick();
+    // Expect the getUsername getter to have been called with the correct arguments
+    expect(store.getters['user/getUsername']).toHaveBeenCalledWith(1);
 
-    // Expect the username to be displayed
-    expect(wrapper.find('h4').text()).toBe('JohnDoe');
-
-    // Expect the message to be displayed
-    expect(wrapper.find('p').text()).toBe('Hello, world!');
+    // Expect the fetched username to be displayed in the component
+    expect(wrapper.find('h4').text()).toBe(mockedUsername);
   });
+
+  it('dispatches fetchUser action when username is not available', async () => {
+    // Spy on the dispatch method of the store
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    // Simulate the component's mounted hook
+    await wrapper.vm.$options.setup(props);
+
+    // Expect the fetchUser action to have been dispatched with the correct arguments
+    expect(dispatchSpy).toHaveBeenCalledWith('user/fetchUser', 1);
+  });
+
+  // Add more test cases as needed...
 });
