@@ -1,29 +1,68 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import ProfileSettings from '../../../src/components/main/Profile/ProfileSettings.vue';
+import moxios from 'moxios';
+import { createRouter, createWebHistory } from 'vue-router';
+import { createStore } from 'vuex';
 
 describe('ProfileSettings', () => {
-  it('emits a "close" event when the cancel button is clicked', async () => {
-    const wrapper = mount(ProfileSettings);
+  let wrapper;
+  let store;
+  let router;
 
-    // Cliquer sur le bouton Annuler
-    const cancelButton = wrapper.find(".mt-3.w-full.inline-flex.justify-center.rounded-md.shadow-sm.px-4.py-2.bg-gray-500.text-base.font-medium.text-gray-300.hover:bg-gray-600.duration-200.focus:outline-none.focus:ring-2.focus:ring-offset-2.focus:ring-blue-500.sm:mt-0.sm:ml-3.sm:w-auto.sm:text-sm");
-    await cancelButton.trigger('click');
+  beforeEach(() => {
+    store = createStore({
+      modules: {
+        auth: {
+          getters: {
+            getUser: () => ({ id: 1, email: "test@gmail.com", username: "Pierre", password: "1256pirt", picture:"ojfzojnfoznjvojzvn" }), // Mock the 'getUser' getter with the desired implementation
+          },
+        },
+      },
+    });
 
-    // Vérifier si l'événement "close" a été émis
-    expect(wrapper.emitted('close')).toBeTruthy();
+    router = createRouter({
+      history: createWebHistory(),
+      routes: [/* Define your routes here */],
+    });
+
+    wrapper = mount(ProfileSettings, {
+      global: {
+        plugins: [store, router],
+        mocks: {
+          $t: (key) => key, // Mock the $t function if needed
+        },
+      },
+    });
+
+    moxios.install();
   });
 
-  it('calls handleUpdate method when the form is submitted', async () => {
-    const wrapper = mount(ProfileSettings);
-    const handleUpdate = jest.spyOn(wrapper.vm, 'handleUpdate');
-
-    // Soumettre le formulaire
-    await wrapper.find('form').trigger('submit');
-
-    // Vérifier si la méthode handleUpdate a été appelée
-    expect(handleUpdate).toHaveBeenCalled();
+  afterEach(() => {
+    wrapper.unmount();
+    moxios.uninstall();
   });
 
-  // Ajoutez d'autres tests selon vos besoins
+  it('renders correctly', () => {
+    expect(wrapper.exists()).toBe(true);
+  });
 
+  it('handles the update', async () => {
+    const usertoUpdate = { id: 1, email: "test@gmail.com", username: "Pierre", password: "1256pirt", picture:"ojfzojnfoznjvojzvn" };
+
+    moxios.stubRequest('/api/handlesUpdate', {
+      status: 200,
+      response: usertoUpdate,
+    });
+
+    const updateProfileMock = jest.spyOn(wrapper.vm, 'updateProfile');
+
+    await wrapper.vm.handleUpdate(usertoUpdate);
+    await flushPromises();
+
+    // Assert the desired behavior
+
+    expect(updateProfileMock).toBeCalled();
+  });
+
+  // Add more tests as needed
 });

@@ -1,42 +1,70 @@
-
 import { mount } from '@vue/test-utils';
+import moxios from 'moxios';
 import UsersList from '../../../src/components/main/Users/UsersList.vue';
-import UserComponent from '../../../src/components/main/Users/UserComponent.vue';
-import UserSkeleton from '../../../src/components/main/Users/UserSkeleton.vue';
-import userService from '@/services/user.service.js';
 
-jest.mock('@/services/user.service');
+describe('UsersComponent', () => {
+  let wrapper;
 
-describe('UsersList', () => {
-  it('renders correctly', async () => {
-    const mockUsers = [
-      { id: 1, username: 'User1', picture: 'user1.jpg' },
-      { id: 2, username: 'User2', picture: 'user2.jpg' },
-      { id: 3, username: 'User3', picture: 'user3.jpg' },
+  beforeEach(() => {
+    // Mount the component
+    wrapper = mount(UsersList);
+
+    // Install Moxios for HTTP mocking
+    moxios.install();
+  });
+
+  afterEach(() => {
+    // Unmount the component and restore Moxios
+    wrapper.unmount();
+    moxios.uninstall();
+  });
+
+  it('renders correctly', () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('calls onMounted correctly', async () => {
+    // Set up the moxios response for fetching users
+    const mockedUsers = [
+      { id: 1, username: 'JohnDoe' },
+      { id: 2, username: 'JaneSmith' },
     ];
-    userService.getUsers.mockResolvedValue(mockUsers);
-
-    const wrapper = mount(UsersList, {
-      components: {
-        UserComponent,
-        UserSkeleton,
-      },
+    moxios.stubRequest('/users', {
+      status: 200,
+      response: mockedUsers
     });
 
-    await wrapper.vm.$nextTick();
+    // Wait for the async operations to complete
+    await wrapper.vm.onMounted();
 
-    expect(wrapper.find('#users').exists()).toBe(true);
-    expect(wrapper.find('h2').text()).toBe('Utilisateurs');
-    expect(wrapper.find('#users-list').exists()).toBe(true);
-    expect(wrapper.findComponent(UserSkeleton).exists()).toBe(false);
-    expect(wrapper.findAllComponents(UserComponent)).toHaveLength(mockUsers.length);
+    // Assert
+    const userComponents = wrapper.findAllComponents(UsersList);
+    expect(userComponents.length).toBe(mockedUsers.length);
 
-    const userComponents = wrapper.findAllComponents(UserComponent);
     userComponents.forEach((userComponent, index) => {
-      const user = mockUsers[index];
-      expect(userComponent.props('username')).toBe(user.username);
-      expect(userComponent.props('userId')).toBe(user.id);
-      expect(userComponent.props('link')).toBe(user.picture);
+      expect(userComponent.props('username')).toBe(mockedUsers[index].username);
+      expect(userComponent.props('userId')).toBe(mockedUsers[index].id);
+      expect(userComponent.props('link')).toBe(mockedUsers[index].picture);
     });
   });
+
+  it('handles error when fetching users', async () => {
+    // Set up the moxios response for fetching users
+    moxios.stubRequest('/users', {
+      status: 403,
+      response: { message: 'Unauthorized' }
+    });
+
+    // Spy on the EventBus dispatch method
+    const dispatchSpy = jest.spyOn(wrapper.vm.eventBus, 'dispatch');
+
+    // Wait for the async operations to complete
+    await wrapper.vm.$nextTick();
+    await moxios.wait();
+
+    // Assert
+    expect(dispatchSpy).toHaveBeenCalledWith('logout');
+  });
+
+  // Add more test cases as needed...
 });

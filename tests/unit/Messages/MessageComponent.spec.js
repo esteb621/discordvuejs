@@ -43,6 +43,10 @@ describe('MessageComponent', () => {
     moxios.uninstall();
   });
 
+  it('renders correctly', () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
   it('fetches user data and displays username', async () => {
     // Mock the response for the getUsername API call
     const mockedUsername = 'JohnDoe';

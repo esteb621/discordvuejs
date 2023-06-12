@@ -51,14 +51,12 @@ describe('ChannelsList', () => {
   });
 
   it('watchEffect correctly', async () => {
-    
-    // 1. Mock the necessary dependencies and API calls
-    const watchEffectMock = jest.spyOn(wrapper.vm, 'watchEffect')
-
 
     // setup channels to watch
     const channelToWatch = { id: 4, nom: 'Channel 4', admin: false }
     wrapper.vm.channels = [channelToWatch];
+
+    const getUserIdMock = jest.spyOn(wrapper.vm.userService,'getUserById')
 
 
     // 2. Trigger the addChannel method with the desired input value
@@ -67,72 +65,62 @@ describe('ChannelsList', () => {
     response: channelToWatch,
     });
 
-    watchEffectMock.mockResolvedValue(channelToWatch);
+    //add the mocked function to the instance that is called by watchEffect
+    getUserIdMock.mockImplementation(wrapper.vm.userService.getUserById())
+
 
     // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
     await wrapper.vm.watchEffect();
     await flushPromises();
 
-
-    wrapper.vm.store.dispatch('channel/fetchChannels');
-
-
     // 4. Assert that the new message is added correctly
-    expect(watchEffectMock).toBeCalled();
+    expect(getUserIdMock).toBeCalled();
+
 
   });
 
   it('adds a new message', async () => {
-    // 1. Mock the necessary dependencies and API calls
-    const addChannelMock = jest.spyOn(wrapper.vm, 'addChannel')
-
+   
     // 2. Trigger the addChannel method with the desired input value
     const newChannel = { id: 3, nom: 'Channel 3', admin: false };
+    const addChannelServiceMock = jest.spyOn(wrapper.vm.channelService,'addChannel')
     moxios.stubRequest('/api/createchannels', {
     status: 200,
     response: newChannel,
     });
 
-    addChannelMock.mockResolvedValue(newChannel);
 
     // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
     await wrapper.vm.addChannel('Channel 3');
     await flushPromises();
 
-    //Adding the new channel manually since the addChannel function is mocked
-    wrapper.vm.channels = [newChannel];
+
+    //add the mocked function to the one that addChannel is calling
+    addChannelServiceMock.mockImplementation(wrapper.vm.channelService.addChannel())
 
 
     // 4. Assert that the new message is added correctly
-    expect(addChannelMock).toHaveBeenCalledWith(newChannel.nom);
-    expect(wrapper.vm.channels).toContainEqual(newChannel);
+    expect(addChannelServiceMock).toBeCalledTimes(1)
   })
 
   it('deletes a channel', async () => {
    // 1. Mock the necessary dependencies and API calls
-   const deleteChannelMock = jest.spyOn(wrapper.vm, 'deleteChannel')
    const channelToDelete = {id: 1, nom: 'Channel 1', admin: true}
-  //Adding a new channel manually
-  wrapper.vm.channels = [channelToDelete];
+   const deleteChannelServiceMock = jest.spyOn(wrapper.vm.channelService,'delete')
+
 
    // 2. Trigger the deleteChannel method with the desired input value
-   const channelDeleted = { id: 1, nom: 'Channel 1', admin: true };
    moxios.stubRequest('/api/deletechannel', {
    status: 200,
-   response: channelDeleted,
+   response: channelToDelete,
+   message: ""
    });
-
-   deleteChannelMock.mockResolvedValue(channelDeleted);
 
    // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
    await wrapper.vm.deleteChannel(1);
    await flushPromises();
 
-   //Delete channel manually since deleteChannel is mocked
-   wrapper.vm.channels = [];
-
-   // 4. Assert that the new message is added correctly
-   expect(deleteChannelMock).toHaveBeenCalledWith(channelDeleted.id);
-   expect(wrapper.vm.channels).toEqual([]);
+   // 4. Assert that the new message is deleted correctly
+   expect(deleteChannelServiceMock).toBeCalled()
  })
 });

@@ -9,7 +9,7 @@ module.exports = {
     },
   },
   collectCoverage: true,
-  coverageDirectory: 'src/components/main'
+  coverageDirectory: '/src/components/main'
 };
 
 

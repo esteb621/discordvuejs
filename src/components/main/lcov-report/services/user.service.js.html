@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">9.09% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>1/11</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">10% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>1/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -103,31 +103,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,32 +137,32 @@
 &nbsp;
 class UserService {
 &nbsp;
-  async getUserById(id) {
-    const response = await axios.get(`/user/`+id);
-    const data = response.data;
-    return data;
+<span class="fstat-no" title="function not covered" >  as</span>ync getUserById(id) {
+    const response = <span class="cstat-no" title="statement not covered" >await axios.get(`/user/`+id);</span>
+    const data = <span class="cstat-no" title="statement not covered" >response.data;</span>
+<span class="cstat-no" title="statement not covered" >    return data;</span>
   }
 &nbsp;
   async getUsers(){
     const response = await axios.get(`/users`);
-    const data = response.data.map(item =&gt; ({
+    const data = <span class="cstat-no" title="statement not covered" >response.data.map(<span class="fstat-no" title="function not covered" >it</span>em =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       id: item.id,
       username: item.username,
       picture: item.picture
     }));
-    return data;
+<span class="cstat-no" title="statement not covered" >    return data;</span>
   }
 &nbsp;
-  async updateProfile(id, user) {
-    try {
-      const response = await axios.put(`/update/users/${id}`, {
+<span class="fstat-no" title="function not covered" >  as</span>ync updateProfile(id, user) {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const response = <span class="cstat-no" title="statement not covered" >await axios.put(`/update/users/${id}`, {</span>
         username: user.username,
         password: user.password,
         email: user.email
       });
-      return response.data.message;
+<span class="cstat-no" title="statement not covered" >      return response.data.message;</span>
     } catch (e) {
-      throw e.response.data.message;
+<span class="cstat-no" title="statement not covered" >      throw e.response.data.message;</span>
     }
   }
 &nbsp;
@@ -175,7 +175,7 @@ export default new UserService();</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-06-11T23:23:09.551Z
+                at 2023-06-12T23:13:37.391Z
             </div>
         <script src="../prettify.js"></script>
         <script>

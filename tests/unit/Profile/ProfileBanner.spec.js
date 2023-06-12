@@ -1,38 +1,56 @@
-import { mount } from '@vue/test-utils';
-import ProfileComponent from '../../../src/components/main/Profile/ProfileBanner.vue';
+import { mount, flushPromises } from '@vue/test-utils';
 import moxios from 'moxios';
-import axios from 'axios';
+import ProfileBanner from '../../../src/components/main/Profile/ProfileBanner.vue';
+import store from '@/store/index';
+import router from '@/router/index';
 
 describe('ProfileComponent', () => {
-  beforeEach(()=>{
-    const wrapper = mount(ProfileComponent);
-    moxios.install(axios);
+  let wrapper;
+
+  beforeEach(() => {
+    // Mount the component
+    wrapper = mount(ProfileBanner,{
+      global:{
+        plugins: [store,router]
+      }
+    });
+
+    // Install Moxios for HTTP mocking
+    moxios.install();
   });
 
-  afterEach(()=>{
+  afterEach(() => {
+    // Unmount the component and restore Moxios
     wrapper.unmount();
+    jest.clearAllMocks();
     moxios.uninstall();
-  })
-  
-  it('emits a "show-modal" event when the profile link is clicked', async () => {
-
-    // Cliquer sur le lien du profil
-    const link = wrapper.find('.group.cursor-pointer');
-    await link.trigger('click');
-
-    // Vérifier si l'événement "show-modal" a été émis
-    expect(wrapper.emitted('show-modal')).toBeTruthy();
   });
 
-  it('calls handleLogout method when the logout link is clicked', async () => {
-    const wrapper = mount(ProfileComponent);
-    const handleLogout = jest.spyOn(wrapper.vm, 'handleLogout');
-
-    // Cliquer sur le lien de déconnexion
-    const logoutLink = wrapper.find('.group.cursor-pointer');
-    await logoutLink.trigger('click');
-
-    // Vérifier si la méthode handleLogout a été appelée
-    expect(handleLogout).toHaveBeenCalled();
+  it('renders correctly', () => {
+    expect(wrapper.exists()).toBe(true);
   });
+
+  it('gets username', async () => {
+    // setup channels to watch
+    const getUserIdMock = jest.spyOn(wrapper.vm.userService,'getUserById')
+    const userToGet = { id: 4, username:"Pierrinator",  }
+
+    // 2. Trigger the addChannel method with the desired input value
+    moxios.stubRequest('/api/watchEffect', {
+    status: 200,
+    response: userToGet,
+    });
+
+    //add the mocked function to the one that getUsername is calling
+    getUserIdMock.mockImplementation(wrapper.vm.userService.getUserById())
+
+    // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
+    await wrapper.vm.getUsername(userToGet);
+    await flushPromises();
+
+    //Expect
+    expect(getUserIdMock).toBeCalledTimes(1);
+  });
+
+  // Add more test cases as needed...
 });

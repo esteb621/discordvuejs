@@ -32,6 +32,5 @@ function submitMessage() {
         emit('send-message',idUser,idChannel,message.value);
         message.value = '';
     }
-
 }
 </script>
