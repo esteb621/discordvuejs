@@ -31,8 +31,9 @@ const verifyToken = (req, res, next) => {
 
 
 isAdmin = (req, res, next) => {
-  const userId = req.headers['userid'];
-  Users.findByPk(userId).then(user => {
+  const token = req.headers["x-access-token"];
+  const decoded = jwt.verify(token, config.secret);
+  Users.findByPk(decoded.id).then(user => {
     if(user.role_id==2){
       next();
       return;
