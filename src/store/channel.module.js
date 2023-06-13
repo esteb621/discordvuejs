@@ -24,8 +24,7 @@ export const channel = {
       },
       async fetchPrivateMessages({ commit },userId) {
         await userService.getPrivateMessages(userId)
-        .then(async response => {
-            const data = response;
+        .then(async data => {
             commit('setPrivateMessages', { channels: data });
         })
         .catch(e => {
@@ -40,6 +39,7 @@ export const channel = {
         state.channels = channels;
       },
         setPrivateMessages(state, { channels }) {
+          console.log(channels)
         state.privateChannels = channels;
       },
     },
@@ -47,6 +47,9 @@ export const channel = {
         getChannels: (state) => {
             return state.channels;
         },
+        getPrivateMessages: (state) => {
+          return state.privateChannels;
+      },
     },
 };
   

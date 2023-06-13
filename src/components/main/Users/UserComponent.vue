@@ -1,7 +1,7 @@
 <template>
 <router-link :to="'/main/personal/user/'+userId" class=" p-2 rounded-md flex items-center cursor-pointer hover:bg-gray-700">
   <UserPicture :id="userId" :link="link"/>
-  <h4 class="p-2 rounded-sm text-md font-bold text-yellow-400 ">{{ username }} ({{ userId }})</h4>
+  <h4 class="p-2 rounded-sm text-md font-bold text-yellow-400 ">{{ username }}</h4>
 </router-link>
 
 </template>

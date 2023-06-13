@@ -17,18 +17,31 @@ class ChannelService {
     return data;
   }
 
-  async addChannel(nom,typologie) {
-    try {
-      const response = await axios.post(`/createchannel`,{
+  async addChannel(nom) {
+      await axios.post("/createChannel",{
         nom:nom,
-        typologie:typologie
-      });
-      return response.data;
-    } catch(e) {
-        throw e.response.data.message;    
-      }
+      })
+      .then(response => {
+          return response.data;
+      })
+      .catch(e=>{
+          throw e.response.data.message;
+      })
   }
-  async delete(id){
+
+  async addPrivateChannel(nom) {
+    await axios.post("/createPrivateChannel",{
+      nom:nom,
+    })
+    .then(response => {
+        return response.data;
+    })
+    .catch(e=>{
+        throw e.response.data.message;
+    })
+}
+
+  async deleteChannel(id){
     try {
       const response = await axios.delete(`/delete/channels/${id}`);
       return response.data;

@@ -17,7 +17,8 @@ import { defineProps,defineEmits } from 'vue';
   const props = defineProps({
     name: String,
     id: Number,
-    admin: Boolean
+    admin: Boolean,
+    typologie: Number
   })
 const emit = defineEmits(['delete-channel']);
 

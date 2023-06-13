@@ -1,5 +1,4 @@
 import axios from './axiosInstance';
-import channelService from './channel.service';
 
 class UserService {
 
@@ -8,6 +7,7 @@ class UserService {
         const data = response.data;
         return data;
     }
+
 
 
     async getUsers() {
@@ -55,30 +55,24 @@ class UserService {
         }
     }
 
-    async addFriend(user1_id, user2_id) {
-        try {
-            await axios.post('/createFriend', {
+    async addFriend(user1_id, user2) {
+        await axios.post('/createFriend', {
                 user1_id: user1_id,
-                user2_id: user2_id,
+                user2: user2,
                 published: 1
             })
-            .then(async data => {
-                await axios.get('/friend',data.user2_id)
-                .then(async friends => {
-                    if(friends){
-                        const nom = "channel_"+user1_id+"_"+user2_id
-                        const response = channelService.addChannel(nom,2);
-                        return response;
-                    }
-                })
-            })
-            .catch(e => {
-                return e.response.data.message;
-            })
-        } catch (error) {
-            console.error(error);
-            return error;
-        }
+        .then(response => {
+            return response.data;
+        })
+        .catch(e => {
+            console.warn(e);
+            throw e.response.data.message;
+        })
+    }
+
+    async isFriend(userId){
+        const response = await axios.get(`/friend/${userId}`);
+        return response.data !=='';
     }
 
     async getPrivateMessages(userId) {
@@ -88,7 +82,7 @@ class UserService {
           nom: item.nom
         }));
         return data;
-      }
+    }
 
 }
 
