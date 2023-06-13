@@ -1,11 +1,13 @@
 import EventBus from '@/common/EventBus';
 import channelService from '@/services/channel.service';
+import userService from '@/services/user.service';
 import { reactive } from 'vue';
 
 export const channel = {
     namespaced: true,
     state : reactive({
       channels: [],
+      privateMessages:[]
     }), 
     actions: {
       async fetchChannels({ commit }) {
@@ -20,10 +22,25 @@ export const channel = {
           }
       })
       },
+      async fetchPrivateMessages({ commit },userId) {
+        await userService.getPrivateMessages(userId)
+        .then(async response => {
+            const data = response;
+            commit('setPrivateMessages', { channels: data });
+        })
+        .catch(e => {
+          if (e.response && e.response.status === 403) {
+            EventBus.dispatch("logout");
+          }
+      })
+      }
     },
     mutations: {
         setChannels(state, { channels }) {
         state.channels = channels;
+      },
+        setPrivateMessages(state, { channels }) {
+        state.privateChannels = channels;
       },
     },
     getters: {

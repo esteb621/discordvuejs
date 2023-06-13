@@ -44,7 +44,6 @@ const buttonClicked=ref(false);
 const route=useRouter();
 const store=useStore();
 //test
-const idUser = ref(store.getters['auth/getUser'].id);
 const friendUsername = ref('');
 
 
@@ -71,9 +70,14 @@ watchEffect(async () => {
         }
     }
     if(link.path.includes("personal")==true){
+        const id= store.getters['auth/getUser'].id;
         title.value="Messages privés";
+        if(!store.getters['channel/getPrivateMessages']){
+            store.dispatch('channel/fetchPrivateMessages',id);
+        }
         isAdmin.value=false;
-        channels.value={};
+        channels.value = store.getters['channel/getPrivateMessages'];
+        console.log(channels.value)
     }
 });
 
@@ -83,7 +87,7 @@ const emit = defineEmits(['info-message']);
 const addFriend = async () => {
   if(friendUsername.value){
     try{
-      const user1 = idUser;
+      const user1 = store.getters['auth/getUser'].id;
       const user2 = friendUsername.value;
       
       const response = await userService.addFriend(user1, user2);
@@ -92,7 +96,8 @@ const addFriend = async () => {
         emit('info-message', `L'utilisateur ${friendUsername.value} a bien été ajouté comme ami!`);
         friendUsername.value = ''; // On réinitialise la zone de saisie
       } else {
-        emit('info-message', 'Une erreur est survenue lors de l\'ajout de l\'ami.');
+        console.log(response);
+        emit('info-message', response);
       }
     }
     catch(e){
@@ -106,7 +111,7 @@ const addFriend = async () => {
 const addChannel = async() => {
     if(input.value && !channels.value.includes(input.value)){
         try{
-            await channelService.addChannel(input.value)
+            await channelService.addChannel(input.value,1)
             .then(response=>{
                 channels.value.push(response);
                 buttonClicked.value=false;

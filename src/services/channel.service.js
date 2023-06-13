@@ -17,11 +17,11 @@ class ChannelService {
     return data;
   }
 
-  async addChannel(nom) {
+  async addChannel(nom,typologie) {
     try {
       const response = await axios.post(`/createchannel`,{
         nom:nom,
-        typologie:1
+        typologie:typologie
       });
       return response.data;
     } catch(e) {
