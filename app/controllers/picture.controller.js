@@ -1,9 +1,10 @@
-const { getStorage, ref, uploadBytes, getDownloadURL } = require("firebase/storage");
+const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = require("firebase/storage");
 const app = require('../config/firebase.config');
 const { response } = require("express");
 const storage = getStorage(app);
 const db = require("../models");
 const Users = db.Users;
+
 
 exports.uploadImage = async (req, res) => {
 
@@ -44,8 +45,22 @@ exports.getImage = async (req, res) => {
   .catch(err => {
     res.status(404).send({
       message:
-        err.message || "Aucune photo de profil correspondant a cet id="+id
-    });
+        err.message || "Aucune photo de profil correspondant a cet id="+id,
+      picture: 
+        "https://firebasestorage.googleapis.com/v0/b/discordjs-ded7c.appspot.com/o/public%2Fprofile-default.jpg?alt=media&token=694e0cd3-627d-4f6a-aa4b-597743c47439"
+      });
     return;
   });
 }
+
+exports.deleteImage = async (req, res) => {
+  const fileName = req.params.id;
+  try {
+    const fileRef = ref(storage, `public/${fileName}`);
+    await deleteObject(fileRef);
+    res.status(200).send('File deleted successfully');
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).send('Failed to delete file');
+  }
+};

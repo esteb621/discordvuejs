@@ -5,6 +5,7 @@ module.exports = (sequelize, Sequelize) => {
         references:{
             model: 'Users',
             key: 'id',
+            onDelete: 'CASCADE'
         }
       },    
       user2_id: {
@@ -12,6 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         references:{
           model: 'Users',
           key: 'id',
+          onDelete: 'CASCADE'
           
       }
         

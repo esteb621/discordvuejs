@@ -1,51 +1,80 @@
 const db = require("../models");
 const Friends = db.Friends;
+const Users = db.Users;
 const Op = db.Sequelize.Op;
 
 // Créer et Sauvegarder un nouvel Ami
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
+
+
   // Validate request
-  if (!req.body.user1_id || !req.body.user2_id) {
+  if (!req.body.user1_id || !req.body.user2) {
     res.status(400).send({
       message: "Les utilisateurs n'existent pas ou le body est vide !"
     });
     return;
   }
-  if (req.body.user1_id == req.body.user2_id){
-    res.status(400).send({
-      message: "Un utilisateur ne peut pas etre ami avec lui meme !"
-    });
-    return;
-  }
-  if ((Friends.user1_id == req.body.user1_id||req.body.user2_id) && (Friends.user2_id == req.body.user1_id||req.body.user2_id)){
-    res.status(404).send({
-      message: "Ces 2 utilisateurs sont déjà ami !"
-    })
-    return;
-  }
 
-  // Créer un ami
-  const friends = {
-    user1_id: req.body.user1_id,
-    user2_id: req.body.user2_id,
-    published: req.body.published ? req.body.published : false
-  };
-
-  // Enregistrer l'ami dans la base de données
-  Friends.create(friends)
-    data => {
-      try {
-      res.send(data);
+  Users.findOne({where: {username:req.body.user2}})
+    .then(user2=>{
+      const user_1 = req.body.user1_id;
+      const user_2 = user2.id;
+    
+    console.log("User 1 : "+user_1);
+    console.log("User 2 : "+user_2);
+    if (user_1 == user_2){
+      res.status(400).send({
+        message: "Un utilisateur ne peut pas etre ami avec lui meme !"
+      });
       return;
-      }
-      catch{err =>
-        res.status(500).send({
-          message:
-            err.message || "Une erreur s'est produite en créant un ami."
-        });
-        return;
-      };
     }
+    Friends.findOne({ 
+      where: { 
+        user1_id: user_1,
+        user2_id: user_2 }
+      })
+      .then(friends => {
+        if(friends === null){
+          // Créer un ami
+          const friends = {
+            user1_id: user_1,
+            user2_id: user_2,
+            published: req.body.published ? req.body.published : false
+          };
+          
+          // Enregistrer l'ami dans la base de données
+          Friends.create(friends)
+          .then(data => {
+            console.log("ami crée")
+            Friends.findOne({ 
+              where: { 
+                user1_id: data.user1_id,
+                user2_id: data.user2_id }
+              })
+              .then(friends => {
+                res.send(friends);
+              })
+              .catch(err => {
+                res.status(500).send({
+                  message:
+                    err.message || "Une erreur s'est produite en créant un ami."
+                });
+                return;
+              })
+          })
+        }
+        else{
+          res.status(404).send({
+            message: "Ces 2 utilisateurs sont déjà ami !"
+          })
+        }
+      })
+  })
+  .catch(() => {
+    res.status(404).send({
+      message: "L'utilisateur "+req.body.user2+" n'existe pas"
+    })
+  })
 };
 
 // Récupérer tous les friends de la base de données.

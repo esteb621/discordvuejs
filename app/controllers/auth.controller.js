@@ -43,7 +43,7 @@ exports.signin = (req, res) => {
         req.body.password,
         user.password
       );
-
+      console.log(passwordIsValid)
       if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,

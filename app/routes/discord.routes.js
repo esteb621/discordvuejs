@@ -15,6 +15,7 @@ module.exports = app => {
     router.post("/createUser",users.create);
     router.post("/createRole", roles.create);
     router.post("/createChannel",[authJwt.isAdmin], channels.create);
+    router.post("/createPrivateChannel", channels.createPrivateChannel);    
     router.post("/createMessage", messages.create);
     router.post("/createFriend", friends.create);
 
@@ -26,7 +27,7 @@ module.exports = app => {
     router.get("/channels/:type", channels.findAll);
     router.get("/messages", messages.findAll);
     router.get("/friends", friends.findAll);
-
+    router.get("/channels/private/:id",channels.findAllPrivateMessages)
 
 
     // Retrieve all values that are published
@@ -49,17 +50,18 @@ module.exports = app => {
   
     // Update a User or a Role with id
     router.put("/update/users/:id",users.update);
-    router.put("/update/roles/:id", roles.update);
-    router.put("/update/channel/:id", channels.update);
+    router.put("/update/password/:id",users.updatePassword);
+    router.put("/update/roles/:id", [authJwt.isAdmin],roles.update);
+    router.put("/update/channel/:id", [authJwt.isAdmin],channels.update);
     router.put("/update/message/:id", messages.update);  
     router.put("/update/friend/:id", friends.update);
 
   
     // Delete a value
     router.delete("/delete/users/:id", users.delete);
-    router.delete("/delete/roles/:id", roles.delete);
-    router.delete("/delete/channels/:id",[authJwt.verifyToken, authJwt.isAdmin], channels.delete);
-    router.delete("/delete/messages/:id", messages.update);
+    router.delete("/delete/roles/:id", [authJwt.isAdmin],roles.delete);
+    router.delete("/delete/channels/:id",[authJwt.isAdmin], channels.delete);
+    router.delete("/delete/messages/:id", [authJwt.isAdmin],messages.update);
     router.delete("/delete/friends/:id", friends.delete);
 
 

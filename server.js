@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 var corsOptions = {
-  origin: ["https://wild-plum-colt-cuff.cyclic.app"]
+  origin: ["https://wild-plum-colt-cuff.cyclic.app","http://localhost:8080","http://localhost:8081"]
 };
 
 app.use(cors(corsOptions));

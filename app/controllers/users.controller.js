@@ -1,7 +1,8 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Users = db.Users;
-const pictureController = require("../controllers/picture.controller")
+const Messages = db.Messages;
+const picture = require("../controllers/picture.controller");
 var bcrypt = require("bcryptjs");
 
 // Create and Save a new User
@@ -123,32 +124,91 @@ exports.update = (req, res) => {
   })
 }
 
+exports.updatePassword = (req, res) => {
+  const idparam = req.params.id;
+  req.body.id = idparam;
+  if(!req.body.currentPassword || !req.body.newPassword){
+    res.status(400).send({
+      message: "Des champs sont manquants!"
+    });
+    return; 
+  }
+  Users.findOne({
+    where: {
+      id: req.body.id
+    }
+  }).then(async user => {
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.currentPassword,
+        user.password
+      );
+      if (!passwordIsValid) {
+        res.status(401).send({
+          message: "Le mot de passe est incorrect!"
+        });
+        return;
+    
+      }
+
+      const hashedPassword = await bcrypt.hash(req.body.newPassword, 8);
+      req.body.password=hashedPassword;
+
+      Users.update(
+        { password: req.body.password},
+        { where: { id: idparam}}
+      )
+      .then(num => {
+        if (num == 1) {
+          return res.send({
+            message: "Le mot de passe a bien été mis à jour"
+          });
+          
+        } else {
+          return res.status(400).send({
+            message: `Cannot update Users with id=${idparam}. Maybe Users was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        return res.status(500).send({
+          message: "Error updating User with id=" + idparam
+        });
+      });
+  })
+}
 // Delete a User with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-
-  Users.destroy({
-    where: { id: id }
+  Messages.destroy({
+    where: {user_id:id},
+    truncate: false
   })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "User was deleted successfully!"
-        });
-        return;
-      } else {
-        res.send({
-          message: `Cannot delete User with id=${id}. Maybe User was not found!`
-        });
-        return;
-      }
+  .then(()=> {
+    Users.destroy({
+      where: { id: id },
+      cascade: true
     })
-    .catch(err => {
-      res.status(500).send({
-        message: "Could not delete User with id=" + id
-      });
-      return;
-    });
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Votre compte a bien été supprimé. Merci d'avoir utilisé nos services!"
+          });
+          return;
+        } else {
+          res.send({
+            message: `Cannot delete User with id=${id}. Maybe User was not found!`
+          });
+          return;
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Could not delete User with id=" + id,
+          error:err
+        });
+        return;
+      });    
+  });
 };
 
 // Delete all Users from the database.

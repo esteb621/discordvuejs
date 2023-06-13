@@ -13,6 +13,8 @@ module.exports = app => {
     // Route pour accéder à une image
     router.get('/:id', picture.getImage);
 
+    router.delete('/delete/:id',picture.deleteImage);
+    
     module.exports = router
     app.use('/api/picture', router);
 }
