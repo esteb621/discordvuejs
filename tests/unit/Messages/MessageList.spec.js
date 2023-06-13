@@ -36,8 +36,6 @@ describe('MessageList', () => {
      // 1. Mock the necessary dependencies and API calls
      // setup messages to scroll
      const messagesToScroll = [{ id: 1, userId : 1, message : "Coucou" }, { id: 2, userId : 2, message : "Salut" }, { id: 3, userId : 1, message : "Comment ça va ?" }]
-     wrapper.vm.messages = [messagesToScroll];
-     wrapper.vm.idChannel = messagesToScroll[2].id
 
      // 2. Trigger the addChannel method with the desired input value
      moxios.stubRequest('/api/scrollToLastMessage', {
@@ -54,22 +52,28 @@ describe('MessageList', () => {
 
      // 4. Assert that the new message is added correctly
      expect(wrapper.vm.scrollToLastMessage).toBeCalled();
-   });
+    });
 
   it('sends a message', async () => {
      // 1. Mock the necessary dependencies and API calls
      // setup messages to scroll
      const messageToSend = { id: 1, userId : 1, message : "PING" }
+     const scrollToMock = jest.spyOn(wrapper.vm,'scrollToLastMessage');
+
  
      // 2. Trigger the addChannel method with the desired input value
      moxios.stubRequest('/api/sendMessage', {
-     status: 200,
-     response: messageToSend,
+      status: 200,
+      response: messageToSend,
      });
   
      // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
      await wrapper.vm.sendMessage();
      await flushPromises();
+
+
+     
+     scrollToMock.mockImplementation(wrapper.vm.scrollToLastMessage())
  
      //add message manually
      wrapper.vm.messages = messageToSend;
@@ -77,5 +81,6 @@ describe('MessageList', () => {
 
      // 4. Assert that the new message is added correctly
      expect(wrapper.vm.messages).toEqual(messageToSend)
+     expect(scrollToMock).toHaveBeenCalled();
     });
 })

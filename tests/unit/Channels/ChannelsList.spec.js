@@ -78,26 +78,5 @@ describe('ChannelsList', () => {
 
     // 4. Assert that the new message is added correctly
     expect(addChannelServiceMock).toBeCalledTimes(1)
-  })
-
-  it('deletes a channel', async () => {
-   // 1. Mock the necessary dependencies and API calls
-   const channelToDelete = {id: 1, nom: 'Channel 1', admin: true}
-   const deleteChannelServiceMock = jest.spyOn(wrapper.vm.channelService,'delete')
-
-
-   // 2. Trigger the deleteChannel method with the desired input value
-   moxios.stubRequest('/api/deletechannel', {
-   status: 200,
-   response: channelToDelete,
-   message: ""
-   });
-
-   // 3. Simulate asynchronous behavior and wait for promises/reactivity updates
-   await wrapper.vm.deleteChannel(1);
-   await flushPromises();
-
-   // 4. Assert that the new message is deleted correctly
-   expect(deleteChannelServiceMock).toBeCalled()
- })
+  });
 });

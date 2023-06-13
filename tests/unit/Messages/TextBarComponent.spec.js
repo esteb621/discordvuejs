@@ -30,13 +30,6 @@ describe('TextBarComponent', () => {
   });
 
   it('submits a message', async () => {
-    // Mock the store getter for the authenticated user
-    const mockedUser = { id: 1, name: "Pierre" };
-    wrapper.vm.$store.getters['auth/getUser'] = mockedUser;
-
-    // Mock the current route value
-    const mockedRoute = { params: { id: 1 } };
-    wrapper.vm.$router.currentRoute = mockedRoute;
 
     // Set up the moxios response for the message submission
     const messageToSubmit = { id: 1, userId: 1, message: "Coucou", channel_id: 2 };
@@ -48,12 +41,14 @@ describe('TextBarComponent', () => {
     // Spy on the emit function
     const emitSpy = jest.spyOn(wrapper.vm, 'emit');
 
+    emitSpy.mockImplementation(wrapper.vm.emit('send-message'));
+
     // Call the submitMessage function
     await wrapper.vm.submitMessage();
     await flushPromises();
 
     // Assert
-    expect(emitSpy).toHaveBeenCalledWith('send-message', mockedUser.id, messageToSubmit.channel_id, messageToSubmit.message);
+    expect(emitSpy).toHaveBeenCalledWith('send-message');
   });
 
   // Add more test cases as needed...

@@ -16,8 +16,8 @@ import { ref, defineProps, onMounted } from 'vue';
 import { useStore } from 'vuex';
     
 
-const store = useStore();
-const props = defineProps({
+store = useStore();
+props = defineProps({
     userId:{
         type:Number,
         required:true

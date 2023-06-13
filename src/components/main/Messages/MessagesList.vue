@@ -34,8 +34,6 @@ const route = useRouter();
 const isloading=ref(false);
 const messages = ref([]);
 const store = useStore();
-let idChannel = ref(null).value;
-
 
 
 
@@ -50,6 +48,7 @@ function sendMessage(userId,channelId,message) {
 
 function scrollToLastMessage(){
   const messageList = document.querySelector('#message-container');
+  console.log('scrollToLastMessage : ', messageList)
   messageList.scrollTo(0, messageList.scrollHeight);
 }
 

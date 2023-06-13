@@ -4,7 +4,7 @@ import ProfileBanner from '../../../src/components/main/Profile/ProfileBanner.vu
 import store from '@/store/index';
 import router from '@/router/index';
 
-describe('ProfileComponent', () => {
+describe('ProfileBanner', () => {
   let wrapper;
 
   beforeEach(() => {
