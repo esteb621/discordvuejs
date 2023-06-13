@@ -45,8 +45,10 @@ exports.getImage = async (req, res) => {
   .catch(err => {
     res.status(404).send({
       message:
-        err.message || "Aucune photo de profil correspondant a cet id="+id
-    });
+        err.message || "Aucune photo de profil correspondant a cet id="+id,
+      picture: 
+        "https://firebasestorage.googleapis.com/v0/b/discordjs-ded7c.appspot.com/o/public%2Fprofile-default.jpg?alt=media&token=694e0cd3-627d-4f6a-aa4b-597743c47439"
+      });
     return;
   });
 }

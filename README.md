@@ -5,8 +5,14 @@
 ```
 npm run install
 ```
-## Lancer le projet en local
+## Lancer le back en local
 
 ```
+cd Back
 node server.js
 ```
+
+## Lancer le front en local
+
+cd Front
+npm run serve

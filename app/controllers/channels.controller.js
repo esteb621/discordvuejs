@@ -6,17 +6,51 @@ const Op = db.Sequelize.Op;
 // Créer et enregister un nouveau channel
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.nom || !req.body.typologie) {
+  if (!req.body.nom) {
     res.status(400).send({
       message: "Le contenu ne peut pas etre vide !"
     });
     return;
   }
-
   // Créer un channel
   const channels = {
     nom: req.body.nom,
-    typologie: req.body.typologie,
+    typologie: 1,
+    published: req.body.published ? req.body.published : false
+  };
+
+  // Enregistrer un channel dans la base de données
+  Channels.create(channels)
+    .then(data => {
+      res.send({
+        id:data.id,
+        nom:data.nom
+      });
+      return;
+    })
+    .catch(() => {
+      res.status(500).send({
+        message:
+          "Ce channel existe déjà!"
+      });
+      return;
+    });
+    return;
+};
+
+// Créer et enregister un nouveau channel
+exports.createPrivateChannel = (req, res) => {
+  // Validate request
+  if (!req.body.nom) {
+    res.status(400).send({
+      message: "Le contenu ne peut pas etre vide !"
+    });
+    return;
+  }
+  // Créer un channel
+  const channels = {
+    nom: req.body.nom,
+    typologie: 2,
     published: req.body.published ? req.body.published : false
   };
 
@@ -176,4 +210,32 @@ exports.findAllPublished = (req, res) => {
           err.message || "Some error occurred while retrieving channels."
       });
     });
+}
+
+
+exports.findAllPrivateMessages = (req,res) => {
+    if(!req.params.id){
+      res.status(400).send({
+        message: "Parametre id manquant"
+      })
+      return;
+    }
+    const userId = req.params.id;
+    Channels.findAll({
+      where: {
+          nom: {
+              [Op.or]: [
+                  { [Op.like]: 'channel_' + userId + '_%' },
+                  { [Op.like]: 'channel_' + '%_' + userId }
+              ]
+          }
+      }
+    })
+    .then(channels => {
+      res.send(channels)
+      console.log(channels);
+  })
+    .catch(err => {
+      res.status(500).send(err);
+  });
 }

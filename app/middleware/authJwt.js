@@ -34,15 +34,15 @@ isAdmin = (req, res, next) => {
   const token = req.headers["x-access-token"];
   const decoded = jwt.verify(token, config.secret);
   Users.findByPk(decoded.id).then(user => {
-    if(user.role_id==2){
-      next();
-      return;
-    }
-    res.status(403).send({
-      message: "Vous devez être administrateur pour pouvoir accéder à cette fonction!"
+      if(user.role_id==2){
+        next();
+        return;
+      }
+      res.status(403).send({
+        message: "Vous devez être administrateur pour pouvoir accéder à cette fonction!"
+      });
+      return;    
     });
-    return;    
-  });
 };
 
 const authJwt = {

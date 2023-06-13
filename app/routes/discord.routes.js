@@ -15,6 +15,7 @@ module.exports = app => {
     router.post("/createUser",users.create);
     router.post("/createRole", roles.create);
     router.post("/createChannel",[authJwt.isAdmin], channels.create);
+    router.post("/createPrivateChannel", channels.createPrivateChannel);    
     router.post("/createMessage", messages.create);
     router.post("/createFriend", friends.create);
 
@@ -26,7 +27,7 @@ module.exports = app => {
     router.get("/channels/:type", channels.findAll);
     router.get("/messages", messages.findAll);
     router.get("/friends", friends.findAll);
-
+    router.get("/channels/private/:id",channels.findAllPrivateMessages)
 
 
     // Retrieve all values that are published
