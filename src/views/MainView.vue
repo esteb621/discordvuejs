@@ -38,6 +38,7 @@ const showModal = ref(false);
 const info = ref("");
 const store = useStore()
 const router = useRouter();
+
 function handleInfoMessage(infoMessage) {
   info.value = infoMessage;
   setTimeout(() => {

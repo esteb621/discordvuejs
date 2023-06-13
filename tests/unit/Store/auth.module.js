@@ -10,7 +10,7 @@ export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-    async login({ commit }, user) {
+    login({ commit }, user) {
       return AuthService.login(user)
         .then(response => {
           if (response.accessToken) {
@@ -26,15 +26,14 @@ export const auth = {
       AuthService.logout();
       commit('logout');
     },
-    async register({ commit }, user) {
+    register({ commit }, user) {
       return AuthService.register(user)
         .then(response => {
-          console.log(response);
           if(user.picture){
-            pictureService.uploadProfilePic(response.id,user.picture);
+            console.log("Photo détectée");
+            pictureService.uploadProfilePic(response.id,user.picture)
           }
           if (response.accessToken){
-            console.log(response.accessToken);
             commit('registerSuccess', response);
             return Promise.resolve(response);
           } else {
@@ -42,9 +41,6 @@ export const auth = {
             return Promise.reject(response);
           }
         });
-    },
-    refreshToken({ commit }, accessToken) {
-      commit('refreshToken', accessToken);
     }
   },
   mutations: {
@@ -66,18 +62,11 @@ export const auth = {
     },
     registerFailure(state) {
       state.status.loggedIn = false;
-    },
-    setToken(state,token){
-      state.user.accessToken=token;
-    },
-    refreshToken(state, accessToken) {
-      state.status.loggedIn = true;
-      state.user = { ...state.user, accessToken: accessToken };
     }
   },
   getters: {
     getUser: (state) => {
-      return state.user || '';
+      return state.user;
     }
   },
 };

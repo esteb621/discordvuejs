@@ -18,7 +18,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@vue/cli": "^5.0.8",
     "@vue/runtime-core": "^3.2.47",
-    "@vue/vue3-jest": "^29.2.4",
+    "@vue/vue3-jest": "^27.0.0",
     "axios": "^0.27.2",
     "bootstrap-icons": "^1.10.5",
     "core-js": "^3.30.2",
@@ -52,5 +52,21 @@
     "jest": "^27.0.5",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2"
-  }
+  },
+  "description": "```\r npm install\r ```",
+  "main": ".eslintrc.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esteb621/discordvuejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/esteb621/discordvuejs/issues"
+  },
+  "homepage": "https://github.com/esteb621/discordvuejs#readme"
 }

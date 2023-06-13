@@ -118,12 +118,6 @@
 
   const store = useStore();
   const router = useRouter();
-  // onMounted(() => {
-  //   const loggedIn=store.state.auth.status.loggedIn;
-  //   if (loggedIn) {
-  //     router.push('/main');
-  // }});
-
   const schema = yup.object().shape({
     username: yup
       .string()
@@ -161,7 +155,6 @@
   const loading = ref(false);
   const backgroundColor = ref('#5c6aff');
   const clickedButton = ref('#3aa55c');
-  const specialChars = ref(/[$&+.,:;=?@#|'"<>^*ඞ()%!-]/).value;
   const isFormEmpty = () => {
     return !(username.value && password.value && retypePassword.value && email.value);
   };
@@ -177,6 +170,7 @@
   }
 
   function isPasswordContainSpecialChars(){
+    const specialChars = /[$&+.,:;=?@#|'"<>^*ඞ()%!-]/;
     return specialChars.test(password.value);
   }
 
@@ -184,10 +178,11 @@ function handleRegister(user) {
       message.value = "";
       loading.value = true;
       store.dispatch("auth/register", user)
-      .then(async response => {
+      .then(response => {
+        console.log("compté crée")
         loading.value = false;
         message.value = response.data;
-          router.push("/main");
+        router.push("/main");
         })
       .catch(error => {
           loading.value = false;

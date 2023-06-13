@@ -14,10 +14,21 @@
 <script setup>
 import { ref, defineProps, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import UserPicture from '../Users/UserPicture.vue';
+    
 
-const userId = ref(props.userId);
-const message = ref(props.message);
+const store = useStore();
+const props = defineProps({
+    userId:{
+        type:Number,
+        required:true
+    },
+    message:{
+        type:String,
+        required:true
+    }
+})
+const userId= ref(props.userId).value;
+const message= ref(props.message);
 const username = ref('');
 const store = useStore();
 
