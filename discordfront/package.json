@@ -1,0 +1,71 @@
+{
+  "name": "discordfront",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
+    "unit": "jest",
+    "start": "src/main.js"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@jridgewell/sourcemap-codec": "^1.4.15",
+    "@vue/runtime-core": "^3.2.47",
+    "@vue/vue3-jest": "^27.0.0",
+    "axios": "^0.27.2",
+    "bootstrap-icons": "^1.10.5",
+    "core-js": "^3.30.2",
+    "gsap": "^3.11.5",
+    "jquery": "^3.6.4",
+    "mock": "^0.1.1",
+    "moxios": "^0.4.0",
+    "process": "^0.11.10",
+    "tailwindcss-animation-delay": "^1.0.7",
+    "vee-validate": "^4.9.1",
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0",
+    "yup": "^1.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/eslint-parser": "^7.21.8",
+    "@types/debug": "^4.1.7",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-unit-jest": "^5.0.8",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/test-utils": "^2.0.0-0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "postcss": "^8.4.23",
+    "tailwindcss": "^3.3.2"
+  },
+  "description": "```\r npm install\r ```",
+  "main": ".eslintrc.js",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esteb621/discordvuejs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/esteb621/discordvuejs/issues"
+  },
+  "homepage": "https://github.com/esteb621/discordvuejs#readme"
+}
