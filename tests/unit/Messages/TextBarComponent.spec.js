@@ -1,26 +1,12 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import moxios from 'moxios';
-import { createStore } from 'vuex';
-import { auth } from "../../../src/store/auth.module";
-import { message } from "../../../src/store/message.module";
-import { user } from "../../../src/store/user.module";
-import { channel } from "../../../src/store/channel.module";
 import TextBarComponent from '../../../src/components/main/Messages/TextBarComponent.vue';
+import store from '@/store';
 
 describe('TextBarComponent', () => {
   let wrapper;
 
   beforeEach(() => {
-    // Create a mocked store instance
-    store = createStore({
-      modules: {
-        auth: {
-          getters: {
-            getUser: () => ({ id: 1 }) // Mocked implementation for 'auth/getUser' getter
-          }
-        }
-      }
-    });
 
     // Mount the component with the mocked store
     wrapper = mount(TextBarComponent, {

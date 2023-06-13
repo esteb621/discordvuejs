@@ -1,49 +1,14 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import moxios from 'moxios';
-import { createStore } from 'vuex';
-import { createRouter, createWebHistory } from 'vue-router';
-import { ref } from 'vue';
 import MessageList from '../../../src/components/main/Messages/MessagesList.vue';
-import { nextTick } from 'vue';
+import store from '@/store';
+import router from '@/router';
 
 describe('MessageList', () => {
   let wrapper;
-  let store;
-  let router
-
-  router = createRouter({
-    history: createWebHistory(),
-    routes: [
-      {
-        path: '/main/server/:id',
-        component: MessageList
-      },
-      {
-        path: '/main/personal/:id',
-        component: MessageList
-        
-      }
-    ]
-  });
 
   beforeEach(() => {
-    // Create a fresh Vuex store instance
-    store = createStore({
-      modules: {
-        message: {
-          state: {
-            messages: []
-          },
-          getters: {
-            getMessagesByChannelId: jest.fn(),
-            getChannelNameById: jest.fn()
-          },
-          actions: {
-            fetchMessages: jest.fn()
-          }
-        }
-      }
-    });
+    
 
     // Mount the component with the store
     wrapper = mount(MessageList, {

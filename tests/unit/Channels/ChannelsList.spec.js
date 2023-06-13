@@ -1,35 +1,12 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import ChannelsList from '@/components/main/Channels/ChannelsList.vue';
 import moxios from 'moxios';
-import { createStore } from 'vuex';
-import { createRouter, createWebHistory } from 'vue-router';
-import { auth } from "../../../src/store/auth.module";
-import { message } from "../../../src/store/message.module";
-import { user } from "../../../src/store/user.module";
-import { channel } from "../../../src/store/channel.module";
-import axios from 'axios';
+import store from '@/store';
+import router from '@/router';
 
 describe('ChannelsList', () => {
   let wrapper;
   const id = 1;
-  const store = createStore({
-    modules: {
-      auth,
-      message,
-      channel,
-      user
-    }
-  }); // Create a real Vuex store (not used in tests but the component needs to have it)
-  const routes = [
-    {
-      path: '/main/server/channel/:id',
-      component: ChannelsList,
-    },
-  ];
-  const router = createRouter({
-    history: createWebHistory(),
-    routes: routes
-  });
 
   beforeEach(() => {
     wrapper = mount(ChannelsList, {

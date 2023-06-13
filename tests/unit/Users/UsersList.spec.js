@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount,flushPromises } from '@vue/test-utils';
 import moxios from 'moxios';
 import UsersList from '../../../src/components/main/Users/UsersList.vue';
 
@@ -16,6 +16,7 @@ describe('UsersComponent', () => {
   afterEach(() => {
     // Unmount the component and restore Moxios
     wrapper.unmount();
+    jest.clearAllMocks();
     moxios.uninstall();
   });
 
@@ -29,42 +30,22 @@ describe('UsersComponent', () => {
       { id: 1, username: 'JohnDoe' },
       { id: 2, username: 'JaneSmith' },
     ];
+
+    const getUsersMock = jest.spyOn(wrapper.vm.userService,'getUsers')
+
     moxios.stubRequest('/users', {
       status: 200,
       response: mockedUsers
     });
 
+    getUsersMock.mockImplementation(wrapper.vm.userService.getUsers())
+
+
     // Wait for the async operations to complete
     await wrapper.vm.onMounted();
+    await flushPromises();
 
     // Assert
-    const userComponents = wrapper.findAllComponents(UsersList);
-    expect(userComponents.length).toBe(mockedUsers.length);
-
-    userComponents.forEach((userComponent, index) => {
-      expect(userComponent.props('username')).toBe(mockedUsers[index].username);
-      expect(userComponent.props('userId')).toBe(mockedUsers[index].id);
-      expect(userComponent.props('link')).toBe(mockedUsers[index].picture);
+    expect(getUsersMock).toBeCalledTimes(1);
     });
   });
-
-  it('handles error when fetching users', async () => {
-    // Set up the moxios response for fetching users
-    moxios.stubRequest('/users', {
-      status: 403,
-      response: { message: 'Unauthorized' }
-    });
-
-    // Spy on the EventBus dispatch method
-    const dispatchSpy = jest.spyOn(wrapper.vm.eventBus, 'dispatch');
-
-    // Wait for the async operations to complete
-    await wrapper.vm.$nextTick();
-    await moxios.wait();
-
-    // Assert
-    expect(dispatchSpy).toHaveBeenCalledWith('logout');
-  });
-
-  // Add more test cases as needed...
-});

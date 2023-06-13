@@ -1,26 +1,12 @@
 import { mount } from '@vue/test-utils';
 import moxios from 'moxios';
-import { createStore } from 'vuex';
-import { user } from '../../../src/store/user.module';
-import { message } from '../../../src/store/message.module';
-import { auth } from '../../../src/store/auth.module';
-import { channel } from '../../../src/store/channel.module';
 import MessageComponent from '../../../src/components/main/Messages/MessageComponent.vue';
+import store from '@/store';
 
 describe('MessageComponent', () => {
   let wrapper;
-  let store;
 
   beforeEach(() => {
-    // Create a fresh Vuex store instance
-    store = createStore({
-      modules: {
-        user,
-        message,
-        auth,
-        channel
-      }
-    });
 
     // Mount the component with the store
     wrapper = mount(MessageComponent, {
