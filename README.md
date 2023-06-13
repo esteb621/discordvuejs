@@ -44,7 +44,8 @@ Par défaut, le serveur se lance sur le port 8080.
 Ouvrez un terminal et allez sur le dossier front depuis la racine : 
 
 ```
-cd front
+cd discordfront
+npm run install
 ```
 
 ensuite lancez la commande suivante pour lancer le front :
