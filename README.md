@@ -55,3 +55,7 @@ npm run serve
 
 Le front se lance par défaut sur le port 8080 si le serveur n'est pas lancé.
 Si le serveur est lancé, le front se lance sur le port 8081.
+
+## Lancer le projet depuis cyclic
+
+Pour lancer le projet directement depuis cyclic, il suffit d'aller sur https://wild-plum-colt-cuff.cyclic.app/
